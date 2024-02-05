@@ -35,12 +35,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // Placeholder for when addItems stories are implemented
+    // PLACEHOLDER FOR WHEN ADD ITEMS STORIES ARE IMPLEMENTED
     public void addItemToTodoList(String item) {
-        // Replace this with your actual code to add an item to the to-do list
         todoQueue.add(item);
 
-        // Update visibility after modifying the to-do list
         updatePlaceholderVisibility();
     }
 
