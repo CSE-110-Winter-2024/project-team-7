@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(view.getRoot());
         updatePlaceholderVisibility();
-
-        // addItemToTodoList("New Task");   WAS USING FOR TESTING
     }
 
     @Override
@@ -37,21 +35,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-// ADD ITEM TO TODO LIST WILL NEED TO USE CODE LIKE THIS
-//    private void addItemToTodoList(String item) {
-//        // Replace this with your actual code to add an item to the to-do list
-//        todoQueue.add(item);
-//
-//        // Update visibility after modifying the to-do list
-//        updatePlaceholderVisibility();
-//    }
+    // Placeholder for when addItems stories are implemented
+    public void addItemToTodoList(String item) {
+        // Replace this with your actual code to add an item to the to-do list
+        todoQueue.add(item);
+
+        // Update visibility after modifying the to-do list
+        updatePlaceholderVisibility();
+    }
 
     // SUBJECT TO CHANGE DEPENDING ON HOW LISTS ARE IMPLEMENTED
-    private void updatePlaceholderVisibility() {
-        if (todoQueue.isEmpty()) {
-            view.placeholderText.setVisibility(View.VISIBLE);
-        } else {
-            view.placeholderText.setVisibility(View.GONE);
-        }
+    public boolean updatePlaceholderVisibility() {
+        boolean isVisible = todoQueue.isEmpty();
+        view.placeholderText.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        return isVisible;
     }
 }
