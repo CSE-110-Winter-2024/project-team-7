@@ -37,9 +37,9 @@ public class AddGoalDialogFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle("New Goal")
-                .setMessage("Please provide the new goal text")
+                .setMessage("Please provide the new goal name")
                 .setView(view.getRoot())
-                .setPositiveButton("Create", this::onPositiveButtonClick)
+                .setPositiveButton("Add", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick)
                 .create();
     }
@@ -54,8 +54,8 @@ public class AddGoalDialogFragment extends DialogFragment {
 
         var goal = new Goal(content);
 
-        MainActivity owner = (MainActivity) requireActivity();
-        owner.addItemToTodoList(goal);
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.addItemToTodoList(goal);
 
         dialog.dismiss();
     }
