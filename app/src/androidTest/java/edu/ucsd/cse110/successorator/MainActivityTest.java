@@ -8,6 +8,9 @@ import org.junit.runner.RunWith;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.assertFalse;
 
+import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
+
 /**
  * Instrumented test, which will execute on an Android device.
  *
@@ -29,10 +32,11 @@ public class MainActivityTest {
     public void testPlaceholderVisibilityWhenTodoListNotEmpty() {
         try (var scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                activity.addItemToTodoList("New Task");
+                activity.addItemToTodoList(new Goal("New Task"));
                 assertFalse(activity.updatePlaceholderVisibility());
             });
             scenario.moveToState(Lifecycle.State.STARTED);
         }
     }
+
 }
