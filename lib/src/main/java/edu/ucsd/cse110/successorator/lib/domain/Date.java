@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Date {
@@ -17,10 +17,13 @@ public class Date {
     }
 
     public void updateDate() {
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.US);
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd");
         String dayOfWeek = LocalDateTime.now().getDayOfWeek().name();
         String dateString = dateFormat.format(LocalDateTime.now());
         this.formattedDate = dayOfWeek + " " + dateString;
     }
 
+    public String getFormattedDate() {
+        return formattedDate;
+    }
 }
