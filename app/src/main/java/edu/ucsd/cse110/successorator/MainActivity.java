@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         //view = ActivityMainBinding.inflate(getLayoutInflater(), null, false);
         //view.placeholderText.setText(R.string.default_message);
-        //view.dateText.setText(currentDate.getFormattedDate());
+        view.dateText.setText(currentDate.getFormattedDate());
 
         setContentView(view.getRoot());
 
