@@ -13,6 +13,7 @@ public class DateTest {
         LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
         Date dateClass = new Date();
         dateClass.updateDate(febNine);
+        System.out.println(dateClass.getFormattedDate());
         assertEquals(dateClass.getFormattedDate(), "FRIDAY 02/09");
 
     }
