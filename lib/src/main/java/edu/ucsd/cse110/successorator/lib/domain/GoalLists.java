@@ -50,8 +50,12 @@ public class GoalLists {
     }
 
     public void finishTask(int index) {
-        //TODO
-        //move goal from unfinished to finished
+        // may need data layer to separate data storage concerns.
+        if (index < unfinished.size()) {
+            var removedTask = unfinished.remove(index);
+            finished.add(removedTask);
+        }
+
     }
 
     //for day update
