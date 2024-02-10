@@ -33,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // view = ActivityMainBinding.inflate(getLayoutInflater());
+        view = ActivityMainBinding.inflate(getLayoutInflater());
 
-        view = ActivityMainBinding.inflate(getLayoutInflater(), null, false);
-        view.placeholderText.setText(R.string.default_message);
-        view.dateText.setText(currentDate.getFormattedDate());
+        //view = ActivityMainBinding.inflate(getLayoutInflater(), null, false);
+        //view.placeholderText.setText(R.string.default_message);
+        //view.dateText.setText(currentDate.getFormattedDate());
 
         setContentView(view.getRoot());
 
