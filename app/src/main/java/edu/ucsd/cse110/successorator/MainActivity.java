@@ -101,4 +101,13 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter.notifyDataSetChanged();
     }
+
+    // getter for testing
+    GoalLists getTodoListForTesting() {
+        return this.todoList;
+    }
+    // getter for testing
+    ArrayAdapter<Goal> getAdapterForTesting() {
+        return this.adapter;
+    }
 }
