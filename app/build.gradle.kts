@@ -39,7 +39,7 @@ android {
 dependencies {
     implementation(project(":lib"))
     project(":lib")
-
+    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     testImplementation("junit:junit:4.13.2")
