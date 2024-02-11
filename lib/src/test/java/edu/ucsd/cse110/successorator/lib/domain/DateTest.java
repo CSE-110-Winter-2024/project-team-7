@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DateTest {
 
@@ -12,8 +13,12 @@ public class DateTest {
     public void dateTest() {
         LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
         Date dateClass = new Date();
-        dateClass.updateDate(febNine);
-        assertEquals(dateClass.getFormattedDate(), "FRIDAY 02/09");
+        dateClass.updateDate();
+        LocalDateTime expected = LocalDateTime.now();
+        String dayOfWeek = expected.getDayOfWeek().name();
+        String dateString = expected.format(DateTimeFormatter.ofPattern("MM/dd"));
+        String expectedDate = dayOfWeek + " " + dateString;
+        assertEquals(expectedDate, dateClass.getFormattedDate());
 
     }
 }
