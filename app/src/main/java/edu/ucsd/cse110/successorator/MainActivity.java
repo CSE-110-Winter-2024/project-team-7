@@ -103,11 +103,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // getter for testing
-    GoalLists getTodoListForTesting() {
+    public GoalLists getTodoListForTesting() {
         return this.todoList;
     }
     // getter for testing
-    ArrayAdapter<Goal> getAdapterForTesting() {
+    public ArrayAdapter<Goal> getAdapterForTesting() {
         return this.adapter;
     }
 }
