@@ -38,6 +38,10 @@ public class GoalLists {
         return unfinished.get(index);
     }
 
+    public List<Goal> getFinishedGoals() {
+        return finished;
+    }
+
     //delete one of the adds later
     public void add(Goal goal) {
         unfinished.add(goal);
@@ -49,13 +53,14 @@ public class GoalLists {
         size++;
     }
 
-    public void finishTask(int index) {
+    // How would we check if goal exists?
+    public void finishTask(Goal goal) {
         // may need data layer to separate data storage concerns.
+        var index = finished.indexOf(goal);
         if (index < unfinished.size()) {
-            var removedTask = unfinished.remove(index);
-            finished.add(removedTask);
+            unfinished.remove(index);
+            finished.add(goal);
         }
-
     }
 
     //for day update

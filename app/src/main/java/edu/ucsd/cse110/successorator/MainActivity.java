@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private GoalLists todoList = new GoalLists(); // Placeholder for actual Queue
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
+    private ArrayAdapter<Goal> fadapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupListView() {
         // Assuming your ListView and Goal class have proper toString() methods for display
+
+        // We should create/implement a goallistadapter file
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        fadapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+
         view.goalsListView.setAdapter(adapter);
+        view.finishedListView.setAdapter(fadapter);
     }
 
 
@@ -79,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
         updatePlaceholderVisibility();
     }
 
+    public void moveGoalToFinishedList(Goal goal) {
+        todoList.finishTask(goal);
+        adapter.remove(goal);
+        fadapter.add(goal);
+        adapter.notifyDataSetChanged();
+        fadapter.notifyDataSetChanged();
+
+        updatePlaceholderVisibility();
+    }
+
     public boolean updatePlaceholderVisibility() {
         boolean isEmpty = todoList.empty();
         view.goalsListView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
@@ -89,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Optionally clear the adapter and re-add all items from todoList if needed
             refreshAdapter();
+            refreshFinishedAdapter();
         }
 
         return isEmpty;
@@ -99,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < todoList.size(); i++) {
             adapter.add(todoList.get(i));
         }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void refreshFinishedAdapter() {
+        fadapter.clear();
+        adapter.addAll(todoList.getFinishedGoals());
         adapter.notifyDataSetChanged();
     }
 }
