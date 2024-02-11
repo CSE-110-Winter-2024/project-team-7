@@ -1,20 +1,17 @@
 package edu.ucsd.cse110.successorator;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import edu.ucsd.cse110.successorator.lib.domain.Date;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
@@ -29,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private GoalLists todoList = new GoalLists(); // Placeholder for actual Queue
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
-    private ArrayAdapter<Goal> fadapter;
+    private ArrayAdapter<Goal> finishedAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +48,24 @@ public class MainActivity extends AppCompatActivity {
 
         // We should create/implement a goallistadapter file
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
-        fadapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        finishedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
 
         view.goalsListView.setAdapter(adapter);
-        view.finishedListView.setAdapter(fadapter);
+        view.finishedListView.setAdapter(finishedAdapter);
+        view.goalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Goal selectedItem = adapter.getItem(position);
+                todoList.finishTask(selectedItem);
+                adapter.remove(selectedItem);
+                finishedAdapter.add(selectedItem);
+                adapter.notifyDataSetChanged();
+                finishedAdapter.notifyDataSetChanged();
+                updatePlaceholderVisibility();
+            }
+        });
+
     }
 
 
@@ -85,12 +96,13 @@ public class MainActivity extends AppCompatActivity {
         updatePlaceholderVisibility();
     }
 
+    // may not need anymore
     public void moveGoalToFinishedList(Goal goal) {
         todoList.finishTask(goal);
         adapter.remove(goal);
-        fadapter.add(goal);
+        finishedAdapter.add(goal);
         adapter.notifyDataSetChanged();
-        fadapter.notifyDataSetChanged();
+        finishedAdapter.notifyDataSetChanged();
 
         updatePlaceholderVisibility();
     }
@@ -112,15 +124,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshAdapter() {
+//        adapter.clear();
+//        for (int i = 0; i < todoList.size(); i++) {
+//            adapter.add(todoList.get(i));
+//        }
+//        adapter.notifyDataSetChanged();
+
         adapter.clear();
-        for (int i = 0; i < todoList.size(); i++) {
-            adapter.add(todoList.get(i));
-        }
+        adapter.addAll(todoList.getUnfinishedGoals());
         adapter.notifyDataSetChanged();
     }
 
     private void refreshFinishedAdapter() {
-        fadapter.clear();
+        finishedAdapter.clear();
         adapter.addAll(todoList.getFinishedGoals());
         adapter.notifyDataSetChanged();
     }
