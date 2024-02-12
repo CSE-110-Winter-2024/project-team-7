@@ -140,4 +140,13 @@ public class MainActivity extends AppCompatActivity {
         adapter.addAll(todoList.getFinishedGoals());
         adapter.notifyDataSetChanged();
     }
+
+    // getter for testing
+    public GoalLists getTodoListForTesting() {
+        return this.todoList;
+    }
+    // getter for testing
+    public ArrayAdapter<Goal> getAdapterForTesting() {
+        return this.adapter;
+    }
 }
