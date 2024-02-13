@@ -1,11 +1,14 @@
 package edu.ucsd.cse110.successorator;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,7 +51,20 @@ public class MainActivity extends AppCompatActivity {
 
         // We should create/implement a goallistadapter file
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
-        finishedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        finishedAdapter = new ArrayAdapter<Goal>(this, android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
+            // set this view to strikethrough
+
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View itemView = super.getView(position, convertView, parent);
+                TextView textView = (TextView) itemView.findViewById(android.R.id.text1);
+
+                textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                return itemView;
+            }
+        };
 
         view.goalsListView.setAdapter(adapter);
         view.finishedListView.setAdapter(finishedAdapter);
@@ -65,6 +81,21 @@ public class MainActivity extends AppCompatActivity {
                 updatePlaceholderVisibility();
             }
         });
+
+        // Moving goals from finished to unfinished in case of user error
+        view.finishedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Goal selectedItem = finishedAdapter.getItem(position);
+                todoList.unfinishTask(selectedItem);
+                finishedAdapter.remove(selectedItem);
+                adapter.add(selectedItem);
+                finishedAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
+                updatePlaceholderVisibility();
+            }
+        });
+
 
     }
 
@@ -137,8 +168,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshFinishedAdapter() {
         finishedAdapter.clear();
-        adapter.addAll(todoList.getFinishedGoals());
-        adapter.notifyDataSetChanged();
+        finishedAdapter.addAll(todoList.getFinishedGoals());
+        finishedAdapter.notifyDataSetChanged();
     }
 
     // getter for testing

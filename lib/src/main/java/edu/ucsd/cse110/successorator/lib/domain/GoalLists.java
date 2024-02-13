@@ -57,11 +57,18 @@ public class GoalLists {
 
     // How would we check if goal exists?
     public void finishTask(Goal goal) {
-        // may need data layer to separate data storage concerns.
         var index = unfinished.indexOf(goal);
         if (index < unfinished.size()) {
             unfinished.remove(index);
             finished.add(goal);
+        }
+    }
+
+    public void unfinishTask(Goal goal) {
+        var index = finished.indexOf(goal);
+        if (index < finished.size()) {
+            finished.remove(index);
+            unfinished.add(goal);
         }
     }
 
