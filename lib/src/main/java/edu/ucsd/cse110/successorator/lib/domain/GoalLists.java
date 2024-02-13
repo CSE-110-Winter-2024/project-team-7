@@ -28,6 +28,10 @@ public class GoalLists {
         return unfinished.size();
     }
 
+    public int FinishedSize() {
+        return finished.size();
+    }
+
     public boolean empty() {
         return size == 0;
     }
@@ -50,11 +54,6 @@ public class GoalLists {
         size++;
     }
 
-    public void add(String goal) {
-        unfinished.add(new Goal(goal));
-        size++;
-    }
-
     // How would we check if goal exists?
     public void finishTask(Goal goal) {
         // may need data layer to separate data storage concerns.
@@ -62,6 +61,14 @@ public class GoalLists {
         if (index < unfinished.size()) {
             unfinished.remove(index);
             finished.add(goal);
+        }
+    }
+
+    public void undoFinishTask(Goal goal) {
+        var index = finished.indexOf(goal);
+        if(index < finished.size()) {
+            finished.remove(index);
+            unfinished.add(goal);
         }
     }
 

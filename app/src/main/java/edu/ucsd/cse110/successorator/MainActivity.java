@@ -1,17 +1,24 @@
 package edu.ucsd.cse110.successorator;
 
+import android.app.Activity;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import edu.ucsd.cse110.successorator.lib.domain.Date;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
@@ -32,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         view = ActivityMainBinding.inflate(getLayoutInflater());
-
-        //view = ActivityMainBinding.inflate(getLayoutInflater(), null, false);
-        //view.placeholderText.setText(R.string.default_message);
         view.dateText.setText(currentDate.getFormattedDate());
 
         setContentView(view.getRoot());
@@ -45,30 +49,56 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupListView() {
         // Assuming your ListView and Goal class have proper toString() methods for display
-
         // We should create/implement a goallistadapter file
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
-        finishedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        finishedAdapter = new ArrayAdapter<Goal>(this, android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textViewGoal = (TextView) view.findViewById(android.R.id.text1);
+                textViewGoal.setPaintFlags(textViewGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                return view;
+            }
+        };
 
         view.goalsListView.setAdapter(adapter);
         view.finishedListView.setAdapter(finishedAdapter);
         view.goalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Goal selectedItem = adapter.getItem(position);
                 todoList.finishTask(selectedItem);
-                adapter.remove(selectedItem);
-                finishedAdapter.add(selectedItem);
-                adapter.notifyDataSetChanged();
-                finishedAdapter.notifyDataSetChanged();
-                updatePlaceholderVisibility();
+                moveToFinished(selectedItem);
+            }
+        });
+
+        view.finishedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Goal selectedItem = finishedAdapter.getItem(position);
+                todoList.undoFinishTask(selectedItem);
+                moveToUnfinished(selectedItem);
             }
         });
 
     }
+    public void moveToFinished(Goal goal) {
+        adapter.remove(goal);
+        finishedAdapter.add(goal);
+        adapter.notifyDataSetChanged();
+        finishedAdapter.notifyDataSetChanged();
+        updatePlaceholderVisibility();
+    }
 
-
+    public void moveToUnfinished(Goal goal) {
+        finishedAdapter.remove(goal);
+        adapter.add(goal);
+        finishedAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        updatePlaceholderVisibility();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,17 +126,6 @@ public class MainActivity extends AppCompatActivity {
         updatePlaceholderVisibility();
     }
 
-    // may not need anymore
-    public void moveGoalToFinishedList(Goal goal) {
-        todoList.finishTask(goal);
-        adapter.remove(goal);
-        finishedAdapter.add(goal);
-        adapter.notifyDataSetChanged();
-        finishedAdapter.notifyDataSetChanged();
-
-        updatePlaceholderVisibility();
-    }
-
     public boolean updatePlaceholderVisibility() {
         boolean isEmpty = todoList.empty();
         view.goalsListView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
@@ -124,12 +143,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshAdapter() {
-//        adapter.clear();
-//        for (int i = 0; i < todoList.size(); i++) {
-//            adapter.add(todoList.get(i));
-//        }
-//        adapter.notifyDataSetChanged();
-
         adapter.clear();
         adapter.addAll(todoList.getUnfinishedGoals());
         adapter.notifyDataSetChanged();
@@ -137,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshFinishedAdapter() {
         finishedAdapter.clear();
-        adapter.addAll(todoList.getFinishedGoals());
-        adapter.notifyDataSetChanged();
+        finishedAdapter.addAll(todoList.getFinishedGoals());
+        finishedAdapter.notifyDataSetChanged();
     }
 
     // getter for testing
