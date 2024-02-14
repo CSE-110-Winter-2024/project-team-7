@@ -28,6 +28,10 @@ public class GoalLists {
         return unfinished.size();
     }
 
+    public int FinishedSize() {
+        return finished.size();
+    }
+
     public boolean empty() {
         return size == 0;
     }
@@ -38,20 +42,34 @@ public class GoalLists {
         return unfinished.get(index);
     }
 
+    public List<Goal> getFinishedGoals() {
+        return finished;
+    }
+
+    public List<Goal> getUnfinishedGoals() { return unfinished; }
+
     //delete one of the adds later
     public void add(Goal goal) {
         unfinished.add(goal);
         size++;
     }
 
-    public void add(String goal) {
-        unfinished.add(new Goal(goal));
-        size++;
+    // How would we check if goal exists?
+    public void finishTask(Goal goal) {
+        // may need data layer to separate data storage concerns.
+        var index = unfinished.indexOf(goal);
+        if (index < unfinished.size()) {
+            unfinished.remove(index);
+            finished.add(goal);
+        }
     }
 
-    public void finishTask(int index) {
-        //TODO
-        //move goal from unfinished to finished
+    public void undoFinishTask(Goal goal) {
+        var index = finished.indexOf(goal);
+        if(index < finished.size()) {
+            finished.remove(index);
+            unfinished.add(goal);
+        }
     }
 
     //for day update

@@ -1,12 +1,16 @@
 package edu.ucsd.cse110.successorator;
 
 import android.app.Activity;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,14 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private GoalLists todoList = new GoalLists(); // Placeholder for actual Queue
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
+    private ArrayAdapter<Goal> finishedAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         view = ActivityMainBinding.inflate(getLayoutInflater());
-
-        //view = ActivityMainBinding.inflate(getLayoutInflater(), null, false);
-        //view.placeholderText.setText(R.string.default_message);
         view.dateText.setText(currentDate.getFormattedDate());
 
         setContentView(view.getRoot());
@@ -47,11 +49,56 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupListView() {
         // Assuming your ListView and Goal class have proper toString() methods for display
+        // We should create/implement a goallistadapter file
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        finishedAdapter = new ArrayAdapter<Goal>(this, android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textViewGoal = (TextView) view.findViewById(android.R.id.text1);
+                textViewGoal.setPaintFlags(textViewGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                return view;
+            }
+        };
+
         view.goalsListView.setAdapter(adapter);
+        view.finishedListView.setAdapter(finishedAdapter);
+        view.goalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Goal selectedItem = adapter.getItem(position);
+                todoList.finishTask(selectedItem);
+                moveToFinished(selectedItem);
+            }
+        });
+
+        view.finishedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Goal selectedItem = finishedAdapter.getItem(position);
+                todoList.undoFinishTask(selectedItem);
+                moveToUnfinished(selectedItem);
+            }
+        });
+
+    }
+    public void moveToFinished(Goal goal) {
+        adapter.remove(goal);
+        finishedAdapter.add(goal);
+        adapter.notifyDataSetChanged();
+        finishedAdapter.notifyDataSetChanged();
+        updatePlaceholderVisibility();
     }
 
-
+    public void moveToUnfinished(Goal goal) {
+        finishedAdapter.remove(goal);
+        adapter.add(goal);
+        finishedAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        updatePlaceholderVisibility();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Optionally clear the adapter and re-add all items from todoList if needed
             refreshAdapter();
+            refreshFinishedAdapter();
         }
 
         return isEmpty;
@@ -96,10 +144,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshAdapter() {
         adapter.clear();
-        for (int i = 0; i < todoList.size(); i++) {
-            adapter.add(todoList.get(i));
-        }
+        adapter.addAll(todoList.getUnfinishedGoals());
         adapter.notifyDataSetChanged();
+    }
+
+    private void refreshFinishedAdapter() {
+        finishedAdapter.clear();
+        finishedAdapter.addAll(todoList.getFinishedGoals());
+        finishedAdapter.notifyDataSetChanged();
     }
 
     // getter for testing

@@ -19,10 +19,6 @@ import edu.ucsd.cse110.successorator.databinding.FragmentDialogAddGoalBinding;
 public class AddGoalDialogFragment extends DialogFragment {
     private FragmentDialogAddGoalBinding view;
 
-    AddGoalDialogFragment() {
-
-    }
-
     public static AddGoalDialogFragment newInstance() {
         var fragment = new AddGoalDialogFragment();
         Bundle args = new Bundle();
