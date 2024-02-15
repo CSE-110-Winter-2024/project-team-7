@@ -18,8 +18,8 @@ public class GoalListTest {
         Goal goal2 = new Goal("two");
         testList.add(goal1);
         testList.add(goal2);
-        GoalLists actual = new GoalLists();
-        GoalLists expected = new GoalLists(testList, emptyList);
+        SimpleGoalLists actual = new SimpleGoalLists();
+        SimpleGoalLists expected = new SimpleGoalLists(testList, emptyList);
 
         actual.add(goal1);
         actual.add(goal2);
@@ -35,7 +35,7 @@ public class GoalListTest {
         testList.add(goal1);
         testList.add(goal2);
 
-        GoalLists goalLists = new GoalLists(testList, testList);
+        GoalLists goalLists = new SimpleGoalLists(testList, testList);
 
         assertEquals(4, goalLists.size());
         assertEquals(2, goalLists.unfinishedSize());
@@ -52,7 +52,7 @@ public class GoalListTest {
         Random rand = new Random();
         int randomNumber = rand.nextInt(0,100);
 
-        GoalLists testList = new GoalLists();
+        GoalLists testList = new SimpleGoalLists();
         ArrayList<Goal> expectedFinishedList = new ArrayList<>();
 
         for(int j = 0; j < randomNumber; j++){
@@ -81,7 +81,7 @@ public class GoalListTest {
         Random rand = new Random();
         int randomNumber = rand.nextInt(0,100);
 
-        GoalLists testList = new GoalLists();
+        GoalLists testList = new SimpleGoalLists();
         ArrayList<Goal> expectedUnfinishedList = new ArrayList<>();
 
         for(int j = 0; j < randomNumber; j++){
@@ -105,7 +105,7 @@ public class GoalListTest {
         Random rand = new Random();
         int randomNumber = rand.nextInt(0,100);
 
-        GoalLists testList = new GoalLists();
+        GoalLists testList = new SimpleGoalLists();
         ArrayList<Goal> expectedUnfinishedList = new ArrayList<>();
 
         for(int j = 0; j < randomNumber; j++){
@@ -139,7 +139,7 @@ public class GoalListTest {
         Random rand = new Random();
         int randomNumber = rand.nextInt(0,100);
 
-        GoalLists testList = new GoalLists();
+        GoalLists testList = new SimpleGoalLists();
 
         for(int j = 0; j < randomNumber; j++){
             testList.add(new Goal("goal" + j));

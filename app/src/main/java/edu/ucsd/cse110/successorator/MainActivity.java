@@ -1,6 +1,5 @@
 package edu.ucsd.cse110.successorator;
 
-import android.app.Activity;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,20 +15,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import edu.ucsd.cse110.successorator.lib.domain.Date;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalLists;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private Date currentDate = new Date();
-    private GoalLists todoList = new GoalLists(); // Placeholder for actual Queue
+    private GoalLists todoList = new SimpleGoalLists(); // Placeholder for actual Queue
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
