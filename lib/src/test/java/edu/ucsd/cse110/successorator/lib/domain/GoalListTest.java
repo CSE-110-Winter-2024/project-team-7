@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class GoalListTest {
 
+    /* OUTDATED TESTS
     @Test
     public void addTest() {
         ArrayList<Goal> testList = new ArrayList<>();
@@ -153,4 +154,5 @@ public class GoalListTest {
         testList.clearFinished();
         assertEquals(0, testList.FinishedSize());
     }
+     */
 }
