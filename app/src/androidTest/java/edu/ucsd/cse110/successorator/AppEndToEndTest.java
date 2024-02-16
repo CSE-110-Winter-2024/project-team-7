@@ -8,12 +8,7 @@ import org.junit.runner.RunWith;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.assertFalse;
 
-import static org.junit.Assert.assertEquals;
-
-import android.widget.ArrayAdapter;
-
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
-import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
 /**
  * Instrumented test, which will execute on an Android device.
