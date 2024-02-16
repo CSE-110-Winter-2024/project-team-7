@@ -17,7 +17,9 @@ import androidx.room.Room;
 
 import java.util.ArrayList;
 
+import edu.ucsd.cse110.successorator.data.db.DateDatabase;
 import edu.ucsd.cse110.successorator.data.db.GoalDatabase;
+import edu.ucsd.cse110.successorator.data.db.RoomDateStorage;
 import edu.ucsd.cse110.successorator.data.db.RoomGoalLists;
 import edu.ucsd.cse110.successorator.lib.domain.Date;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
@@ -34,17 +36,38 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
+
+    private RoomDateStorage storedDate;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        var database = Room.databaseBuilder(
+        var goalDatabase = Room.databaseBuilder(
                 getApplicationContext(),
                 GoalDatabase.class,
                 "goals-database"
         ).allowMainThreadQueries().build();
 
-        this.todoList = new RoomGoalLists(database.goalDao());
+        this.todoList = new RoomGoalLists(goalDatabase.goalDao());
+
+        var dateDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                DateDatabase.class,
+                "date-database"
+        ).allowMainThreadQueries().build();
+
+        this.storedDate = new RoomDateStorage(dateDatabase.dateDao());
+
+        var sharedPreferences = getSharedPreferences("goals", MODE_PRIVATE);
+        var isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+
+        if(isFirstRun) {
+            storedDate.replace(currentDate);
+        } else if(!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
+            storedDate.replace(currentDate);
+            //TODO: DO THE OBSERVER STUFF OR SOMETHING HERE
+        }
+
 
         view = ActivityMainBinding.inflate(getLayoutInflater());
         view.dateText.setText(currentDate.getFormattedDate());
