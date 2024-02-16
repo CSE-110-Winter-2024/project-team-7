@@ -13,9 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import java.util.ArrayList;
 
+import edu.ucsd.cse110.successorator.data.db.GoalDatabase;
+import edu.ucsd.cse110.successorator.data.db.RoomGoalLists;
 import edu.ucsd.cse110.successorator.lib.domain.Date;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
@@ -27,13 +30,21 @@ import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
 public class MainActivity extends AppCompatActivity {
 
     private Date currentDate = new Date();
-    private GoalLists todoList = new SimpleGoalLists(); // Placeholder for actual Queue
+    private GoalLists todoList; // Placeholder for actual Queue
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        var database = Room.databaseBuilder(
+                getApplicationContext(),
+                GoalDatabase.class,
+                "goals-database"
+        ).allowMainThreadQueries().build();
+
+        this.todoList = new RoomGoalLists(database.goalDao());
 
         view = ActivityMainBinding.inflate(getLayoutInflater());
         view.dateText.setText(currentDate.getFormattedDate());

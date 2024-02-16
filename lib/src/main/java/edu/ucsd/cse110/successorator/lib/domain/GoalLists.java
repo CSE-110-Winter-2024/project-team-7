@@ -12,8 +12,6 @@ public interface GoalLists {
 
     boolean empty();
 
-    Goal get(int index);
-
     List<Goal> getFinishedGoals();
 
     List<Goal> getUnfinishedGoals();

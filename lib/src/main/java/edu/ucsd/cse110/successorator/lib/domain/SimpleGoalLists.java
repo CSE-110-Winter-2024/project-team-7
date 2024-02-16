@@ -40,7 +40,7 @@ public class SimpleGoalLists implements GoalLists {
         return size == 0;
     }
 
-    @Override
+    //@Override
     public Goal get(int index) {
         if(index >= unfinished.size())
             return finished.get(index - unfinished.size());
