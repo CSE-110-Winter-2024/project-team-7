@@ -8,7 +8,8 @@ public interface GoalLists {
     //might be necessary for crossing out
     int unfinishedSize();
 
-    int FinishedSize();
+
+    int finishedSize();
 
     boolean empty();
 

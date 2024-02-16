@@ -31,7 +31,7 @@ public class SimpleGoalLists implements GoalLists {
     }
 
     @Override
-    public int FinishedSize() {
+    public int finishedSize() {
         return finished.size();
     }
 

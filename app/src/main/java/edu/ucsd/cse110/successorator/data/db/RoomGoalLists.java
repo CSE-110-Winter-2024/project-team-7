@@ -30,7 +30,7 @@ public class RoomGoalLists implements GoalLists {
     }
 
     @Override
-    public int FinishedSize() {
+    public int finishedSize() {
         return goalDao.finishedCount();
     }
 
