@@ -11,24 +11,25 @@ import java.util.Locale;
 public class Date {
 
     private String formattedDate;
+    private LocalDateTime dateTime;
+    private DateTimeFormatter dateFormat;
 
     public Date() {
+        this.dateFormat = DateTimeFormatter.ofPattern("MM/dd");
+        this.dateTime = LocalDateTime.now();
         updateDate();
     }
 
     public void updateDate() {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd");
-        String dayOfWeek = LocalDateTime.now().getDayOfWeek().name();
-        String dateString = dateFormat.format(LocalDateTime.now());
+        String dayOfWeek = dateTime.getDayOfWeek().name();
+        String dateString = dateFormat.format(dateTime);
         this.formattedDate = dayOfWeek + " " + dateString;
     }
 
-//    public void updateDate(LocalDateTime dateTime) {
-//        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd");
-//        String dayOfWeek = LocalDateTime.now().getDayOfWeek().name();
-//        String dateString = dateFormat.format(LocalDateTime.now());
-//        this.formattedDate = dayOfWeek + " " + dateString;
-//    }
+    public void skipDay() {
+        this.dateTime = dateTime.plusDays(1);
+        updateDate();
+    }
 
     public String getFormattedDate() {
         return formattedDate;

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view.getRoot());
 
         setupListView();
+        setupDateMock();
         updatePlaceholderVisibility();
     }
 
@@ -83,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setupDateMock() {
+        view.dateMockButton.setOnClickListener(v -> {
+            currentDate.skipDay();
+            view.dateText.setText(currentDate.getFormattedDate());
+        });
     }
     public void moveToFinished(Goal goal) {
         adapter.remove(goal);
