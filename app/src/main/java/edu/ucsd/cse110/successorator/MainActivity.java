@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(isFirstRun) {
             storedDate.replace(currentDate);
+            sharedPreferences.edit().putBoolean("isFirstRun", false).apply();
         } else if(!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
             storedDate.replace(currentDate);
             //TODO: DO THE OBSERVER STUFF OR SOMETHING HERE
