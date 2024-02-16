@@ -55,7 +55,7 @@ public class SimpleGoalLists implements GoalLists {
     @Override
     public List<Goal> getUnfinishedGoals() { return unfinished; }
 
-    //delete one of the adds later
+    // function to add new goal
     @Override
     public void add(Goal goal) {
         unfinished.add(goal);
@@ -65,11 +65,10 @@ public class SimpleGoalLists implements GoalLists {
     // How would we check if goal exists?
     @Override
     public void finishTask(Goal goal) {
-        // may need data layer to separate data storage concerns.
         var index = unfinished.indexOf(goal);
         if (index < unfinished.size()) {
             unfinished.remove(index);
-            finished.add(goal);
+            finished.add(goal.withFinished(true));
         }
     }
 
@@ -78,7 +77,7 @@ public class SimpleGoalLists implements GoalLists {
         var index = finished.indexOf(goal);
         if(index < finished.size()) {
             finished.remove(index);
-            unfinished.add(goal);
+            unfinished.add(goal.withFinished(false));
         }
     }
 

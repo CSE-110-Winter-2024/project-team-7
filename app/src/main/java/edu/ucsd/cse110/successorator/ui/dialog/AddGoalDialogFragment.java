@@ -48,7 +48,7 @@ public class AddGoalDialogFragment extends DialogFragment {
             return;
         }
 
-        var goal = new Goal(content);
+        var goal = new Goal(null, content, false);
 
         MainActivity activity = (MainActivity) requireActivity();
         activity.addItemToTodoList(goal);
