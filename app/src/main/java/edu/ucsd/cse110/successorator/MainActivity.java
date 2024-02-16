@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         finishedAdapter.add(goal);
         adapter.notifyDataSetChanged();
         finishedAdapter.notifyDataSetChanged();
+        todoList.finishTask(goal);
         updatePlaceholderVisibility();
     }
 
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.add(goal);
         finishedAdapter.notifyDataSetChanged();
         adapter.notifyDataSetChanged();
+        todoList.undoFinishTask(goal);
         updatePlaceholderVisibility();
     }
 

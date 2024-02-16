@@ -28,7 +28,7 @@ public class GoalLists {
         return unfinished.size();
     }
 
-    public int FinishedSize() {
+    public int finishedSize() {
         return finished.size();
     }
 
