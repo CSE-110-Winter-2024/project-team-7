@@ -151,6 +151,6 @@ public class GoalListTest {
         }
 
         testList.clearFinished();
-        assertEquals(0, testList.FinishedSize());
+        assertEquals(0, testList.finishedSize());
     }
 }
