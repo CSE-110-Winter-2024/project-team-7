@@ -1,20 +1,15 @@
 package edu.ucsd.cse110.successorator.lib.domain;
 
-import androidx.annotation.NonNull;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
-public class Date {
+public class DateHandler {
 
     private String formattedDate;
     private LocalDateTime dateTime;
     private DateTimeFormatter dateFormat;
 
-    public Date() {
+    public DateHandler() {
         this.dateFormat = DateTimeFormatter.ofPattern("MM/dd");
         this.dateTime = LocalDateTime.now();
         updateDate();

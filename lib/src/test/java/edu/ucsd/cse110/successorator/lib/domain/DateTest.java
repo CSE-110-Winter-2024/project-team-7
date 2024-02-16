@@ -12,7 +12,7 @@ public class DateTest {
     @Test
     public void dateTest() {
         LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
-        Date dateClass = new Date();
+        DateHandler dateClass = new DateHandler();
         dateClass.updateDate();
         LocalDateTime expected = LocalDateTime.now();
         String dayOfWeek = expected.getDayOfWeek().name();

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import edu.ucsd.cse110.successorator.lib.domain.Date;
+import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
@@ -29,7 +29,7 @@ import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Date currentDate = new Date();
+    private DateHandler currentDate = new DateHandler();
     private GoalLists todoList = new GoalLists(); // Placeholder for actual Queue
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
