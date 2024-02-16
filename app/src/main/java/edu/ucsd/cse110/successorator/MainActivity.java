@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Goal selectedItem = adapter.getItem(position);
-                todoList.finishTask(selectedItem);
                 moveToFinished(selectedItem);
             }
         });
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Goal selectedItem = finishedAdapter.getItem(position);
-                todoList.undoFinishTask(selectedItem);
                 moveToUnfinished(selectedItem);
             }
         });
