@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Goal Database Setup
         var goalDatabase = Room.databaseBuilder(
                 getApplicationContext(),
                 GoalDatabase.class,
@@ -50,24 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.todoList = new RoomGoalLists(goalDatabase.goalDao());
 
-        var dateDatabase = Room.databaseBuilder(
-                getApplicationContext(),
-                DateDatabase.class,
-                "date-database"
-        ).allowMainThreadQueries().build();
 
-        this.storedDate = new RoomDateStorage(dateDatabase.dateDao());
-
-        var sharedPreferences = getSharedPreferences("goals", MODE_PRIVATE);
-        var isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
-
-        if(isFirstRun) {
-            storedDate.replace(currentDate);
-            sharedPreferences.edit().putBoolean("isFirstRun", false).apply();
-        } else if(!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
-            storedDate.replace(currentDate);
-            //TODO: DO THE OBSERVER STUFF OR SOMETHING HERE
-        }
 
 
         view = ActivityMainBinding.inflate(getLayoutInflater());
@@ -77,6 +61,33 @@ public class MainActivity extends AppCompatActivity {
 
         setupListView();
         updatePlaceholderVisibility();
+
+        //Date Database Setup
+        //After everything else so that lists can be updated if necessary
+        var dateDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                DateDatabase.class,
+                "date-database"
+        ).allowMainThreadQueries().build();
+
+        this.storedDate = new RoomDateStorage(dateDatabase.dateDao());
+
+        //Checks if it's the first run so that it doesn't try to check previous date that doesn't exist
+        var sharedPreferences = getSharedPreferences("goals", MODE_PRIVATE);
+        var isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+
+        if(isFirstRun) {
+            storedDate.replace(currentDate);
+            sharedPreferences.edit().putBoolean("isFirstRun", false).apply();
+        } else if(!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
+
+            //TODO: DO THE OBSERVER STUFF OR SOMETHING HERE
+            //below was for testing
+            /* addItemToTodoList(new Goal(null,
+                    "DATE CHANGED FROM: " + storedDate.formattedDate(), false)); */
+
+            storedDate.replace(currentDate);
+        }
     }
 
     private void setupListView() {

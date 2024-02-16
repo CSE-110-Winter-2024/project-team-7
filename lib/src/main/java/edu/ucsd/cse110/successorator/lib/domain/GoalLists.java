@@ -27,4 +27,6 @@ public interface GoalLists {
 
     //for day update
     void clearFinished();
+
+    Goal get(int i);
 }

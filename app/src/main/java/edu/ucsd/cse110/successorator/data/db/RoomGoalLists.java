@@ -88,6 +88,15 @@ public class RoomGoalLists implements GoalLists {
         }
     }
 
+    @Override
+    public Goal get(int index) {
+        List<Goal> unfinished = getUnfinishedGoals();
+        List<Goal> finished = getFinishedGoals();
+
+        if(index >= unfinished.size())
+            return finished.get(index - unfinished.size());
+        return unfinished.get(index);
+    }
 
 
 

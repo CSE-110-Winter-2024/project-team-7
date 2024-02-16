@@ -36,7 +36,7 @@ public class MainActivityTest {
     public void testPlaceholderVisibilityWhenTodoListNotEmpty() {
         try (var scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                activity.addItemToTodoList(new Goal("New Task"));
+                activity.addItemToTodoList(new Goal(null, "New Task", false));
                 assertFalse(activity.updatePlaceholderVisibility());
             });
             scenario.moveToState(Lifecycle.State.STARTED);
@@ -47,7 +47,7 @@ public class MainActivityTest {
     public void testAddItemToTodoList() {
         try (var scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                Goal newGoal = new Goal("Complete unit testing");
+                Goal newGoal = new Goal(null, "Complete unit testing", false);
                 activity.addItemToTodoList(newGoal);
 
                 // Makes use of getTodoListForTesting() and getAdapterForTesting()
