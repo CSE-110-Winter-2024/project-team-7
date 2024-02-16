@@ -10,15 +10,20 @@ import java.time.format.DateTimeFormatter;
 public class DateTest {
 
     @Test
-    public void dateTest() {
+    public void basicDateTest() {
         LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
         DateHandler dateClass = new DateHandler();
-        dateClass.updateDate();
-        LocalDateTime expected = LocalDateTime.now();
-        String dayOfWeek = expected.getDayOfWeek().name();
-        String dateString = expected.format(DateTimeFormatter.ofPattern("MM/dd"));
-        String expectedDate = dayOfWeek + " " + dateString;
-        assertEquals(expectedDate, dateClass.getFormattedDate());
+        dateClass.updateDate(febNine);
+        assertEquals("FRIDAY 02/09", dateClass.getFormattedDate());
+    }
 
+    @Test
+    public void dateSkipTest() {
+        LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
+        DateHandler dateClass = new DateHandler();
+        dateClass.updateDate(febNine);
+        dateClass.skipDay();
+        dateClass.skipDay();
+        assertEquals("SUNDAY 02/11", dateClass.getFormattedDate());
     }
 }

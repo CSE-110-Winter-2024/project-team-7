@@ -21,6 +21,13 @@ public class DateHandler {
         this.formattedDate = dayOfWeek + " " + dateString;
     }
 
+    public void updateDate(LocalDateTime dateInput) {
+        this.dateTime = dateInput;
+        String dayOfWeek = dateTime.getDayOfWeek().name();
+        String dateString = dateFormat.format(dateTime);
+        this.formattedDate = dayOfWeek + " " + dateString;
+    }
+
     public void skipDay() {
         this.dateTime = dateTime.plusDays(1);
         updateDate();
