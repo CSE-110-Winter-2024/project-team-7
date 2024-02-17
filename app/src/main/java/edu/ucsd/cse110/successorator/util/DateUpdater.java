@@ -27,16 +27,16 @@ public class DateUpdater {
                     }
                 });
             }
-        }, calculateDelayToMidnight(), 24 * 60 * 60 * 1000);
+        }, calculateDelayToMidnight(Calendar.getInstance()), 24 * 60 * 60 * 1000);
     }
 
-    private static long calculateDelayToMidnight() {
-        Calendar midnight = Calendar.getInstance();
+    public static long calculateDelayToMidnight(Calendar currentTime) {
+        Calendar midnight = (Calendar) currentTime.clone();
         midnight.set(Calendar.HOUR_OF_DAY, 0);
         midnight.set(Calendar.MINUTE, 0);
         midnight.set(Calendar.SECOND, 0);
         midnight.add(Calendar.DAY_OF_YEAR, 1);
-        return midnight.getTimeInMillis() - System.currentTimeMillis();
+        return midnight.getTimeInMillis() - currentTime.getTimeInMillis();
     }
 
     public static void cancelDateUpdates() {

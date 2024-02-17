@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void setupDateMock() {
         view.dateMockButton.setOnClickListener(v -> {
             currentDate.skipDay();
-            view.dateText.setText(currentDate.getFormattedDate());
         });
     }
     public void moveToFinished(Goal goal) {
@@ -215,6 +214,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
     // getter for testing
     public ArrayAdapter<Goal> getAdapterForTesting() {
         return this.adapter;
+    }
+
+    public ArrayAdapter<Goal> getFinishedAdapterForTesting() {
+        return this.finishedAdapter;
+    }
+
+    public DateHandler getCurrentDate() {
+        return currentDate;
     }
 
     @Override

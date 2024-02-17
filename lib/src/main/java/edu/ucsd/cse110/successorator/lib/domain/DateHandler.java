@@ -49,7 +49,6 @@ public class DateHandler implements Subject {
 
     public void skipDay() {
         this.dateTime = dateTime.plusDays(1);
-        System.out.println(dateTime.getDayOfWeek().name() + " " + dateTime.format(dateFormat));
         updateDate(dateTime);
     }
 
