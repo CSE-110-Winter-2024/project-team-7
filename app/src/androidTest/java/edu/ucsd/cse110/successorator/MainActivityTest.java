@@ -36,8 +36,15 @@ public class MainActivityTest {
     public void testPlaceholderVisibilityWhenTodoListNotEmpty() {
         try (var scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                activity.addItemToTodoList(new Goal("New Task"));
+                Goal newGoal = new Goal(null, "New Task", false);
+                activity.addItemToTodoList(newGoal);
                 assertFalse(activity.updatePlaceholderVisibility());
+
+                //clear for other tests
+
+                GoalLists todoList = activity.getTodoListForTesting();
+                activity.moveToFinished(todoList.get(0));
+                todoList.clearFinished();
             });
             scenario.moveToState(Lifecycle.State.STARTED);
         }
@@ -47,7 +54,7 @@ public class MainActivityTest {
     public void testAddItemToTodoList() {
         try (var scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                Goal newGoal = new Goal("Complete unit testing");
+                Goal newGoal = new Goal(null, "Complete unit testing", false);
                 activity.addItemToTodoList(newGoal);
 
                 // Makes use of getTodoListForTesting() and getAdapterForTesting()
@@ -61,6 +68,10 @@ public class MainActivityTest {
                 // Verifying the adapter has the new goal, assuming the adapter adds items at the end
                 ArrayAdapter<Goal> adapter = activity.getAdapterForTesting();
                 assertEquals("Adapter should contain the new goal", newGoal, adapter.getItem(adapter.getCount() - 1));
+
+                //clear for other tests
+                activity.moveToFinished(todoList.get(0));
+                todoList.clearFinished();
             });
         }
     }

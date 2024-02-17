@@ -1,6 +1,5 @@
 package edu.ucsd.cse110.successorator;
 
-import android.app.Activity;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,34 +8,53 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+
+import edu.ucsd.cse110.successorator.data.db.DateDatabase;
+import edu.ucsd.cse110.successorator.data.db.GoalDatabase;
+import edu.ucsd.cse110.successorator.data.db.RoomDateStorage;
+import edu.ucsd.cse110.successorator.data.db.RoomGoalLists;
 
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
+
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalLists;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private GoalLists todoList; // Placeholder for actual Queue
     private DateHandler currentDate = new DateHandler();
-    private GoalLists todoList = new GoalLists(); // Placeholder for actual Queue
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
+
+    private RoomDateStorage storedDate;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Goal Database Setup
+        var goalDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                GoalDatabase.class,
+                "goals-database"
+        ).allowMainThreadQueries().build();
+
+        this.todoList = new RoomGoalLists(goalDatabase.goalDao());
+
+
+
 
         view = ActivityMainBinding.inflate(getLayoutInflater());
         view.dateText.setText(currentDate.getFormattedDate());
@@ -46,6 +64,33 @@ public class MainActivity extends AppCompatActivity {
         setupListView();
         setupDateMock();
         updatePlaceholderVisibility();
+
+        //Date Database Setup
+        //After everything else so that lists can be updated if necessary
+        var dateDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                DateDatabase.class,
+                "date-database"
+        ).allowMainThreadQueries().build();
+
+        this.storedDate = new RoomDateStorage(dateDatabase.dateDao());
+
+        //Checks if it's the first run so that it doesn't try to check previous date that doesn't exist
+        var sharedPreferences = getSharedPreferences("goals", MODE_PRIVATE);
+        var isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+
+        if(isFirstRun) {
+            storedDate.replace(currentDate);
+            sharedPreferences.edit().putBoolean("isFirstRun", false).apply();
+        } else if(!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
+
+            //TODO: DO THE OBSERVER STUFF OR SOMETHING HERE
+            //below was for testing
+            /* addItemToTodoList(new Goal(null,
+                    "DATE CHANGED FROM: " + storedDate.formattedDate(), false)); */
+
+            storedDate.replace(currentDate);
+        }
     }
 
     private void setupListView() {

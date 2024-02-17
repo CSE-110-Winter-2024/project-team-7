@@ -22,18 +22,18 @@ public class AppEndToEndTest {
         try (var scenario1 = ActivityScenario.launch(MainActivity.class)) {
             scenario1.onActivity(activity -> {
                 assertTrue(activity.updatePlaceholderVisibility());
-                activity.addItemToTodoList(new Goal("Finish Project Report"));
+                activity.addItemToTodoList(new Goal(null,"Finish Project Report", false));
                 assertFalse(activity.updatePlaceholderVisibility());
                 assertTrue(activity.getTodoListForTesting().unfinishedSize() == 1);
-                activity.addItemToTodoList(new Goal("Prepare for Tomorrow's Presentation"));
+                activity.addItemToTodoList(new Goal(null, "Prepare for Tomorrow's Presentation", false));
                 assertFalse(activity.updatePlaceholderVisibility());
                 assertTrue(activity.getTodoListForTesting().unfinishedSize() == 2);
                 activity.moveToFinished(activity.getTodoListForTesting().get(0));
                 assertFalse(activity.updatePlaceholderVisibility());
                 assertTrue(activity.getTodoListForTesting().unfinishedSize() == 1);
-                assertTrue(activity.getTodoListForTesting().get(0).toString() == "Prepare for Tomorrow's Presentation");
+                assertTrue(activity.getTodoListForTesting().get(0).toString().equals("Prepare for Tomorrow's Presentation"));
                 assertTrue(activity.getTodoListForTesting().finishedSize() == 1);
-                assertTrue(activity.getTodoListForTesting().getFinishedGoals().get(0).toString() == "Finish Project Report");
+                assertTrue(activity.getTodoListForTesting().getFinishedGoals().get(0).toString().equals("Finish Project Report"));
             });
             scenario1.moveToState(Lifecycle.State.STARTED);
         }
