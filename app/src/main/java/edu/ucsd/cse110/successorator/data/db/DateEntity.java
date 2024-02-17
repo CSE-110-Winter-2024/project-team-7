@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import edu.ucsd.cse110.successorator.lib.domain.Date;
+import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 
 @Entity(tableName = "Date")
@@ -23,7 +23,7 @@ public class DateEntity {
         this.id = 0;
     }
 
-    public static DateEntity fromDate(@NonNull Date date) {
+    public static DateEntity fromDate(@NonNull DateHandler date) {
         var newDate = new DateEntity(date.getFormattedDate());
         newDate.id = 0;
         return newDate;

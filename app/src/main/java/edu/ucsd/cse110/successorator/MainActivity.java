@@ -21,7 +21,9 @@ import edu.ucsd.cse110.successorator.data.db.DateDatabase;
 import edu.ucsd.cse110.successorator.data.db.GoalDatabase;
 import edu.ucsd.cse110.successorator.data.db.RoomDateStorage;
 import edu.ucsd.cse110.successorator.data.db.RoomGoalLists;
-import edu.ucsd.cse110.successorator.lib.domain.Date;
+
+import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
+
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
@@ -31,8 +33,8 @@ import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Date currentDate = new Date();
     private GoalLists todoList; // Placeholder for actual Queue
+    private DateHandler currentDate = new DateHandler();
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view.getRoot());
 
         setupListView();
+        setupDateMock();
         updatePlaceholderVisibility();
 
         //Date Database Setup
@@ -124,6 +127,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setupDateMock() {
+        view.dateMockButton.setOnClickListener(v -> {
+            currentDate.skipDay();
+            view.dateText.setText(currentDate.getFormattedDate());
+        });
     }
     public void moveToFinished(Goal goal) {
         adapter.remove(goal);

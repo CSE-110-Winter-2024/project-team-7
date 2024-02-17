@@ -1,6 +1,6 @@
 package edu.ucsd.cse110.successorator.data.db;
 
-import edu.ucsd.cse110.successorator.lib.domain.Date;
+import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 
 public class RoomDateStorage {
     private final DateDao dateDao;
@@ -13,7 +13,7 @@ public class RoomDateStorage {
         return dateDao.find().formattedDate;
     }
 
-    public void replace(Date date) {
+    public void replace(DateHandler date) {
         dateDao.replace(DateEntity.fromDate(date));
     }
 }
