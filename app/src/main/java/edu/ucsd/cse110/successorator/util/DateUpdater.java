@@ -14,6 +14,7 @@ public class DateUpdater {
     private static Timer timer;
     private static Handler handler;
 
+    // Scheduler to run updateDate() every 24 hours at 2AM
     public static void scheduleDateUpdates(DateHandler dateData) {
         handler = new Handler(Looper.getMainLooper());
         timer = new Timer();

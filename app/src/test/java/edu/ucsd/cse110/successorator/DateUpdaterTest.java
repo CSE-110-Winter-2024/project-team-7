@@ -33,13 +33,8 @@ public class DateUpdaterTest {
 
     @Test
     public void testCancelDateUpdates() {
-        // Ensure that timer is initially null
         assertNull(getTimerField());
-
-        // Call cancelDateUpdates
         DateUpdater.cancelDateUpdates();
-
-        // Ensure that timer is null after cancellation
         assertNull(getTimerField());
     }
 

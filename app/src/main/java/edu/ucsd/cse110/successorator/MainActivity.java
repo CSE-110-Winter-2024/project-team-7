@@ -37,7 +37,7 @@ import edu.ucsd.cse110.successorator.util.DateUpdater;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    private GoalLists todoList; // Placeholder for actual Queue
+    private GoalLists todoList;
     private DateHandler currentDate = new DateHandler();
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setContentView(view.getRoot());
 
         TextView dateTextView = findViewById(R.id.date_text);
-
-        // Register observers for DateHandler
         currentDate.observe(new DateDisplay(dateTextView));
         currentDate.observe(this);
         DateUpdater.scheduleDateUpdates(currentDate);
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         updatePlaceholderVisibility();
 
         //Date Database Setup
-        //After everything else so that lists can be updated if necessary
         var dateDatabase = Room.databaseBuilder(
                 getApplicationContext(),
                 DateDatabase.class,
@@ -95,8 +92,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void setupListView() {
-        // Assuming your ListView and Goal class have proper toString() methods for display
-        // We should create/implement a goallistadapter file
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         finishedAdapter = new ArrayAdapter<Goal>(this, android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
             @NonNull
@@ -174,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void addItemToTodoList(Goal goal) {
         todoList.add(goal);
-        adapter.add(goal); // Add goal directly to the adapter
-        adapter.notifyDataSetChanged(); // Notify the adapter to refresh the list view
+        adapter.add(goal);
+        adapter.notifyDataSetChanged();
         updatePlaceholderVisibility();
     }
 
@@ -187,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         if(isEmpty) {
             view.placeholderText.setText(R.string.default_message);
         } else {
-            // Optionally clear the adapter and re-add all items from todoList if needed
             refreshAdapter();
             refreshFinishedAdapter();
         }

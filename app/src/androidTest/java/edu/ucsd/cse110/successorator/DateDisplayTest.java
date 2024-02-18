@@ -31,10 +31,10 @@ public class DateDisplayTest {
                 assertNotNull("TextView not found", dateTextView);
 
                 DateDisplay dateDisplay = new DateDisplay(dateTextView);
-                String sampleDate = "Monday 01/01";
-                dateDisplay.onChanged(sampleDate);
+                String newDate = "Monday 01/01";
+                dateDisplay.onChanged(newDate);
 
-                assertEquals(sampleDate, dateTextView.getText().toString());
+                assertEquals(newDate, dateTextView.getText().toString());
             });
             scenario.moveToState(Lifecycle.State.STARTED);
         }
