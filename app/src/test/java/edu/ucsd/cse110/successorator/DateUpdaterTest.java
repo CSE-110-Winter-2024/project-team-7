@@ -11,20 +11,22 @@ import edu.ucsd.cse110.successorator.util.DateUpdater;
 public class DateUpdaterTest {
 
     @Test
-    public void testCalculateDelayToMidnight() {
+    public void testCalculateDelayTo2AM() {
         Calendar currentTime = Calendar.getInstance();
         currentTime.set(Calendar.HOUR_OF_DAY, 23);
         currentTime.set(Calendar.MINUTE, 59);
         currentTime.set(Calendar.SECOND, 59);
 
-        long delay = DateUpdater.calculateDelayToMidnight(currentTime);
+        long delay = DateUpdater.calculateDelayTo2AM(currentTime);
 
-        Calendar midnight = (Calendar) currentTime.clone();
-        midnight.add(Calendar.DAY_OF_YEAR, 1);
-        midnight.set(Calendar.HOUR_OF_DAY, 0);
-        midnight.set(Calendar.MINUTE, 0);
-        midnight.set(Calendar.SECOND, 0);
-        long expectedDelay = midnight.getTimeInMillis() - currentTime.getTimeInMillis();
+        Calendar next2AM = (Calendar) currentTime.clone();
+        next2AM.set(Calendar.HOUR_OF_DAY, 2);
+        next2AM.set(Calendar.MINUTE, 0);
+        next2AM.set(Calendar.SECOND, 0);
+        if (next2AM.before(currentTime)) {
+            next2AM.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        long expectedDelay = next2AM.getTimeInMillis() - currentTime.getTimeInMillis();
 
         assertTrue(Math.abs(delay - expectedDelay) < 1000);
     }
