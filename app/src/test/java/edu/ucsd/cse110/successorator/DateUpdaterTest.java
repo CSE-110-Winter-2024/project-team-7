@@ -13,7 +13,7 @@ public class DateUpdaterTest {
     @Test
     public void testCalculateDelayTo2AM() {
         Calendar currentTime = Calendar.getInstance();
-        currentTime.set(Calendar.HOUR_OF_DAY, 23);
+        currentTime.set(Calendar.HOUR_OF_DAY, 1);
         currentTime.set(Calendar.MINUTE, 59);
         currentTime.set(Calendar.SECOND, 59);
 
