@@ -231,6 +231,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
             finishedAdapter.clear();
             finishedAdapter.notifyDataSetChanged();
             updatePlaceholderVisibility();
+
+            storedDate.replace(currentDate);
         }
+
     }
 }
