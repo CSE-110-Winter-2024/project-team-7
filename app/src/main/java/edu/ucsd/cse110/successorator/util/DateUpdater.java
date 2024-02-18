@@ -27,16 +27,18 @@ public class DateUpdater {
                     }
                 });
             }
-        }, calculateDelayToMidnight(Calendar.getInstance()), 24 * 60 * 60 * 1000);
+        }, calculateDelayTo2AM(Calendar.getInstance()), 24 * 60 * 60 * 1000);
     }
 
-    public static long calculateDelayToMidnight(Calendar currentTime) {
-        Calendar midnight = (Calendar) currentTime.clone();
-        midnight.set(Calendar.HOUR_OF_DAY, 0);
-        midnight.set(Calendar.MINUTE, 0);
-        midnight.set(Calendar.SECOND, 0);
-        midnight.add(Calendar.DAY_OF_YEAR, 1);
-        return midnight.getTimeInMillis() - currentTime.getTimeInMillis();
+    public static long calculateDelayTo2AM(Calendar currentTime) {
+        Calendar next2AM = (Calendar) currentTime.clone();
+        next2AM.set(Calendar.HOUR_OF_DAY, 2);
+        next2AM.set(Calendar.MINUTE, 0);
+        next2AM.set(Calendar.SECOND, 0);
+        if (next2AM.before(currentTime)) {
+            next2AM.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        return next2AM.getTimeInMillis() - currentTime.getTimeInMillis();
     }
 
     public static void cancelDateUpdates() {
@@ -46,4 +48,3 @@ public class DateUpdater {
         }
     }
 }
-

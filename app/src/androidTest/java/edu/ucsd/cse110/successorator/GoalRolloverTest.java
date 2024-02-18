@@ -6,13 +6,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 
 public class GoalRolloverTest {
 
     @Test
-    public void testRolloverOnChanged() {
+    public void testRolloverSkip() {
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
                 activity.addItemToTodoList(new Goal(null, "Goal 1", false));

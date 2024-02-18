@@ -3,6 +3,7 @@ package edu.ucsd.cse110.successorator.lib.domain;
 import androidx.annotation.Nullable;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +26,15 @@ public class DateHandler implements Subject {
 
     public void updateDate(String previousDate) {
         this.dateTime = LocalDateTime.now();
+        LocalTime currentTime = dateTime.toLocalTime();
+        if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(2, 0))) {
+            dateTime = dateTime.minusDays(1);
+        }
         String dayOfWeek = dateTime.getDayOfWeek().name();
         String dateString = dateFormat.format(dateTime);
         String newFormattedDate = dayOfWeek + " " + dateString;
         System.out.println(formattedDate);
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate)) || !(previousDate.equals(newFormattedDate))) {
-            System.out.println("Updating date");
             this.formattedDate = newFormattedDate;
             notifyObservers();
         }
