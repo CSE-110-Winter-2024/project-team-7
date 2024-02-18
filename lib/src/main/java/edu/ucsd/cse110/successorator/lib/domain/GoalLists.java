@@ -17,10 +17,8 @@ public interface GoalLists {
 
     List<Goal> getUnfinishedGoals();
 
-    //delete one of the adds later
     void add(Goal goal);
 
-    // How would we check if goal exists?
     void finishTask(Goal goal);
 
     void undoFinishTask(Goal goal);
