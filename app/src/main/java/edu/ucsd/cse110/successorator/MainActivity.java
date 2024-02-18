@@ -201,6 +201,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
         finishedAdapter.notifyDataSetChanged();
     }
 
+
+    @Override
+    public void onChanged(@Nullable Object value) {
+        if (todoList != null && finishedAdapter != null) {
+            todoList.clearFinished();
+            finishedAdapter.clear();
+            finishedAdapter.notifyDataSetChanged();
+            updatePlaceholderVisibility();
+
+            storedDate.replace(currentDate);
+        }
+    }
+
     // getters for testing
     public GoalLists getTodoListForTesting() {
         return this.todoList;
@@ -216,18 +229,5 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public DateHandler getCurrentDate() {
         return currentDate;
-    }
-
-    @Override
-    public void onChanged(@Nullable Object value) {
-        if (todoList != null && finishedAdapter != null) {
-            todoList.clearFinished();
-            finishedAdapter.clear();
-            finishedAdapter.notifyDataSetChanged();
-            updatePlaceholderVisibility();
-
-            storedDate.replace(currentDate);
-        }
-
     }
 }
