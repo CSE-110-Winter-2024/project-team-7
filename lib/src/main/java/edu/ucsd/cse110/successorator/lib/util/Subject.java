@@ -26,4 +26,6 @@ public interface Subject<T> {
      * @param observer The observer to remove.
      */
     void removeObserver(Observer<T> observer);
+
+    void notifyObservers();
 }

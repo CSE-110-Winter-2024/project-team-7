@@ -3,11 +3,9 @@ package edu.ucsd.cse110.successorator.lib.domain;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-public class DateTest {
+public class DateHandlerTest {
 
     @Test
     public void basicDateTest() {

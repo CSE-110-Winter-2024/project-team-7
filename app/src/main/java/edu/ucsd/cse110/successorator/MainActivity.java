@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import edu.ucsd.cse110.successorator.data.db.DateDatabase;
@@ -29,9 +30,12 @@ import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalLists;
+import edu.ucsd.cse110.successorator.lib.util.Observer;
+import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
+import edu.ucsd.cse110.successorator.util.DateUpdater;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer {
 
     private GoalLists todoList; // Placeholder for actual Queue
     private DateHandler currentDate = new DateHandler();
@@ -53,13 +57,15 @@ public class MainActivity extends AppCompatActivity {
 
         this.todoList = new RoomGoalLists(goalDatabase.goalDao());
 
-
-
-
         view = ActivityMainBinding.inflate(getLayoutInflater());
-        view.dateText.setText(currentDate.getFormattedDate());
-
         setContentView(view.getRoot());
+
+        TextView dateTextView = findViewById(R.id.date_text);
+
+        // Register observers for DateHandler
+        currentDate.observe(new DateDisplay(dateTextView));
+        currentDate.observe(this);
+        DateUpdater.scheduleDateUpdates(currentDate);
 
         setupListView();
         setupDateMock();
@@ -83,12 +89,7 @@ public class MainActivity extends AppCompatActivity {
             storedDate.replace(currentDate);
             sharedPreferences.edit().putBoolean("isFirstRun", false).apply();
         } else if(!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
-
-            //TODO: DO THE OBSERVER STUFF OR SOMETHING HERE
-            //below was for testing
-            /* addItemToTodoList(new Goal(null,
-                    "DATE CHANGED FROM: " + storedDate.formattedDate(), false)); */
-
+            currentDate.updateDate(storedDate.formattedDate());
             storedDate.replace(currentDate);
         }
     }
@@ -132,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
     private void setupDateMock() {
         view.dateMockButton.setOnClickListener(v -> {
             currentDate.skipDay();
-            view.dateText.setText(currentDate.getFormattedDate());
         });
     }
     public void moveToFinished(Goal goal) {
@@ -207,12 +207,33 @@ public class MainActivity extends AppCompatActivity {
         finishedAdapter.notifyDataSetChanged();
     }
 
-    // getter for testing
+    // getters for testing
     public GoalLists getTodoListForTesting() {
         return this.todoList;
     }
-    // getter for testing
+
     public ArrayAdapter<Goal> getAdapterForTesting() {
         return this.adapter;
+    }
+
+    public ArrayAdapter<Goal> getFinishedAdapterForTesting() {
+        return this.finishedAdapter;
+    }
+
+    public DateHandler getCurrentDate() {
+        return currentDate;
+    }
+
+    @Override
+    public void onChanged(@Nullable Object value) {
+        if (todoList != null && finishedAdapter != null) {
+            todoList.clearFinished();
+            finishedAdapter.clear();
+            finishedAdapter.notifyDataSetChanged();
+            updatePlaceholderVisibility();
+
+            storedDate.replace(currentDate);
+        }
+
     }
 }

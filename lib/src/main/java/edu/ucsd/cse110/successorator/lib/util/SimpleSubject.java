@@ -35,7 +35,7 @@ public class SimpleSubject<T> implements MutableSubject<T> {
     /**
      * Notifies all observers of the subject's new value. Used internally.
      */
-    private void notifyObservers() {
+    public void notifyObservers() {
         for (var observer : observers) {
             observer.onChanged(value);
         }
