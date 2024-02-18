@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -39,6 +40,10 @@ public class AppEndToEndTest {
                 assertTrue(activity.getTodoListForTesting().get(0).toString().equals("Prepare for Tomorrow's Presentation"));
                 assertTrue(activity.getTodoListForTesting().finishedSize() == 1);
                 assertTrue(activity.getTodoListForTesting().getFinishedGoals().get(0).toString().equals("Finish Project Report"));
+
+                GoalLists todoList = activity.getTodoListForTesting();
+                activity.moveToFinished(todoList.get(0));
+                todoList.clearFinished();
             });
             scenario1.moveToState(Lifecycle.State.STARTED);
         }
@@ -91,6 +96,9 @@ public class AppEndToEndTest {
                 assertTrue(activity.getTodoListForTesting().get(0).toString().equals("Prepare for Tomorrow's Presentation"));
                 assertEquals(0, activity.getTodoListForTesting().finishedSize());
 
+                GoalLists todoList = activity.getTodoListForTesting();
+                activity.moveToFinished(todoList.get(0));
+                todoList.clearFinished();
 
             });
             reopenedScenario.moveToState(Lifecycle.State.STARTED);
