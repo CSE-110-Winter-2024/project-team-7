@@ -27,5 +27,8 @@ public interface Subject<T> {
      */
     void removeObserver(Observer<T> observer);
 
+    /**
+     * Notifies all observers of the subject's current value
+     */
     void notifyObservers();
 }

@@ -24,7 +24,6 @@ public class SimpleGoalLists implements GoalLists {
         return size;
     }
 
-    //might be necessary for crossing out
     @Override
     public int unfinishedSize() {
         return unfinished.size();
@@ -55,14 +54,12 @@ public class SimpleGoalLists implements GoalLists {
     @Override
     public List<Goal> getUnfinishedGoals() { return unfinished; }
 
-    // function to add new goal
     @Override
     public void add(Goal goal) {
         unfinished.add(goal);
         size++;
     }
 
-    // How would we check if goal exists?
     @Override
     public void finishTask(Goal goal) {
         var index = unfinished.indexOf(goal);
@@ -81,14 +78,12 @@ public class SimpleGoalLists implements GoalLists {
         }
     }
 
-    //for day update
     @Override
     public void clearFinished() {
         finished.clear();
         size = unfinished.size();
     }
 
-    //for testing
     public String toString() {
         String retval = "unfinished: \n";
         for(int i = 0; i < size; i++) {

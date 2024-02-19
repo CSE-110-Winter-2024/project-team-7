@@ -5,9 +5,7 @@ import java.util.List;
 public interface GoalLists {
     int size();
 
-    //might be necessary for crossing out
     int unfinishedSize();
-
 
     int finishedSize();
 
@@ -17,10 +15,8 @@ public interface GoalLists {
 
     List<Goal> getUnfinishedGoals();
 
-    //delete one of the adds later
     void add(Goal goal);
 
-    // How would we check if goal exists?
     void finishTask(Goal goal);
 
     void undoFinishTask(Goal goal);

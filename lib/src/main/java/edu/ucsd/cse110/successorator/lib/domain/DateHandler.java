@@ -68,7 +68,6 @@ public class DateHandler implements Subject {
 
     @Override
     public void observe(Observer observer) {
-        System.out.println("Adding an Observer");
         observers.add(observer);
         observer.onChanged(formattedDate);
     }

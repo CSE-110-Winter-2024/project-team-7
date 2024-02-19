@@ -1,11 +1,7 @@
 package edu.ucsd.cse110.successorator.data.db;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
@@ -23,7 +19,6 @@ public class RoomGoalLists implements GoalLists {
         return goalDao.count();
     }
 
-    //might be necessary for crossing out
     @Override
     public int unfinishedSize() {
         return goalDao.unfinishedCount();
@@ -70,13 +65,11 @@ public class RoomGoalLists implements GoalLists {
 
     @Override
     public void finishTask(Goal goal) {
-        // may need data layer to separate data storage concerns.
         goalDao.finish(goal.id());
     }
 
     @Override
     public void undoFinishTask(Goal goal) {
-        // may need data layer to separate data storage concerns.
         goalDao.unfinish(goal.id());
     }
 
