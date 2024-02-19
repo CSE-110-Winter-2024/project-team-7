@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Goal Database Setup
+        // Goal Database Setup
         var goalDatabase = Room.databaseBuilder(
                 getApplicationContext(),
                 GoalDatabase.class,
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setupDateMock();
         updatePlaceholderVisibility();
 
-        //Date Database Setup
+        // Date Database Setup
         var dateDatabase = Room.databaseBuilder(
                 getApplicationContext(),
                 DateDatabase.class,
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         this.storedDate = new RoomDateStorage(dateDatabase.dateDao());
 
-        //Checks if it's the first run so that it doesn't try to check previous date that doesn't exist
+        // Checks if it's the first run so that it doesn't try to check previous date that doesn't exist
         var sharedPreferences = getSharedPreferences("goals", MODE_PRIVATE);
         var isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
 

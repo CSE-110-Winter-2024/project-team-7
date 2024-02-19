@@ -24,7 +24,6 @@ public class SimpleGoalLists implements GoalLists {
         return size;
     }
 
-    //might be necessary for crossing out
     @Override
     public int unfinishedSize() {
         return unfinished.size();
