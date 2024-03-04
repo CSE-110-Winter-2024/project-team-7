@@ -91,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    public void onResume() {
+        super.onResume();
+        currentDate.updateDate(LocalDateTime.now());
+    }
+
     private void setupListView() {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         finishedAdapter = new ArrayAdapter<Goal>(this, android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
