@@ -4,14 +4,14 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 public class RecurringGoalTest {
 
     @Test
     public void dailyGoalTest() {
-        LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
-        RecurringGoal rgoal = new RecurringGoal("test", RecurringGoal.DAILY, febNine);
-        LocalDateTime testDate = LocalDateTime.of(2024, 2, 9, 2, 3);
+        LocalDate febNine = LocalDate.of(2024, 2, 9);
+        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.DAILY, febNine);
+        LocalDate testDate = LocalDate.of(2024, 2, 9);
 
         for(int i = 0; i < 100; i++) {
             assertTrue(rgoal.recurToday(testDate));
@@ -21,9 +21,9 @@ public class RecurringGoalTest {
 
     @Test
     public void weeklyGoalTest() {
-        LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
-        RecurringGoal rgoal = new RecurringGoal("test", RecurringGoal.WEEKLY, febNine);
-        LocalDateTime testDate = LocalDateTime.of(2024, 2, 9, 2, 3);
+        LocalDate febNine = LocalDate.of(2024, 2, 9);
+        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.WEEKLY, febNine);
+        LocalDate testDate = LocalDate.of(2024, 2, 9);
 
         for(int i = 0; i < 100; i++) {
             if(i % 7 == 0) {
@@ -37,9 +37,9 @@ public class RecurringGoalTest {
 
     @Test
     public void secondFridayMonthlyGoalTest() {
-        LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
-        RecurringGoal rgoal = new RecurringGoal("test", RecurringGoal.MONTHLY, febNine);
-        LocalDateTime testDate = LocalDateTime.of(2024, 2, 9, 2, 3);
+        LocalDate febNine = LocalDate.of(2024, 2, 9);
+        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.MONTHLY, febNine);
+        LocalDate testDate = LocalDate.of(2024, 2, 9);
 
         ArrayList<Integer> secondFridays = new ArrayList<>();
         secondFridays.add(0);
@@ -61,9 +61,9 @@ public class RecurringGoalTest {
 
     @Test
     public void fifthThursdayMonthlyGoalTest() {
-        LocalDateTime febNine = LocalDateTime.of(2024, 2, 29, 2, 3);
-        RecurringGoal rgoal = new RecurringGoal("test", RecurringGoal.MONTHLY, febNine);
-        LocalDateTime testDate = LocalDateTime.of(2024, 2, 29, 2, 3);
+        LocalDate febNine = LocalDate.of(2024, 2, 29);
+        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.MONTHLY, febNine);
+        LocalDate testDate = LocalDate.of(2024, 2, 29);
 
         ArrayList<Integer> fifthThursday = new ArrayList<>();
         fifthThursday.add(0);
@@ -83,21 +83,21 @@ public class RecurringGoalTest {
         }
 
         //extra test
-        testDate = LocalDateTime.of(2024, 4, 4, 2, 3);
+        testDate = LocalDate.of(2024, 4, 4);
         assertTrue(rgoal.recurToday(testDate));
     }
 
     @Test
     public void yearlyGoalTest() {
-        LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
-        RecurringGoal rgoal = new RecurringGoal("test", RecurringGoal.YEARLY, febNine);
-        LocalDateTime testDate = LocalDateTime.of(2024, 2, 9, 2, 3);
+        LocalDate febNine = LocalDate.of(2024, 2, 9);
+        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.YEARLY, febNine);
+        LocalDate testDate = LocalDate.of(2024, 2, 9);
 
         for(int i = 0; i < 364; i++) {
             testDate = testDate.plusDays(1);
             assertFalse(rgoal.recurToday(testDate));
         }
-        testDate = LocalDateTime.of(2024, 2, 9, 2, 3);
+        testDate = LocalDate.of(2024, 2, 9);
         for(int i = 0; i < 25; i++) {
             assertTrue(rgoal.recurToday(testDate));
             testDate = testDate.plusYears(1);

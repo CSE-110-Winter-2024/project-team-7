@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
 import java.io.Serializable;
@@ -17,13 +17,13 @@ public class RecurringGoal implements Serializable {
     private final @Nullable Integer id;
     private final @NonNull String content;
     private final int recurringType;
-    private final LocalDateTime date;
+    private final LocalDate date;
     private DayOfWeek dayOfWeek;
     private int weekOfMonth;
 
-    public RecurringGoal(@NonNull String content, int recurringType,
-                         LocalDateTime date) {
-        this.id = null;
+    public RecurringGoal(@Nullable Integer id, @NonNull String content, int recurringType,
+                         LocalDate date) {
+        this.id = id;
         this.content = content;
         this.recurringType = recurringType;
         this.date = date;
@@ -39,7 +39,15 @@ public class RecurringGoal implements Serializable {
         return content;
     }
 
-    public boolean recurToday(LocalDateTime today) {
+    public int getRecurringType() {
+        return recurringType;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public boolean recurToday(LocalDate today) {
         if(recurringType == DAILY) {
             return true;
         }
@@ -50,7 +58,7 @@ public class RecurringGoal implements Serializable {
         }
         else if(recurringType == MONTHLY) {
             System.out.println(dayOfWeek + "     " + weekOfMonth);
-            LocalDateTime prevMonth;
+            LocalDate prevMonth;
             if(today.getMonthValue() == 1) {
                 prevMonth = today.withMonth(12);
                 prevMonth = prevMonth.withYear(prevMonth.getYear()-1);
@@ -59,15 +67,15 @@ public class RecurringGoal implements Serializable {
                 prevMonth = today.withMonth(today.getMonthValue()-1);
             }
 
-            LocalDateTime targetDate = prevMonth.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
+            LocalDate targetDate = prevMonth.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
             System.out.println(targetDate);
-            if(targetDate.toLocalDate().isEqual(today.toLocalDate())) {
+            if(targetDate.isEqual(today)) {
                 return true;
             }
 
             targetDate = today.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
             System.out.println(targetDate);
-            if(targetDate.toLocalDate().isEqual(today.toLocalDate())) {
+            if(targetDate.isEqual(today)) {
                 return true;
             }
 
