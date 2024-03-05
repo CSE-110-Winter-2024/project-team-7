@@ -33,7 +33,6 @@ public class AddGoalDialogFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle("New Goal")
-                .setMessage("Please provide the new goal name")
                 .setView(view.getRoot())
                 .setPositiveButton("Add", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick)
