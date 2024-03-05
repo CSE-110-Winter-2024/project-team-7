@@ -47,14 +47,14 @@ public interface GoalDao {
 
     @Transaction
     default int add(GoalEntity goal) {
-        var newGoal = new GoalEntity(goal.content, goal.finished);
+        var newGoal = new GoalEntity(goal.content, goal.finished, goal.fromRecurring);
         return Math.toIntExact(insert(newGoal));
     }
 
     @Transaction
     default int finish(int id) {
         var finishedGoal = find(id);
-        var newlyFinishedGoal = new GoalEntity(finishedGoal.content, true);
+        var newlyFinishedGoal = new GoalEntity(finishedGoal.content, true, finishedGoal.fromRecurring);
         delete(id);
         return Math.toIntExact(insert(newlyFinishedGoal));
     }
@@ -62,7 +62,7 @@ public interface GoalDao {
     @Transaction
     default int unfinish(int id) {
         var unfinishedGoal = find(id);
-        var newlyUnfinishedGoal = new GoalEntity(unfinishedGoal.content, false);
+        var newlyUnfinishedGoal = new GoalEntity(unfinishedGoal.content, false, unfinishedGoal.fromRecurring);
         delete(id);
         return Math.toIntExact(insert(newlyUnfinishedGoal));
     }

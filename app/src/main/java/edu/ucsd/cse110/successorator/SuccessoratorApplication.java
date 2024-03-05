@@ -38,6 +38,15 @@ public class SuccessoratorApplication extends Application {
 
         this.todoList = new RoomGoalLists(goalDatabase.goalDao());
 
+        //Recurring Goal Database Setup
+        var recurringDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                RecurringGoalDatabase.class,
+                "recurring-database"
+        ).allowMainThreadQueries().build();
+
+        this.recurringList = new RoomRecurringGoalLists(recurringDatabase.rgoalDao());
+
         // Date Database Setup
         var dateDatabase = Room.databaseBuilder(
                 getApplicationContext(),
@@ -59,14 +68,7 @@ public class SuccessoratorApplication extends Application {
             storedDate.replace(currentDate);
         }
 
-        //Recurring Goal Database Setup
-        var recurringDatabase = Room.databaseBuilder(
-                getApplicationContext(),
-                RecurringGoalDatabase.class,
-                "recurring-database"
-        ).allowMainThreadQueries().build();
 
-        this.recurringList = new RoomRecurringGoalLists(recurringDatabase.rgoalDao());
     }
 
     public DateHandler getCurrentDate() {

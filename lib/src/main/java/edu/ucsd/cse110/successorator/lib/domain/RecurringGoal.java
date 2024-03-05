@@ -90,7 +90,7 @@ public class RecurringGoal implements Serializable {
     }
 
     public Goal toGoal() {
-        return new Goal(null, content, false);
+        return new Goal(null, content, false, true);
     }
 
 

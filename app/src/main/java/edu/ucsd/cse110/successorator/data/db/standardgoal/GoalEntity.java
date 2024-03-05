@@ -20,18 +20,22 @@ public class GoalEntity {
     @ColumnInfo(name = "finished")
     public boolean finished;
 
-    GoalEntity(@NonNull String content, boolean finished) {
+    @ColumnInfo(name = "fromRecurring")
+    public boolean fromRecurring;
+
+    GoalEntity(@NonNull String content, boolean finished, boolean fromRecurring) {
         this.content = content;
         this.finished = finished;
+        this.fromRecurring = fromRecurring;
     }
 
     public static GoalEntity fromGoal(@NonNull Goal goal) {
-        var newGoal = new GoalEntity(goal.content(), goal.getFinished());
+        var newGoal = new GoalEntity(goal.content(), goal.getFinished(), goal.isFromRecurring());
         newGoal.id = goal.id();
         return newGoal;
     }
 
     public @NonNull Goal toGoal() {
-        return new Goal(id, content, finished);
+        return new Goal(id, content, finished, fromRecurring);
     }
 }

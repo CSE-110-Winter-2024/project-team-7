@@ -15,6 +15,9 @@ public interface DateDao {
     @Query("SELECT * FROM Date WHERE id = 0")
     DateEntity find();
 
+    @Query("SELECT COUNT(*) FROM Date")
+    int count();
+
     @Transaction
     default int replace(DateEntity newDate) {
         return Math.toIntExact(insert(newDate));

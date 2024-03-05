@@ -18,4 +18,8 @@ public class RoomDateStorage {
     public void replace(DateHandler date) {
         dateDao.replace(DateEntity.fromDate(date));
     }
+
+    public boolean empty() {
+        return dateDao.count() == 0;
+    }
 }

@@ -75,13 +75,23 @@ public class MainViewModel extends ViewModel implements Observer {
                                                    ArrayAdapter<Goal> adapter, DateHandler currentDate) {
 
         List<RecurringGoal> recurringGoals = recurringList.getRecurringGoals();
-        //currently adds them into the list if they should appear tomorrow
-        //this may change depending on how the tomorrow list is implemented
-        LocalDate tomorrow = currentDate.dateTime().toLocalDate().plusDays(1);
+        LocalDate today = currentDate.dateTime().toLocalDate();
+        //for future use with a tomorrow list
+        LocalDate tomorrow = today.plusDays(1);
 
+        List<Goal> unfinished = todoList.getUnfinishedGoals();
         for(RecurringGoal rgoal : recurringGoals) {
-            if(rgoal.recurToday(tomorrow)) {
-                addItemToTodoList(rgoal.toGoal(), adapter, todoList);
+            if(rgoal.recurToday(today)) {
+                //DOESN'T ADD THE GOAL IF THERE IS A GOAL WITH THE SAME TEXT
+                //BUT HYPOTHETICALLY A PERSON COULD MAKE TWO DIFFERENT GOALS WITH SAME TEXT
+                boolean alreadyExists = false;
+                for(Goal g : unfinished) {
+                    if(g.isFromRecurring() && g.content().equals(rgoal.content()))
+                        alreadyExists = true;
+                }
+                if(!alreadyExists) {
+                    addItemToTodoList(rgoal.toGoal(), adapter, todoList);
+                }
             }
         }
     }
