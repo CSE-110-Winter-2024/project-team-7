@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 import android.widget.ArrayAdapter;
 
+import static edu.ucsd.cse110.successorator.MainViewModel.*;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
@@ -36,13 +37,14 @@ public class MainActivityTest {
     public void testPlaceholderVisibilityWhenTodoListNotEmpty() {
         try (var scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
+                SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
+                GoalLists todoList = app.getTodoList();
                 Goal newGoal = new Goal(null, "New Task", false);
                 activity.addItemToTodoList(newGoal);
                 assertFalse(activity.updatePlaceholderVisibility());
 
 
-                GoalLists todoList = activity.getTodoListForTesting();
-                activity.moveToFinished(todoList.get(0));
+                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
                 todoList.clearFinished();
             });
             scenario.moveToState(Lifecycle.State.STARTED);
@@ -56,16 +58,17 @@ public class MainActivityTest {
                 Goal newGoal = new Goal(null, "Complete unit testing", false);
                 activity.addItemToTodoList(newGoal);
 
-                GoalLists todoList = activity.getTodoListForTesting();
+                SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
+                GoalLists todoList = app.getTodoList();
 
                 assertTrue("todoList should not be empty after adding a goal", !todoList.empty());
                 assertEquals("Size of todoList should be 1 after adding one goal", 1, todoList.size());
                 assertEquals("First goal in the todoList should be the one that was added", newGoal, todoList.get(0));
 
-                ArrayAdapter<Goal> adapter = activity.getAdapterForTesting();
+                ArrayAdapter<Goal> adapter = activity.getAdapter();
                 assertEquals("Adapter should contain the new goal", newGoal, adapter.getItem(adapter.getCount() - 1));
 
-                activity.moveToFinished(todoList.get(0));
+                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
                 todoList.clearFinished();
             });
         }
