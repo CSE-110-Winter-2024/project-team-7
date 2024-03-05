@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.data.db;
+package edu.ucsd.cse110.successorator.data.db.date;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

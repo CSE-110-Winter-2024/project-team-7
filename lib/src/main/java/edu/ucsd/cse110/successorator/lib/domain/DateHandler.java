@@ -88,4 +88,12 @@ public class DateHandler implements Subject {
         return observers.toString();
     }
 
+    public LocalDateTime dateTime() {
+        return dateTime;
+    }
+
+    public String monthDay() {
+        return dateFormat.format(dateTime);
+    }
+
 }

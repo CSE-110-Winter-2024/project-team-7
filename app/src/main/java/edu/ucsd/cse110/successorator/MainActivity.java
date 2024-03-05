@@ -15,13 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import edu.ucsd.cse110.successorator.data.db.DateDatabase;
-import edu.ucsd.cse110.successorator.data.db.GoalDatabase;
-import edu.ucsd.cse110.successorator.data.db.RoomDateStorage;
-import edu.ucsd.cse110.successorator.data.db.RoomGoalLists;
+import edu.ucsd.cse110.successorator.data.db.date.DateDatabase;
+import edu.ucsd.cse110.successorator.data.db.standardgoal.GoalDatabase;
+import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
+import edu.ucsd.cse110.successorator.data.db.standardgoal.RoomGoalLists;
 
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 
@@ -29,7 +28,6 @@ import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
-import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;

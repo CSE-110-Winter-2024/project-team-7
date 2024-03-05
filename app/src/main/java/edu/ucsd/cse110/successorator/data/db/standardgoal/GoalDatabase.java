@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.data.db;
+package edu.ucsd.cse110.successorator.data.db.standardgoal;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
