@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.successorator;
 
+import static edu.ucsd.cse110.successorator.MainViewModel.*;
+
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,15 +15,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import edu.ucsd.cse110.successorator.data.db.DateDatabase;
-import edu.ucsd.cse110.successorator.data.db.GoalDatabase;
 import edu.ucsd.cse110.successorator.data.db.RoomDateStorage;
-import edu.ucsd.cse110.successorator.data.db.RoomGoalLists;
 
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 
@@ -29,7 +27,6 @@ import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
-import edu.ucsd.cse110.successorator.lib.domain.SimpleGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
@@ -37,28 +34,28 @@ import edu.ucsd.cse110.successorator.util.DateUpdater;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    private GoalLists todoList;
-    private DateHandler currentDate = new DateHandler();
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
 
+    private DateHandler currentDate;
+
+    private GoalLists todoList;
+
     private RoomDateStorage storedDate;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Goal Database Setup
-        var goalDatabase = Room.databaseBuilder(
-                getApplicationContext(),
-                GoalDatabase.class,
-                "goals-database"
-        ).allowMainThreadQueries().build();
-
-        this.todoList = new RoomGoalLists(goalDatabase.goalDao());
-
         view = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(view.getRoot());
+
+        SuccessoratorApplication app = (SuccessoratorApplication) getApplication();
+        currentDate = app.getCurrentDate();
+        todoList = app.getTodoList();
+        storedDate = app.getStoredDate();
 
         TextView dateTextView = findViewById(R.id.date_text);
         currentDate.observe(new DateDisplay(dateTextView));
@@ -68,27 +65,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setupListView();
         setupDateMock();
         updatePlaceholderVisibility();
+    }
 
-        // Date Database Setup
-        var dateDatabase = Room.databaseBuilder(
-                getApplicationContext(),
-                DateDatabase.class,
-                "date-database"
-        ).allowMainThreadQueries().build();
-
-        this.storedDate = new RoomDateStorage(dateDatabase.dateDao());
-
-        // Checks if it's the first run so that it doesn't try to check previous date that doesn't exist
-        var sharedPreferences = getSharedPreferences("goals", MODE_PRIVATE);
-        var isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
-
-        if(isFirstRun) {
-            storedDate.replace(currentDate);
-            sharedPreferences.edit().putBoolean("isFirstRun", false).apply();
-        } else if(!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
-            currentDate.updateDate(storedDate.formattedDate());
-            storedDate.replace(currentDate);
-        }
+    public void onResume() {
+        super.onResume();
+        currentDate.updateDate(LocalDateTime.now());
     }
 
     private void setupListView() {
@@ -111,7 +92,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Goal selectedItem = adapter.getItem(position);
-                moveToFinished(selectedItem);
+                moveToFinished(selectedItem, adapter, finishedAdapter, todoList);
+                updatePlaceholderVisibility();
             }
         });
 
@@ -119,7 +101,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Goal selectedItem = finishedAdapter.getItem(position);
-                moveToUnfinished(selectedItem);
+                moveToUnfinished(selectedItem, adapter, finishedAdapter, todoList);
+                updatePlaceholderVisibility();
             }
         });
 
@@ -129,23 +112,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         view.dateMockButton.setOnClickListener(v -> {
             currentDate.skipDay();
         });
-    }
-    public void moveToFinished(Goal goal) {
-        adapter.remove(goal);
-        finishedAdapter.add(goal);
-        adapter.notifyDataSetChanged();
-        finishedAdapter.notifyDataSetChanged();
-        todoList.finishTask(goal);
-        updatePlaceholderVisibility();
-    }
-
-    public void moveToUnfinished(Goal goal) {
-        finishedAdapter.remove(goal);
-        adapter.add(goal);
-        finishedAdapter.notifyDataSetChanged();
-        adapter.notifyDataSetChanged();
-        todoList.undoFinishTask(goal);
-        updatePlaceholderVisibility();
     }
 
     @Override
@@ -168,9 +134,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
 
     public void addItemToTodoList(Goal goal) {
-        todoList.add(goal);
-        adapter.add(goal);
-        adapter.notifyDataSetChanged();
+        MainViewModel.addItemToTodoList(goal, adapter, todoList);
         updatePlaceholderVisibility();
     }
 
@@ -182,25 +146,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         if(isEmpty) {
             view.placeholderText.setText(R.string.default_message);
         } else {
-            refreshAdapter();
-            refreshFinishedAdapter();
+            refreshAdapter(adapter, todoList);
+            refreshFinishedAdapter(finishedAdapter, todoList);
         }
 
         return isEmpty;
     }
-
-    private void refreshAdapter() {
-        adapter.clear();
-        adapter.addAll(todoList.getUnfinishedGoals());
-        adapter.notifyDataSetChanged();
-    }
-
-    private void refreshFinishedAdapter() {
-        finishedAdapter.clear();
-        finishedAdapter.addAll(todoList.getFinishedGoals());
-        finishedAdapter.notifyDataSetChanged();
-    }
-
 
     @Override
     public void onChanged(@Nullable Object value) {
@@ -214,20 +165,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    // getters for testing
-    public GoalLists getTodoListForTesting() {
-        return this.todoList;
-    }
-
-    public ArrayAdapter<Goal> getAdapterForTesting() {
+    public ArrayAdapter<Goal> getAdapter() {
         return this.adapter;
     }
 
-    public ArrayAdapter<Goal> getFinishedAdapterForTesting() {
+    public ArrayAdapter<Goal> getFinishedAdapter() {
         return this.finishedAdapter;
     }
 
-    public DateHandler getCurrentDate() {
-        return currentDate;
-    }
 }
