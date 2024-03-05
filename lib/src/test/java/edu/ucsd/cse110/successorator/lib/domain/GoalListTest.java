@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class GoalListTest {
 
-    /* OUTDATED TESTS
+    //OUTDATED TESTS
     @Test
     public void addTest() {
         ArrayList<Goal> testList = new ArrayList<>();
@@ -49,35 +49,6 @@ public class GoalListTest {
     }
 
     @Test
-    public void testGetFinishedGoals() {
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(0,100);
-
-        GoalLists testList = new SimpleGoalLists();
-        ArrayList<Goal> expectedFinishedList = new ArrayList<>();
-
-        for(int j = 0; j < randomNumber; j++){
-            testList.add(new Goal(null,"goal" + j, false));
-        }
-
-        //finish goals
-        for(int i = 0; i < randomNumber; i++){
-            testList.finishTask(new Goal(null, "goal" + i, false));
-        }
-
-        for(int j = 0; j < randomNumber; j++){
-            expectedFinishedList.add(new Goal(null,"goal" + j, false));
-        }
-
-        int i = 0;
-        //check getFinishedGoals
-        for(Goal expectedGoal:expectedFinishedList){
-            assertEquals(expectedGoal, testList.getFinishedGoals().get(i));
-            i++;
-        }
-    }
-
-    @Test
     public void testGetUnfinishedGoals() {
         Random rand = new Random();
         int randomNumber = rand.nextInt(0,100);
@@ -91,40 +62,6 @@ public class GoalListTest {
 
         for(int j = 0; j < randomNumber; j++){
             expectedUnfinishedList.add(new Goal(null,"goal" + j, false));
-        }
-
-        int i = 0;
-        //check getUnfinishedGoals
-        for(Goal expectedGoal:expectedUnfinishedList){
-            assertEquals(expectedGoal, testList.getUnfinishedGoals().get(i));
-            i++;
-        }
-    }
-
-    @Test
-    public void testUndoFinishTask() {
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(0,100);
-
-        GoalLists testList = new SimpleGoalLists();
-        ArrayList<Goal> expectedUnfinishedList = new ArrayList<>();
-
-        for(int j = 0; j < randomNumber; j++){
-            expectedUnfinishedList.add(new Goal(null, "goal" + j, false));
-        }
-
-        for(int j = 0; j < randomNumber; j++){
-            testList.add(new Goal(null, "goal" + j, false));
-        }
-
-        //finish goals
-        for(int i = 0; i < randomNumber; i++){
-            testList.finishTask(new Goal(null, "goal" + i, false));
-        }
-
-        //undo finish goals
-        for(int i = 0; i < randomNumber; i++){
-            testList.undoFinishTask(new Goal(null, "goal" + i, false));
         }
 
         int i = 0;
@@ -154,5 +91,5 @@ public class GoalListTest {
         testList.clearFinished();
         assertEquals(0, testList.finishedSize());
     }
-     */
+
 }

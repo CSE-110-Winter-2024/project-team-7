@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
@@ -34,7 +35,8 @@ public class GoalPersistenceTest {
         // Simulate app restart by relaunching the activity
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                GoalLists todoList = activity.getTodoListForTesting();
+                SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
+                GoalLists todoList = app.getTodoList();
                 assertFalse("todoList should not be empty after app restart", todoList.empty());
                 assertTrue("todoList should contain the persisted goal after app restart", todoList.getUnfinishedGoals().contains(goal));
             });
