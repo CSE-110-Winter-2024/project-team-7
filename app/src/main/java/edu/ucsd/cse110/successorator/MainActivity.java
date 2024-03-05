@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
 
@@ -28,6 +29,8 @@ import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoal;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private GoalLists todoList;
 
+    private RecurringGoalLists recurringList;
+
     private RoomDateStorage storedDate;
 
 
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentDate = app.getCurrentDate();
         todoList = app.getTodoList();
         storedDate = app.getStoredDate();
+        recurringList = app.getRecurringList();
 
         TextView dateTextView = findViewById(R.id.date_text);
         currentDate.observe(new DateDisplay(dateTextView));
@@ -127,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         if (itemId == R.id.action_bar_add_button) {
             var dialogFragment = AddGoalDialogFragment.newInstance();
+            dialogFragment.setCurrentDate(currentDate);
             dialogFragment.show(getSupportFragmentManager(), "AddGoalDialogFragment");
         }
 
@@ -136,6 +143,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void addItemToTodoList(Goal goal) {
         MainViewModel.addItemToTodoList(goal, adapter, todoList);
+        updatePlaceholderVisibility();
+    }
+
+    public void addItemToRecurringList(RecurringGoal rgoal) {
+        MainViewModel.addItemToRecurringList(rgoal, adapter, todoList, recurringList);
         updatePlaceholderVisibility();
     }
 
@@ -160,9 +172,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
             todoList.clearFinished();
             finishedAdapter.clear();
             finishedAdapter.notifyDataSetChanged();
-            updatePlaceholderVisibility();
 
             storedDate.replace(currentDate);
+
+            MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate);
+            updatePlaceholderVisibility();
         }
     }
 

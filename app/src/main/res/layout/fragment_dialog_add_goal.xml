@@ -50,9 +50,9 @@
             android:text="Yearly on" />
     </RadioGroup>
 
-    <TextView
+    <EditText
         android:id="@+id/goal_name_edit_text"
-        android:layout_width="332dp"
+        android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginTop="3dp"
         android:ems="10"

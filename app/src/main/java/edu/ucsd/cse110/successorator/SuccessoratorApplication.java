@@ -11,12 +11,19 @@ import edu.ucsd.cse110.successorator.data.db.standardgoal.RoomGoalLists;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 
+import edu.ucsd.cse110.successorator.data.db.recurringgoal.RecurringGoalDatabase;
+import edu.ucsd.cse110.successorator.data.db.recurringgoal.RoomRecurringGoalLists;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
+
 public class SuccessoratorApplication extends Application {
     private RoomDateStorage storedDate;
 
     private final DateHandler currentDate = new DateHandler();
 
     private GoalLists todoList;
+
+    private RecurringGoalLists recurringList;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -51,6 +58,15 @@ public class SuccessoratorApplication extends Application {
             currentDate.updateDate(storedDate.formattedDate());
             storedDate.replace(currentDate);
         }
+
+        //Recurring Goal Database Setup
+        var recurringDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                RecurringGoalDatabase.class,
+                "recurring-database"
+        ).allowMainThreadQueries().build();
+
+        this.recurringList = new RoomRecurringGoalLists(recurringDatabase.rgoalDao());
     }
 
     public DateHandler getCurrentDate() {
@@ -63,6 +79,10 @@ public class SuccessoratorApplication extends Application {
 
     public RoomDateStorage getStoredDate() {
         return storedDate;
+    }
+
+    public RecurringGoalLists getRecurringList() {
+        return recurringList;
     }
 
 }
