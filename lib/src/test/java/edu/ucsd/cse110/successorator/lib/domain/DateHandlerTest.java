@@ -11,7 +11,7 @@ public class DateHandlerTest {
     public void basicDateTest() {
         LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
         DateHandler dateClass = new DateHandler();
-        dateClass.updateDate(febNine);
+        dateClass.updateTodayDate(febNine);
         assertEquals("FRIDAY 02/09", dateClass.getFormattedDate());
     }
 
@@ -19,7 +19,7 @@ public class DateHandlerTest {
     public void dateSkipTest() {
         LocalDateTime febNine = LocalDateTime.of(2024, 2, 9, 2, 3);
         DateHandler dateClass = new DateHandler();
-        dateClass.updateDate(febNine);
+        dateClass.updateTodayDate(febNine);
         dateClass.skipDay();
         dateClass.skipDay();
         assertEquals("SUNDAY 02/11", dateClass.getFormattedDate());

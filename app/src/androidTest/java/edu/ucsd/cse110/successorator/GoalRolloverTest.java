@@ -27,7 +27,7 @@ public class GoalRolloverTest {
                 assertEquals(1, app.getTodoList().unfinishedSize());
                 assertEquals(1, app.getTodoList().finishedSize());
 
-                currentDate.updateDate(LocalDateTime.now().plusDays(1));
+                currentDate.updateTodayDate(LocalDateTime.now().plusDays(1));
 
 
                 assertEquals(1, app.getTodoList().unfinishedSize());

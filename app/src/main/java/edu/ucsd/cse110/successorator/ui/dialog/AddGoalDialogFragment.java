@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.successorator.MainActivity;
+import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 
@@ -33,6 +35,15 @@ public class AddGoalDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         this.view = FragmentDialogAddGoalBinding.inflate(getLayoutInflater());
+
+        RadioButton weeklyButton = view.getRoot().findViewById(R.id.weekly_button);
+        weeklyButton.setText("Weekly on " + currentDate.getWeekday());
+
+        RadioButton monthlyButton = view.getRoot().findViewById(R.id.monthly_button);
+        monthlyButton.setText("Monthly on " + currentDate.getWeekdayInMonth());
+
+        RadioButton yearlyButton = view.getRoot().findViewById(R.id.yearly_button);
+        yearlyButton.setText("Yearly on " + currentDate.getMonthAndDate());
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle("New Goal")

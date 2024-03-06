@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="Weekly on " />
+            android:text="Weekly on weekday" />
 
         <RadioButton
             android:id="@+id/monthly_button"

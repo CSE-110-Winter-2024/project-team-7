@@ -2,11 +2,16 @@ package edu.ucsd.cse110.successorator.lib.domain;
 
 import androidx.annotation.Nullable;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
@@ -19,32 +24,28 @@ public class DateHandler implements Subject {
     private final List<Observer> observers = new ArrayList<>();
 
     public DateHandler() {
-        this.dateFormat = DateTimeFormatter.ofPattern("MM/dd");
+        dateFormat = DateTimeFormatter.ofPattern("EEE M/dd");
         this.dateTime = null;
-        updateDate((String) null);
+        updateTodayDate((String) null);
     }
 
-    public void updateDate(String previousDate) {
+    public void updateTodayDate(String previousDate) {
         this.dateTime = LocalDateTime.now();
         LocalTime currentTime = dateTime.toLocalTime();
         if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(2, 0))) {
             dateTime = dateTime.minusDays(1);
         }
-        String dayOfWeek = dateTime.getDayOfWeek().name();
-        String dateString = dateFormat.format(dateTime);
-        String newFormattedDate = dayOfWeek + " " + dateString;
-        System.out.println(formattedDate);
+        String newFormattedDate = "Today, " + dateTime.format(dateFormat);
+        System.out.println("DATE: " + newFormattedDate);
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate)) || !(previousDate.equals(newFormattedDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
         }
     }
 
-    public void updateDate(LocalDateTime dateInput) {
+    public void updateTodayDate(LocalDateTime dateInput) {
         this.dateTime = dateInput;
-        String dayOfWeek = dateTime.getDayOfWeek().name();
-        String dateString = dateFormat.format(dateTime);
-        String newFormattedDate = dayOfWeek + " " + dateString;
+        String newFormattedDate = "Today, " + dateTime.format(dateFormat);
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
@@ -53,7 +54,7 @@ public class DateHandler implements Subject {
 
     public void skipDay() {
         this.dateTime = dateTime.plusDays(1);
-        updateDate(dateTime);
+        updateTodayDate(dateTime);
     }
 
     public String getFormattedDate() {
@@ -95,5 +96,39 @@ public class DateHandler implements Subject {
     public String monthDay() {
         return dateFormat.format(dateTime);
     }
+
+    public String getMonthAndDate(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d");
+        return dateTime.format(formatter);
+    }
+
+    public String getWeekdayInMonth(){
+        DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
+
+        // Get the ordinal value for the day of the week (e.g., 3rd Tuesday)
+        int ordinal = (dateTime.getDayOfMonth() - 1) / 7 + 1;
+
+        // Get the textual representation of the day of the week and the ordinal value
+        String ordinalSuffix;
+        switch (ordinal) {
+            case 1:
+                ordinalSuffix = "st";
+                break;
+            case 2:
+                ordinalSuffix = "nd";
+                break;
+            case 3:
+                ordinalSuffix = "rd";
+                break;
+            default:
+                ordinalSuffix = "th";
+        }
+
+        String dayOfWeekText = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault());
+
+        return ordinal + ordinalSuffix + " " + dayOfWeekText;
+    }
+
+    public String getWeekday() { return dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());}
 
 }

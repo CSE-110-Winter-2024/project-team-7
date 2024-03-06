@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void onResume() {
         super.onResume();
-        currentDate.updateDate(LocalDateTime.now());
+        currentDate.updateTodayDate(LocalDateTime.now());
     }
 
     private void setupListView() {
