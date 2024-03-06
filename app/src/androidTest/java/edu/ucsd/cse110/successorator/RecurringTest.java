@@ -18,6 +18,8 @@ import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 
 import static edu.ucsd.cse110.successorator.MainViewModel.*;
 
+import java.time.LocalDateTime;
+
 
 //THESE TESTS MUST BE RUN SEPARATELY FOR NOW
 @RunWith(AndroidJUnit4.class)
@@ -75,6 +77,70 @@ public class RecurringTest {
                     if(i == 6) {
                         assertTrue(todoList.unfinishedSize() == 1);
                         assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("weekly"));
+                    } else {
+                        assertTrue(todoList.unfinishedSize() == 0);
+                        assertTrue(todoList.finishedSize() == 0);
+                    }
+                }
+            });
+        }
+    }
+
+    @Test
+    public void testMonthlyRecurring() {
+
+        try (var scenario1 = ActivityScenario.launch(MainActivity.class)) {
+            scenario1.onActivity(activity -> {
+                SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
+                GoalLists todoList = app.getTodoList();
+                RecurringGoalLists recurringList = app.getRecurringList();
+                DateHandler currentDate = app.getCurrentDate();
+
+                currentDate.updateTodayDate(LocalDateTime.of(2024, 3, 5, 1, 1));
+
+                activity.addItemToRecurringList(new RecurringGoal(null, "monthly",
+                        RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate()));
+                System.out.println(todoList.unfinishedSize());
+                assertTrue(todoList.unfinishedSize() == 1);
+                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+
+                for(int i = 0; i < 30; i++) {
+                    currentDate.skipDay();
+                    if(i >= 27) {
+                        assertTrue(todoList.unfinishedSize() == 1);
+                        assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("monthly"));
+                    } else {
+                        assertTrue(todoList.unfinishedSize() == 0);
+                        assertTrue(todoList.finishedSize() == 0);
+                    }
+                }
+            });
+        }
+    }
+
+    @Test
+    public void testYearlyRecurring() {
+
+        try (var scenario1 = ActivityScenario.launch(MainActivity.class)) {
+            scenario1.onActivity(activity -> {
+                SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
+                GoalLists todoList = app.getTodoList();
+                RecurringGoalLists recurringList = app.getRecurringList();
+                DateHandler currentDate = app.getCurrentDate();
+
+                currentDate.updateTodayDate(LocalDateTime.of(2024, 3, 5, 1, 1));
+
+                activity.addItemToRecurringList(new RecurringGoal(null, "yearly",
+                        RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate()));
+                System.out.println(todoList.unfinishedSize());
+                assertTrue(todoList.unfinishedSize() == 1);
+                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+
+                for(int i = 0; i < 365; i++) {
+                    currentDate.skipDay();
+                    if(i == 364) {
+                        assertTrue(todoList.unfinishedSize() == 1);
+                        assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("yearly"));
                     } else {
                         assertTrue(todoList.unfinishedSize() == 0);
                         assertTrue(todoList.finishedSize() == 0);
