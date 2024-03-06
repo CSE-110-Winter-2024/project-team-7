@@ -1,5 +1,7 @@
-package edu.ucsd.cse110.successorator.data.db;
+package edu.ucsd.cse110.successorator.data.db.date;
 
+import edu.ucsd.cse110.successorator.data.db.date.DateDao;
+import edu.ucsd.cse110.successorator.data.db.date.DateEntity;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 
 public class RoomDateStorage {
@@ -15,5 +17,9 @@ public class RoomDateStorage {
 
     public void replace(DateHandler date) {
         dateDao.replace(DateEntity.fromDate(date));
+    }
+
+    public boolean empty() {
+        return dateDao.count() == 0;
     }
 }

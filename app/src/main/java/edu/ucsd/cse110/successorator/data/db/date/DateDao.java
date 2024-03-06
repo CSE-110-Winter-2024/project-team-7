@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.data.db;
+package edu.ucsd.cse110.successorator.data.db.date;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -14,6 +14,9 @@ public interface DateDao {
 
     @Query("SELECT * FROM Date WHERE id = 0")
     DateEntity find();
+
+    @Query("SELECT COUNT(*) FROM Date")
+    int count();
 
     @Transaction
     default int replace(DateEntity newDate) {

@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.data.db;
+package edu.ucsd.cse110.successorator.data.db.standardgoal;
 
 import java.util.ArrayList;
 import java.util.List;

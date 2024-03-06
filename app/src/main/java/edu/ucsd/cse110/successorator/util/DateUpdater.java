@@ -24,7 +24,7 @@ public class DateUpdater {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        dateData.updateDate((String) null);
+                        dateData.updateTodayDate((String) null);
                     }
                 });
             }

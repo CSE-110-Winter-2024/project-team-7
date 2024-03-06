@@ -12,10 +12,21 @@ public class Goal implements Serializable {
 
     private final @NonNull boolean finished;
 
+    private final @NonNull boolean fromRecurring;
+
     public Goal(@Nullable Integer id, @NonNull String content, @NonNull boolean finished) {
         this.id = id;
         this.content = content;
         this.finished = finished;
+        this.fromRecurring = false;
+    }
+
+    public Goal(@Nullable Integer id, @NonNull String content,
+                @NonNull boolean finished, @NonNull boolean fromRecurring) {
+        this.id = id;
+        this.content = content;
+        this.finished = finished;
+        this.fromRecurring = fromRecurring;
     }
 
     public @Nullable Integer id() {
@@ -36,6 +47,10 @@ public class Goal implements Serializable {
 
     public Goal withId(int id) {
         return new Goal(id, this.content, this.finished);
+    }
+
+    public @NonNull boolean isFromRecurring() {
+        return this.fromRecurring;
     }
 
     public Goal withFinished(boolean finished) {
