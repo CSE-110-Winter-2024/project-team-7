@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
 
@@ -34,6 +33,7 @@ import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateUpdater;
 
 public class MainActivity extends AppCompatActivity implements Observer {
@@ -137,6 +137,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
             dialogFragment.show(getSupportFragmentManager(), "AddGoalDialogFragment");
         }
 
+        if (itemId == R.id.action_arrow_drop_down_button) {
+            swapFragments();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -178,6 +182,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
             MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate);
             updatePlaceholderVisibility();
         }
+    }
+
+    private void swapFragments() {
+        var dialogFragment = DropDownDialogFragment.newInstance();
+        dialogFragment.show(getSupportFragmentManager(), "dropdown_fragment");
     }
 
     public ArrayAdapter<Goal> getAdapter() {

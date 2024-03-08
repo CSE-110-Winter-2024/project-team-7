@@ -55,6 +55,12 @@ public class DateHandler implements Subject {
     public void skipDay() {
         this.dateTime = dateTime.plusDays(1);
         updateTodayDate(dateTime);
+
+    }
+
+    public String getTomorrowDate() {
+        LocalDateTime tomorrow = this.dateTime.plusDays(1);
+        return "Tomorrow, " + tomorrow.format(dateFormat);
     }
 
     public String getFormattedDate() {
@@ -64,7 +70,7 @@ public class DateHandler implements Subject {
     @Nullable
     @Override
     public Object getValue() {
-        return formattedDate;
+        return dateTime;
     }
 
     @Override

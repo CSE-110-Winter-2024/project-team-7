@@ -21,6 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.tomorrow.TomorrowFragment" />
+        <activity android:name=".ui.recurring.RecurringFragment" />
+        <activity android:name=".ui.pending.PendingFragment" />
 
     </application>
 
