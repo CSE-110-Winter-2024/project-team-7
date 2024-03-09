@@ -27,21 +27,21 @@ public class AppEndToEndTest {
             scenario1.onActivity(activity -> {
                 SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
                 GoalLists todoList = app.getTodoList();
-                assertTrue(activity.updatePlaceholderVisibility());
+                assertTrue(activity.getTodayFragment().updatePlaceholderVisibility());
                 activity.addItemToTodoList(new Goal(null,"Finish Project Report", false));
-                assertFalse(activity.updatePlaceholderVisibility());
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
                 activity.addItemToTodoList(new Goal(null, "Prepare for Tomorrow's Presentation", false));
-                assertFalse(activity.updatePlaceholderVisibility());
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 2);
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
-                assertFalse(activity.updatePlaceholderVisibility());
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
                 assertTrue(todoList.get(0).toString().equals("Prepare for Tomorrow's Presentation"));
                 assertTrue(todoList.finishedSize() == 1);
                 assertTrue(todoList.getFinishedGoals().get(0).toString().equals("Finish Project Report"));
 
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 todoList.clearFinished();
             });
             scenario1.moveToState(Lifecycle.State.STARTED);
@@ -56,15 +56,15 @@ public class AppEndToEndTest {
             scenario1.onActivity(activity -> {
                 SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
                 GoalLists todoList = app.getTodoList();
-                assertTrue(activity.updatePlaceholderVisibility());
+                assertTrue(activity.getTodayFragment().updatePlaceholderVisibility());
                 activity.addItemToTodoList(new Goal(null,"Finish Project Report", false));
-                assertFalse(activity.updatePlaceholderVisibility());
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
                 activity.addItemToTodoList(new Goal(null, "Prepare for Tomorrow's Presentation", false));
-                assertFalse(activity.updatePlaceholderVisibility());
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 2);
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
-                assertFalse(activity.updatePlaceholderVisibility());
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
                 assertTrue(todoList.get(0).toString().equals("Prepare for Tomorrow's Presentation"));
                 assertTrue(todoList.finishedSize() == 1);
@@ -83,7 +83,7 @@ public class AppEndToEndTest {
                 SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
                 GoalLists todoList = app.getTodoList();
                 String currentDate = app.getCurrentDate().getFormattedDate();
-                assertFalse(activity.updatePlaceholderVisibility());
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
                 assertTrue(todoList.get(0).toString().equals("Prepare for Tomorrow's Presentation"));
                 assertTrue(todoList.finishedSize() == 1);
@@ -94,12 +94,12 @@ public class AppEndToEndTest {
                 String nextDate = app.getCurrentDate().getFormattedDate();
                 System.out.println(nextDate);
 
-                assertFalse(activity.updatePlaceholderVisibility());
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
                 assertTrue(todoList.get(0).toString().equals("Prepare for Tomorrow's Presentation"));
                 assertEquals(0, todoList.finishedSize());
 
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 todoList.clearFinished();
 
             });

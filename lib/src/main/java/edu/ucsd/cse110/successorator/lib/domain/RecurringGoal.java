@@ -93,6 +93,8 @@ public class RecurringGoal implements Serializable {
         return new Goal(null, content, false, true);
     }
 
-
+    public String toString() {
+        return content;
+    }
 
 }

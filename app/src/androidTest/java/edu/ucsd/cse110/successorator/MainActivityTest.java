@@ -27,7 +27,7 @@ public class MainActivityTest {
     public void testPlaceholderVisibilityWhenTodoListEmpty() {
         try (var scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                assertTrue(activity.updatePlaceholderVisibility());
+                assertTrue(activity.getTodayFragment().updatePlaceholderVisibility());
             });
             scenario.moveToState(Lifecycle.State.STARTED);
         }
@@ -41,10 +41,10 @@ public class MainActivityTest {
                 GoalLists todoList = app.getTodoList();
                 Goal newGoal = new Goal(null, "New Task", false);
                 activity.addItemToTodoList(newGoal);
-                assertFalse(activity.updatePlaceholderVisibility());
+                assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
 
 
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 todoList.clearFinished();
             });
             scenario.moveToState(Lifecycle.State.STARTED);
@@ -65,10 +65,10 @@ public class MainActivityTest {
                 assertEquals("Size of todoList should be 1 after adding one goal", 1, todoList.size());
                 assertEquals("First goal in the todoList should be the one that was added", newGoal, todoList.get(0));
 
-                ArrayAdapter<Goal> adapter = activity.getAdapter();
+                ArrayAdapter<Goal> adapter = activity.getTodayFragment().getAdapter();
                 assertEquals("Adapter should contain the new goal", newGoal, adapter.getItem(adapter.getCount() - 1));
 
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 todoList.clearFinished();
             });
         }
