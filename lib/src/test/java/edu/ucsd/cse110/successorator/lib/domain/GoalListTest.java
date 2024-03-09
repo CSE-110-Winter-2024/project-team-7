@@ -5,12 +5,13 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
 public class GoalListTest {
 
-    //OUTDATED TESTS
+
     @Test
     public void addTest() {
         ArrayList<Goal> testList = new ArrayList<>();
@@ -91,5 +92,41 @@ public class GoalListTest {
         testList.clearFinished();
         assertEquals(0, testList.finishedSize());
     }
+
+    @Test
+    public void testAddingGoalsWithDifferentContexts() {
+        SimpleGoalLists goalLists = new SimpleGoalLists();
+        Goal homeGoal = new Goal(null, "Buy groceries", false, false, "Home");
+        Goal workGoal = new Goal(null, "Prepare presentation", false, false, "Work");
+
+        goalLists.add(homeGoal);
+        goalLists.add(workGoal);
+
+        assertTrue(goalLists.getUnfinishedGoals().contains(homeGoal));
+        assertTrue(goalLists.getUnfinishedGoals().contains(workGoal));
+    }
+
+    @Test
+    public void testFilteringGoalsByContext() {
+        SimpleGoalLists goalLists = new SimpleGoalLists();
+        goalLists.add(new Goal(null, "Task 1", false, false, "Work"));
+        goalLists.add(new Goal(null, "Task 2", false, false, "Home"));
+
+        List<Goal> workGoals = goalLists.getGoalsByContext("Work", false);
+        assertEquals(1, workGoals.size());
+        assertEquals("Work", workGoals.get(0).getContext());
+    }
+
+    @Test
+    public void testGoalCountByContext() {
+        SimpleGoalLists goalLists = new SimpleGoalLists();
+        goalLists.add(new Goal(null, "Buy milk", false, false, "Errands"));
+        goalLists.add(new Goal(null, "Send emails", false, false, "Work"));
+        goalLists.add(new Goal(null, "Buy bread", false, false, "Errands"));
+
+        assertEquals(2, goalLists.getGoalsByContext("Errands", false).size());
+        assertEquals(1, goalLists.getGoalsByContext("Work", false).size());
+    }
+
 
 }

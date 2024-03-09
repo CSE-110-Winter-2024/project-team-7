@@ -18,17 +18,19 @@ public class RecurringGoal implements Serializable {
     private final @NonNull String content;
     private final int recurringType;
     private final LocalDate date;
+    private final @NonNull String context;
     private DayOfWeek dayOfWeek;
     private int weekOfMonth;
 
     public RecurringGoal(@Nullable Integer id, @NonNull String content, int recurringType,
-                         LocalDate date) {
+                         LocalDate date, @NonNull String context) {
         this.id = id;
         this.content = content;
         this.recurringType = recurringType;
         this.date = date;
+        this.context = context;
         this.dayOfWeek = date.getDayOfWeek();
-        this.weekOfMonth = ((date.getDayOfMonth()-1) / 7) + 1;
+        this.weekOfMonth = ((date.getDayOfMonth() - 1) / 7) + 1;
     }
 
     public @Nullable Integer id() {
@@ -45,6 +47,14 @@ public class RecurringGoal implements Serializable {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public @NonNull String getContext() {
+        return context;
+    }
+
+    public Goal toGoal() {
+        return new Goal(null, content, false, true, context);
     }
 
     public boolean recurToday(LocalDate today) {
@@ -88,11 +98,5 @@ public class RecurringGoal implements Serializable {
         }
         return false;
     }
-
-    public Goal toGoal() {
-        return new Goal(null, content, false, true);
-    }
-
-
 
 }

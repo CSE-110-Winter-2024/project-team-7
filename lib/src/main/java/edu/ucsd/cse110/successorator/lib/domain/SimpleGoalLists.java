@@ -2,6 +2,8 @@ package edu.ucsd.cse110.successorator.lib.domain;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 public class SimpleGoalLists implements GoalLists {
     private List<Goal> unfinished;
     private List<Goal> finished;
@@ -84,6 +86,18 @@ public class SimpleGoalLists implements GoalLists {
         size = unfinished.size();
     }
 
+    public List<Goal> getGoalsByContext(String context, boolean isFinished) {
+        if (isFinished) {
+            return finished.stream()
+                    .filter(goal -> goal.getContext().equalsIgnoreCase(context))
+                    .collect(Collectors.toList());
+        } else {
+            return unfinished.stream()
+                    .filter(goal -> goal.getContext().equalsIgnoreCase(context))
+                    .collect(Collectors.toList());
+        }
+    }
+
     public String toString() {
         String retval = "unfinished: \n";
         for(int i = 0; i < size; i++) {
@@ -93,4 +107,12 @@ public class SimpleGoalLists implements GoalLists {
         }
         return retval;
     }
+
+    public List<Goal> getFinishedGoalsByContext(String context) {
+        return finished.stream()
+                .filter(goal -> goal.getContext().equalsIgnoreCase(context))
+                .collect(Collectors.toList());
+    }
+
+
 }

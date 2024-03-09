@@ -18,10 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
-
 
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 
@@ -41,13 +39,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
-
     private DateHandler currentDate;
-
     private GoalLists todoList;
-
     private RecurringGoalLists recurringList;
-
     private RoomDateStorage storedDate;
 
 
