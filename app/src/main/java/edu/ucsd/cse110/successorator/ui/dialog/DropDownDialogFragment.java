@@ -34,6 +34,7 @@ public class DropDownDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         this.view = FragmentDialogDropDownBinding.inflate(getLayoutInflater());
+        MainActivity activity = (MainActivity) getActivity();
 
         TextView titleTextView = new TextView(requireContext());
         titleTextView.setText("Select View");
@@ -50,7 +51,7 @@ public class DropDownDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 // Handle click for Today button
                 // Start TodayActivity
-                startActivity(new Intent(requireContext(), MainActivity.class));
+                activity.changeView(MainActivity.TODAY);
                 dismiss(); // Dismiss the dialog after navigation
             }
         });
@@ -60,7 +61,7 @@ public class DropDownDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 // Handle click for Tomorrow button
                 // Start TomorrowActivity
-                startActivity(new Intent(requireContext(), TomorrowFragment.class));
+                activity.changeView(MainActivity.TOMORROW);
                 dismiss(); // Dismiss the dialog after navigation
             }
         });
@@ -70,7 +71,7 @@ public class DropDownDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 // Handle click for Recurring button
                 // Start RecurringActivity
-                startActivity(new Intent(requireContext(), RecurringFragment.class));
+                activity.changeView(MainActivity.RECURRING);
                 dismiss(); // Dismiss the dialog after navigation
             }
         });
@@ -80,7 +81,7 @@ public class DropDownDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 // Handle click for Pending button
                 // Start PendingActivity
-                startActivity(new Intent(requireContext(), PendingFragment.class));
+                activity.changeView(MainActivity.PENDING);
                 dismiss(); // Dismiss the dialog after navigation
             }
         });

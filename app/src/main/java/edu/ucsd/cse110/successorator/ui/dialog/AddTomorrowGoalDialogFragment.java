@@ -42,7 +42,7 @@ public class AddTomorrowGoalDialogFragment extends DialogFragment {
         yearlyButton.setText("Yearly on " + currentDate.getMonthAndDate());
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle("New Goal")
+                .setTitle("New Goal for Tomorrow")
                 .setView(view.getRoot())
                 .setPositiveButton("Add", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick)
@@ -57,7 +57,7 @@ public class AddTomorrowGoalDialogFragment extends DialogFragment {
             return;
         }
 
-        TomorrowFragment activity = (TomorrowFragment) requireActivity();
+        //TomorrowFragment activity = (TomorrowFragment) requireActivity();
 
 //        if(view.oneTimeButton.isChecked()) {
 //            var goal = new Goal(null, content, false);

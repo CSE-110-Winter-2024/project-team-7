@@ -1,15 +1,10 @@
-package edu.ucsd.cse110.successorator.ui.tomorrow;
+package edu.ucsd.cse110.successorator.ui.today;
 
-import static edu.ucsd.cse110.successorator.MainViewModel.moveToFinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.moveToUnfinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshAdapter;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshFinishedAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.*;
 
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,43 +13,38 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 
 import edu.ucsd.cse110.successorator.MainActivity;
+import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.SuccessoratorApplication;
 import edu.ucsd.cse110.successorator.databinding.TodayBinding;
-import edu.ucsd.cse110.successorator.databinding.TomorrowBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
-import edu.ucsd.cse110.successorator.ui.dialog.AddTomorrowGoalDialogFragment;
-import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
-import edu.ucsd.cse110.successorator.ui.today.TodayFragment;
 import edu.ucsd.cse110.successorator.util.DateUpdater;
 
-public class TomorrowFragment extends Fragment implements Observer {
+public class TodayFragment extends Fragment implements Observer {
+    private TodayBinding view;
     private MainActivity mainActivity;
-    private DateHandler currentDate;
-    private TextView dateTextView;
-    TomorrowBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
-    //THIS MAY BE TEMPORARY IF WE WANT TO MAKE A TOMORROWLIST CLASS
-    private GoalLists tomorrowList;
+    private DateHandler currentDate;
 
+    private GoalLists todoList;
 
-    public TomorrowFragment() {
+    public TodayFragment() {
 
     }
 
-    public static TomorrowFragment newInstance() {
-        TomorrowFragment fragment = new TomorrowFragment();
+    public static TodayFragment newInstance() {
+        TodayFragment fragment = new TodayFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -66,18 +56,17 @@ public class TomorrowFragment extends Fragment implements Observer {
 
         mainActivity = (MainActivity) requireActivity();
         SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
-        mainActivity.setTomorrowFragment(this);
+        mainActivity.setTodayFragment(this);
         currentDate = app.getCurrentDate();
-        //tomorrowList = app.getTomorrowList(); NOT YET IMPLEMENTED
-        tomorrowList = app.getTodoList(); //TO AVOID CRASHES
+        todoList = app.getTodoList();
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = TomorrowBinding.inflate(inflater, container, false);
-        dateTextView = view.dateTomorrowText;
-        dateTextView.setText(currentDate.getTomorrowDate());
+        view = TodayBinding.inflate(inflater, container, false);
+        TextView dateTextView = view.dateText;
+        currentDate.observe(new DateDisplay(dateTextView));
         currentDate.observe(this);
 
         setupListView();
@@ -101,41 +90,26 @@ public class TomorrowFragment extends Fragment implements Observer {
             }
         };
 
-        view.goalsListTomorrowView.setAdapter(adapter);
-        view.finishedListTomorrowView.setAdapter(finishedAdapter);
-        view.goalsListTomorrowView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        view.goalsListView.setAdapter(adapter);
+        view.finishedListView.setAdapter(finishedAdapter);
+        view.goalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Goal selectedItem = adapter.getItem(position);
-                moveToFinished(selectedItem, adapter, finishedAdapter, tomorrowList);
+                moveToFinished(selectedItem, adapter, finishedAdapter, todoList);
                 updatePlaceholderVisibility();
             }
         });
 
-        view.finishedListTomorrowView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        view.finishedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Goal selectedItem = finishedAdapter.getItem(position);
-                moveToUnfinished(selectedItem, adapter, finishedAdapter, tomorrowList);
+                moveToUnfinished(selectedItem, adapter, finishedAdapter, todoList);
                 updatePlaceholderVisibility();
             }
         });
 
-    }
-
-    public boolean updatePlaceholderVisibility() {
-        boolean isEmpty = tomorrowList.empty();
-        view.goalsListTomorrowView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
-        view.placeholderTomorrowText.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-
-        if(isEmpty) {
-            view.placeholderTomorrowText.setText(R.string.placeholder_tomorrow_text);
-        } else {
-            refreshAdapter(adapter, tomorrowList);
-            refreshFinishedAdapter(finishedAdapter, tomorrowList);
-        }
-
-        return isEmpty;
     }
 
     private void setupDateMock() {
@@ -144,12 +118,38 @@ public class TomorrowFragment extends Fragment implements Observer {
         });
     }
 
+    public boolean updatePlaceholderVisibility() {
+        boolean isEmpty = todoList.empty();
+        view.goalsListView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        view.placeholderText.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+
+        if(isEmpty) {
+            view.placeholderText.setText(R.string.default_message);
+        } else {
+            refreshAdapter(adapter, todoList);
+            refreshFinishedAdapter(finishedAdapter, todoList);
+        }
+
+        return isEmpty;
+    }
+
     public void onChanged(@Nullable Object value) {
-        dateTextView.setText(currentDate.getTomorrowDate());
-        //TODO: rollover all tomorrow goals to today, and delete(i think?) the finished goals
+        if (todoList != null && finishedAdapter != null) {
+            todoList.clearFinished();
+            finishedAdapter.clear();
+            finishedAdapter.notifyDataSetChanged();
+
+            updatePlaceholderVisibility();
+        }
     }
 
     public ArrayAdapter<Goal> getAdapter() {
         return adapter;
     }
+
+    public ArrayAdapter<Goal> getFinishedAdapter() {
+        return finishedAdapter;
+    }
+
+
 }

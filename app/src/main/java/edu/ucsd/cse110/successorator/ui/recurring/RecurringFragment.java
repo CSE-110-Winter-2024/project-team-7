@@ -1,47 +1,120 @@
 package edu.ucsd.cse110.successorator.ui.recurring;
 
+import static edu.ucsd.cse110.successorator.MainViewModel.moveToFinished;
+import static edu.ucsd.cse110.successorator.MainViewModel.moveToUnfinished;
+import static edu.ucsd.cse110.successorator.MainViewModel.refreshAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.refreshFinishedAdapter;
+
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
+
+import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.R;
+import edu.ucsd.cse110.successorator.SuccessoratorApplication;
 import edu.ucsd.cse110.successorator.databinding.RecurringBinding;
+import edu.ucsd.cse110.successorator.databinding.TomorrowBinding;
+import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
+import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoal;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
+import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tomorrow.TomorrowFragment;
 
-public class RecurringFragment extends AppCompatActivity {
+public class RecurringFragment extends Fragment implements Observer {
+
+    private MainActivity mainActivity;
+    private DateHandler currentDate;
+    RecurringBinding view;
+    private ArrayAdapter<RecurringGoal> adapter;
+    private RecurringGoalLists recurringList;
+
+    public RecurringFragment() {
+
+    }
+
+    public static RecurringFragment newInstance() {
+        RecurringFragment fragment = new RecurringFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RecurringBinding view = RecurringBinding.inflate(getLayoutInflater());
-        setContentView(view.getRoot());
-        view.placeholderRecurringText.setText(R.string.placeholder_recurring_text);
+
+        mainActivity = (MainActivity) requireActivity();
+        SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
+        mainActivity.setRecurringFragment(this);
+        currentDate = app.getCurrentDate();
+        recurringList = app.getRecurringList();
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_bar, menu);
-        return true;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = RecurringBinding.inflate(inflater, container, false);
+        currentDate.observe(this);
+
+        setupListView();
+        setupDateMock();
+        updatePlaceholderVisibility();
+
+        return view.getRoot();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        var itemId = item.getItemId();
+    private void setupListView() {
+        adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
 
-        if (itemId == R.id.action_bar_add_button) {
-            var dialogFragment = AddGoalDialogFragment.newInstance();
-//            dialogFragment.setCurrentDate(currentDate);
-            dialogFragment.show(getSupportFragmentManager(), "AddGoalDialogFragment");
+        view.goalsListRecurringView.setAdapter(adapter);
+
+        //TODO: SETUP THE HOLD THING TO DELETE RECURRING GOALS HERE
+
+    }
+
+    public boolean updatePlaceholderVisibility() {
+        boolean isEmpty = recurringList.empty();
+        view.goalsListRecurringView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        view.placeholderRecurringText.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+
+        if(isEmpty) {
+            view.placeholderRecurringText.setText(R.string.placeholder_recurring_text);
+        } else {
+            //refreshAdapter(adapter, recurringList); //WRITE REFRESH ADAPTER THAT TAKES RECURRINGLIST ARGUMENT
         }
 
-        if (itemId == R.id.action_arrow_drop_down_button) {
-            var dialogFragment = DropDownDialogFragment.newInstance();
-            dialogFragment.show(getSupportFragmentManager(), "dropdown_fragment");
-        }
+        return isEmpty;
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void setupDateMock() {
+        view.dateMockButton.setOnClickListener(v -> {
+            currentDate.skipDay();
+        });
+    }
+
+    public void onChanged(@Nullable Object value) {
+        //TODO: might not have to do anything here, might not need to observe date
+    }
+
+    public ArrayAdapter<RecurringGoal> getAdapter() {
+        return adapter;
     }
 }

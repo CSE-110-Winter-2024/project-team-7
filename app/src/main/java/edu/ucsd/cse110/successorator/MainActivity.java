@@ -33,10 +33,18 @@ import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.dialog.AddPendingGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.dialog.AddRecurringGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.dialog.AddTomorrowGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
+import edu.ucsd.cse110.successorator.ui.pending.PendingFragment;
+import edu.ucsd.cse110.successorator.ui.recurring.RecurringFragment;
+import edu.ucsd.cse110.successorator.ui.today.TodayFragment;
+import edu.ucsd.cse110.successorator.ui.tomorrow.TomorrowFragment;
 import edu.ucsd.cse110.successorator.util.DateUpdater;
 
 public class MainActivity extends AppCompatActivity implements Observer {
+    public static int TODAY = 0, TOMORROW = 1, RECURRING = 2, PENDING = 3;
 
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
@@ -49,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private RecurringGoalLists recurringList;
 
     private RoomDateStorage storedDate;
+
+    private TodayFragment todayFragment;
+    private TomorrowFragment tomorrowFragment;
+    private RecurringFragment recurringFragment;
+    private PendingFragment pendingFragment;
+
+    private int currentView;
 
 
     @Override
@@ -64,14 +79,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         storedDate = app.getStoredDate();
         recurringList = app.getRecurringList();
 
-        TextView dateTextView = findViewById(R.id.date_text);
-        currentDate.observe(new DateDisplay(dateTextView));
         currentDate.observe(this);
         DateUpdater.scheduleDateUpdates(currentDate);
 
-        setupListView();
-        setupDateMock();
-        updatePlaceholderVisibility();
+        currentView = TODAY;
+
     }
 
     public void onResume() {
@@ -79,47 +91,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentDate.updateTodayDate(LocalDateTime.now());
     }
 
-    private void setupListView() {
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
-        finishedAdapter = new ArrayAdapter<Goal>(this, android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textViewGoal = (TextView) view.findViewById(android.R.id.text1);
-                textViewGoal.setPaintFlags(textViewGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                return view;
-            }
-        };
-
-        view.goalsListView.setAdapter(adapter);
-        view.finishedListView.setAdapter(finishedAdapter);
-        view.goalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Goal selectedItem = adapter.getItem(position);
-                moveToFinished(selectedItem, adapter, finishedAdapter, todoList);
-                updatePlaceholderVisibility();
-            }
-        });
-
-        view.finishedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Goal selectedItem = finishedAdapter.getItem(position);
-                moveToUnfinished(selectedItem, adapter, finishedAdapter, todoList);
-                updatePlaceholderVisibility();
-            }
-        });
-
-    }
-
-    private void setupDateMock() {
-        view.dateMockButton.setOnClickListener(v -> {
-            currentDate.skipDay();
-        });
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,9 +103,23 @@ public class MainActivity extends AppCompatActivity implements Observer {
         var itemId = item.getItemId();
 
         if (itemId == R.id.action_bar_add_button) {
-            var dialogFragment = AddGoalDialogFragment.newInstance();
-            dialogFragment.setCurrentDate(currentDate);
-            dialogFragment.show(getSupportFragmentManager(), "AddGoalDialogFragment");
+            if(currentView == TODAY) {
+                var dialogFragment = AddGoalDialogFragment.newInstance();
+                dialogFragment.setCurrentDate(currentDate);
+                dialogFragment.show(getSupportFragmentManager(), "AddTodayGoalDialogFragment");
+            } else if(currentView == TOMORROW) {
+                var dialogFragment = AddTomorrowGoalDialogFragment.newInstance();
+                dialogFragment.setCurrentDate(currentDate);
+                dialogFragment.show(getSupportFragmentManager(), "AddTomorrowGoalDialogFragment");
+            } else if(currentView == RECURRING) {
+                var dialogFragment = AddRecurringGoalDialogFragment.newInstance();
+                //dialogFragment.setCurrentDate(currentDate);
+                dialogFragment.show(getSupportFragmentManager(), "AddRecurringGoalDialogFragment");
+            } else if(currentView == PENDING) {
+                var dialogFragment = AddPendingGoalDialogFragment.newInstance();
+                //dialogFragment.setCurrentDate(currentDate);
+                dialogFragment.show(getSupportFragmentManager(), "AddPendingGoalDialogFragment");
+            }
         }
 
         if (itemId == R.id.action_arrow_drop_down_button) {
@@ -146,47 +131,55 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
 
     public void addItemToTodoList(Goal goal) {
-        MainViewModel.addItemToTodoList(goal, adapter, todoList);
-        updatePlaceholderVisibility();
+        MainViewModel.addItemToTodoList(goal, todayFragment.getAdapter(), todoList);
+        todayFragment.updatePlaceholderVisibility();
     }
 
     public void addItemToRecurringList(RecurringGoal rgoal) {
-        MainViewModel.addItemToRecurringList(rgoal, adapter, todoList, recurringList);
-        updatePlaceholderVisibility();
-    }
-
-    public boolean updatePlaceholderVisibility() {
-        boolean isEmpty = todoList.empty();
-        view.goalsListView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
-        view.placeholderText.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-
-        if(isEmpty) {
-            view.placeholderText.setText(R.string.default_message);
-        } else {
-            refreshAdapter(adapter, todoList);
-            refreshFinishedAdapter(finishedAdapter, todoList);
-        }
-
-        return isEmpty;
+        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(), todoList, recurringList);
+        todayFragment.updatePlaceholderVisibility();
     }
 
     @Override
     public void onChanged(@Nullable Object value) {
-        if (todoList != null && finishedAdapter != null) {
-            todoList.clearFinished();
-            finishedAdapter.clear();
-            finishedAdapter.notifyDataSetChanged();
-
+        if (todoList != null && todayFragment.getFinishedAdapter() != null) {
             storedDate.replace(currentDate);
 
-            MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate);
-            updatePlaceholderVisibility();
+            MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, todayFragment.getAdapter(), currentDate);
         }
     }
 
     private void swapFragments() {
         var dialogFragment = DropDownDialogFragment.newInstance();
         dialogFragment.show(getSupportFragmentManager(), "dropdown_fragment");
+    }
+
+    public void changeView(int newView) {
+        if(newView == TODAY) {
+            currentView = TODAY;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainerView, TodayFragment.newInstance())
+                    .commit();
+        } else if(newView == TOMORROW) {
+            currentView = TOMORROW;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainerView, TomorrowFragment.newInstance())
+                    .commit();
+        } else if(newView == RECURRING) {
+            currentView = RECURRING;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainerView, RecurringFragment.newInstance())
+                    .commit();
+        } else if(newView == PENDING) {
+            currentView = PENDING;
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainerView, PendingFragment.newInstance())
+                    .commit();
+        }
     }
 
     public ArrayAdapter<Goal> getAdapter() {
@@ -197,4 +190,27 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return this.finishedAdapter;
     }
 
+    public DateHandler getCurrentDate() {
+        return currentDate;
+    }
+
+    public GoalLists getTodoList() {
+        return todoList;
+    }
+
+    public void setTodayFragment(TodayFragment todayFragment) {
+        this.todayFragment = todayFragment;
+    }
+
+    public void setTomorrowFragment(TomorrowFragment tommorowFragment) {
+        this.tomorrowFragment = tommorowFragment;
+    }
+
+    public void setRecurringFragment(RecurringFragment recurringFragment) {
+        this.recurringFragment = recurringFragment;
+    }
+
+    public void setPendingFragment(PendingFragment pendingFragment) {
+        this.pendingFragment = pendingFragment;
+    }
 }
