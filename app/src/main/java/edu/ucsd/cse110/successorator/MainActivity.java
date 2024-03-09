@@ -213,4 +213,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void setPendingFragment(PendingFragment pendingFragment) {
         this.pendingFragment = pendingFragment;
     }
+
+    //for testing
+    public TodayFragment getTodayFragment() {
+        return todayFragment;
+    }
+
+    public int getCurrentView() {
+        return currentView;
+    }
 }

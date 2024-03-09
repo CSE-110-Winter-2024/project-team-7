@@ -42,7 +42,7 @@ public class RecurringTest {
                 currentDate.skipDay();
                 assertTrue(todoList.unfinishedSize() == 1);
                 assertTrue(recurringList.size() == 1);
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 assertTrue(todoList.unfinishedSize() == 0);
                 assertTrue(todoList.finishedSize() == 1);
                 assertTrue(todoList.getFinishedGoals().get(0).toString().equals("daily"));
@@ -70,7 +70,7 @@ public class RecurringTest {
                         RecurringGoal.WEEKLY, currentDate.dateTime().toLocalDate()));
                 System.out.println(todoList.unfinishedSize());
                 assertTrue(todoList.unfinishedSize() == 1);
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
 
                 for(int i = 0; i < 7; i++) {
                     currentDate.skipDay();
@@ -102,7 +102,7 @@ public class RecurringTest {
                         RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate()));
                 System.out.println(todoList.unfinishedSize());
                 assertTrue(todoList.unfinishedSize() == 1);
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
 
                 for(int i = 0; i < 30; i++) {
                     currentDate.skipDay();
@@ -134,7 +134,7 @@ public class RecurringTest {
                         RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate()));
                 System.out.println(todoList.unfinishedSize());
                 assertTrue(todoList.unfinishedSize() == 1);
-                moveToFinished(todoList.get(0), activity.getAdapter(), activity.getFinishedAdapter(), todoList);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
 
                 for(int i = 0; i < 365; i++) {
                     currentDate.skipDay();

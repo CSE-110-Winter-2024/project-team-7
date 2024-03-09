@@ -23,7 +23,7 @@ public class GoalRolloverTest {
                 activity.addItemToTodoList(new Goal(null, "Goal 1", false));
                 activity.addItemToTodoList(new Goal(null, "Goal 2", false));
 
-                moveToFinished(app.getTodoList().get(0), activity.getAdapter(), activity.getFinishedAdapter(), app.getTodoList());
+                moveToFinished(app.getTodoList().get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), app.getTodoList());
                 assertEquals(1, app.getTodoList().unfinishedSize());
                 assertEquals(1, app.getTodoList().finishedSize());
 
