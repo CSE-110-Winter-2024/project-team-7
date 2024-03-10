@@ -27,6 +27,7 @@ import edu.ucsd.cse110.successorator.databinding.TodayBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.util.DateUpdater;
@@ -141,6 +142,12 @@ public class TodayFragment extends Fragment implements Observer {
                 todoList.clearFinished();
                 finishedAdapter.clear();
                 finishedAdapter.notifyDataSetChanged();
+
+                SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
+
+                RecurringGoalLists recurringList = app.getRecurringList();
+
+                MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate);
 
                 updatePlaceholderVisibility();
                 storedDate.replace(currentDate);
