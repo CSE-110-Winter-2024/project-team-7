@@ -36,7 +36,6 @@ public class DateHandler implements Subject {
             dateTime = dateTime.minusDays(1);
         }
         String newFormattedDate = "Today, " + dateTime.format(dateFormat);
-        System.out.println("DATE: " + newFormattedDate);
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate)) || !(previousDate.equals(newFormattedDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();

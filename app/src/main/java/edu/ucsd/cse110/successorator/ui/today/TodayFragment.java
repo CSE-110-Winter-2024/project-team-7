@@ -22,10 +22,12 @@ import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.SuccessoratorApplication;
+import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
 import edu.ucsd.cse110.successorator.databinding.TodayBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.util.DateUpdater;
@@ -36,6 +38,7 @@ public class TodayFragment extends Fragment implements Observer {
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
     private DateHandler currentDate;
+    private RoomDateStorage storedDate;
 
     private GoalLists todoList;
 
@@ -59,17 +62,17 @@ public class TodayFragment extends Fragment implements Observer {
         mainActivity.setTodayFragment(this);
         currentDate = app.getCurrentDate();
         todoList = app.getTodoList();
+        storedDate = app.getStoredDate();
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = TodayBinding.inflate(inflater, container, false);
+        setupListView();
         TextView dateTextView = view.dateText;
         currentDate.observe(new DateDisplay(dateTextView));
         currentDate.observe(this);
-
-        setupListView();
         setupDateMock();
         updatePlaceholderVisibility();
 
@@ -135,11 +138,20 @@ public class TodayFragment extends Fragment implements Observer {
 
     public void onChanged(@Nullable Object value) {
         if (todoList != null && finishedAdapter != null) {
-            todoList.clearFinished();
-            finishedAdapter.clear();
-            finishedAdapter.notifyDataSetChanged();
+            if (!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
+                todoList.clearFinished();
+                finishedAdapter.clear();
+                finishedAdapter.notifyDataSetChanged();
 
-            updatePlaceholderVisibility();
+                SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
+
+                RecurringGoalLists recurringList = app.getRecurringList();
+
+                MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate);
+
+                updatePlaceholderVisibility();
+                storedDate.replace(currentDate);
+            }
         }
     }
 

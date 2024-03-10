@@ -65,7 +65,6 @@ public class SuccessoratorApplication extends Application {
             sharedPreferences.edit().putBoolean("isFirstRun", false).apply();
         } else if(!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
             currentDate.updateTodayDate(storedDate.formattedDate());
-            storedDate.replace(currentDate);
         }
 
 
