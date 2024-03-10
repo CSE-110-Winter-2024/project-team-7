@@ -74,9 +74,8 @@ public class PendingFragment extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = PendingBinding.inflate(inflater, container, false);
-        currentDate.observe(this);
-
         setupListView();
+        currentDate.observe(this);
         setupDateMock();
         updatePlaceholderVisibility();
 

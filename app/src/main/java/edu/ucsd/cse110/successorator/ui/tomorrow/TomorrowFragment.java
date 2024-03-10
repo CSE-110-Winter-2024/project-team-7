@@ -76,11 +76,10 @@ public class TomorrowFragment extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = TomorrowBinding.inflate(inflater, container, false);
+        setupListView();
         dateTextView = view.dateTomorrowText;
         dateTextView.setText(currentDate.getTomorrowDate());
         currentDate.observe(this);
-
-        setupListView();
         setupDateMock();
         updatePlaceholderVisibility();
 

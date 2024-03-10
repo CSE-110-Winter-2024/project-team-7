@@ -57,7 +57,6 @@ public class RecurringGoal implements Serializable {
             }
         }
         else if(recurringType == MONTHLY) {
-            System.out.println(dayOfWeek + "     " + weekOfMonth);
             LocalDate prevMonth;
             if(today.getMonthValue() == 1) {
                 prevMonth = today.withMonth(12);
@@ -68,13 +67,11 @@ public class RecurringGoal implements Serializable {
             }
 
             LocalDate targetDate = prevMonth.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
-            System.out.println(targetDate);
             if(targetDate.isEqual(today)) {
                 return true;
             }
 
             targetDate = today.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
-            System.out.println(targetDate);
             if(targetDate.isEqual(today)) {
                 return true;
             }

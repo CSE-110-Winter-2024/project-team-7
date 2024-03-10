@@ -10,8 +10,12 @@ import static junit.framework.TestCase.assertFalse;
 
 import static org.junit.Assert.assertEquals;
 
+import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoal;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
+
 import static edu.ucsd.cse110.successorator.MainViewModel.*;
 
 /**
@@ -22,7 +26,7 @@ import static edu.ucsd.cse110.successorator.MainViewModel.*;
 @RunWith(AndroidJUnit4.class)
 public class AppEndToEndTest {
     @Test
-    public void testEndToEnd() {
+    public void testEndToEnd1() {
         try (var scenario1 = ActivityScenario.launch(MainActivity.class)) {
             scenario1.onActivity(activity -> {
                 SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
@@ -106,5 +110,50 @@ public class AppEndToEndTest {
             reopenedScenario.moveToState(Lifecycle.State.STARTED);
         }
 
+    }
+
+    @Test
+    public void testEndToEnd3() {
+        try (var scenario1 = ActivityScenario.launch(MainActivity.class)) {
+            scenario1.onActivity(activity -> {
+                assertTrue(activity.getCurrentView() == MainActivity.TODAY);
+
+                activity.changeView(MainActivity.TOMORROW);
+                assertTrue(activity.getCurrentView() == MainActivity.TOMORROW);
+
+                activity.changeView(MainActivity.RECURRING);
+                assertTrue(activity.getCurrentView() == MainActivity.RECURRING);
+
+                activity.changeView(MainActivity.PENDING);
+                assertTrue(activity.getCurrentView() == MainActivity.PENDING);
+
+                activity.changeView(MainActivity.TODAY);
+                assertTrue(activity.getCurrentView() == MainActivity.TODAY);
+
+                SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
+                GoalLists todoList = app.getTodoList();
+                RecurringGoalLists recurringList = app.getRecurringList();
+                DateHandler currentDate = app.getCurrentDate();
+
+                activity.addItemToRecurringList(new RecurringGoal(null,"daily",
+                        RecurringGoal.DAILY, currentDate.dateTime().toLocalDate()));
+                System.out.println(todoList.unfinishedSize());
+                assertTrue(todoList.unfinishedSize() == 1);
+                assertTrue(recurringList.size() == 1);
+                currentDate.skipDay();
+                assertTrue(todoList.unfinishedSize() == 1);
+                assertTrue(recurringList.size() == 1);
+                moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
+                assertTrue(todoList.unfinishedSize() == 0);
+                assertTrue(todoList.finishedSize() == 1);
+                assertTrue(todoList.getFinishedGoals().get(0).toString().equals("daily"));
+                currentDate.skipDay();
+                assertTrue(todoList.unfinishedSize() == 1);
+                assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("daily"));
+                assertTrue(todoList.finishedSize() == 0);
+                assertTrue(recurringList.size() == 1);
+            });
+            scenario1.moveToState(Lifecycle.State.STARTED);
+        }
     }
 }

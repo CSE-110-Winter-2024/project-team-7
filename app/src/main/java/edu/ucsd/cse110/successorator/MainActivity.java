@@ -143,8 +143,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     @Override
     public void onChanged(@Nullable Object value) {
         if (todoList != null && todayFragment.getFinishedAdapter() != null) {
-            storedDate.replace(currentDate);
-
             MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, todayFragment.getAdapter(), currentDate);
         }
     }

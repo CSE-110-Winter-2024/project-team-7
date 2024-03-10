@@ -72,9 +72,8 @@ public class RecurringFragment extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = RecurringBinding.inflate(inflater, container, false);
-        currentDate.observe(this);
-
         setupListView();
+        currentDate.observe(this);
         setupDateMock();
         updatePlaceholderVisibility();
 
