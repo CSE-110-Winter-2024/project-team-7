@@ -29,6 +29,7 @@ public class RoomRecurringGoalLists implements RecurringGoalLists {
         for(int i = 0; i < entityGoals.size(); i++) {
             nonEntityGoals.add(entityGoals.get(i).toRecurringGoal());
         }
+        //temp
 
         return nonEntityGoals;
     }
