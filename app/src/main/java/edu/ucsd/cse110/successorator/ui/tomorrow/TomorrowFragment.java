@@ -2,14 +2,12 @@ package edu.ucsd.cse110.successorator.ui.tomorrow;
 
 import static edu.ucsd.cse110.successorator.MainViewModel.moveToFinished;
 import static edu.ucsd.cse110.successorator.MainViewModel.moveToUnfinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshAdapter;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshFinishedAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.refreshTodayAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.refreshTodayFinishedAdapter;
 
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
@@ -26,17 +23,11 @@ import java.util.ArrayList;
 import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.SuccessoratorApplication;
-import edu.ucsd.cse110.successorator.databinding.TodayBinding;
 import edu.ucsd.cse110.successorator.databinding.TomorrowBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
-import edu.ucsd.cse110.successorator.ui.DateDisplay;
-import edu.ucsd.cse110.successorator.ui.dialog.AddTomorrowGoalDialogFragment;
-import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
-import edu.ucsd.cse110.successorator.ui.today.TodayFragment;
-import edu.ucsd.cse110.successorator.util.DateUpdater;
 
 public class TomorrowFragment extends Fragment implements Observer {
     private MainActivity mainActivity;
@@ -130,8 +121,8 @@ public class TomorrowFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderTomorrowText.setText(R.string.placeholder_tomorrow_text);
         } else {
-            refreshAdapter(adapter, tomorrowList);
-            refreshFinishedAdapter(finishedAdapter, tomorrowList);
+            refreshTodayAdapter(adapter, tomorrowList);
+            refreshTodayFinishedAdapter(finishedAdapter, tomorrowList);
         }
 
         return isEmpty;

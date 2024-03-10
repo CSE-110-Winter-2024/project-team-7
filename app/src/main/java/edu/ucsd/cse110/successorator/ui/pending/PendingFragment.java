@@ -1,24 +1,12 @@
 package edu.ucsd.cse110.successorator.ui.pending;
 
-import static edu.ucsd.cse110.successorator.MainViewModel.moveToFinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.moveToUnfinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshAdapter;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshFinishedAdapter;
-
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
@@ -27,17 +15,10 @@ import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.SuccessoratorApplication;
 import edu.ucsd.cse110.successorator.databinding.PendingBinding;
-import edu.ucsd.cse110.successorator.databinding.RecurringBinding;
-import edu.ucsd.cse110.successorator.databinding.TomorrowBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
-import edu.ucsd.cse110.successorator.lib.domain.RecurringGoal;
-import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
-import edu.ucsd.cse110.successorator.ui.dialog.AddGoalDialogFragment;
-import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
-import edu.ucsd.cse110.successorator.ui.tomorrow.TomorrowFragment;
 
 public class PendingFragment extends Fragment implements Observer {
 
@@ -99,7 +80,7 @@ public class PendingFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderPendingText.setText(R.string.placeholder_pending_text);
         } else {
-            //refreshAdapter(adapter, recurringList); //WRITE REFRESH ADAPTER THAT TAKES RECURRINGLIST ARGUMENT
+            //refreshTodayAdapter(adapter, recurringList); //WRITE REFRESH ADAPTER THAT TAKES RECURRINGLIST ARGUMENT
         }
 
         return isEmpty;

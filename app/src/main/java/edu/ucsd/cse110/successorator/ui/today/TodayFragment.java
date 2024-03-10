@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 
@@ -30,7 +29,6 @@ import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
-import edu.ucsd.cse110.successorator.util.DateUpdater;
 
 public class TodayFragment extends Fragment implements Observer {
     private TodayBinding view;
@@ -129,8 +127,8 @@ public class TodayFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderText.setText(R.string.default_message);
         } else {
-            refreshAdapter(adapter, todoList);
-            refreshFinishedAdapter(finishedAdapter, todoList);
+            refreshTodayAdapter(adapter, todoList);
+            refreshTodayFinishedAdapter(finishedAdapter, todoList);
         }
 
         return isEmpty;

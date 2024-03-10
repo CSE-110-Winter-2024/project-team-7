@@ -158,25 +158,29 @@ public class MainActivity extends AppCompatActivity implements Observer {
             currentView = TODAY;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainerView, TodayFragment.newInstance())
+                    .replace(R.id.fragmentContainerView, todayFragment == null ?
+                            TodayFragment.newInstance() : todayFragment)
                     .commit();
         } else if(newView == TOMORROW) {
             currentView = TOMORROW;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainerView, TomorrowFragment.newInstance())
+                    .replace(R.id.fragmentContainerView, tomorrowFragment == null ?
+                            TomorrowFragment.newInstance() : tomorrowFragment)
                     .commit();
         } else if(newView == RECURRING) {
             currentView = RECURRING;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainerView, RecurringFragment.newInstance())
+                    .replace(R.id.fragmentContainerView, recurringFragment == null ?
+                            RecurringFragment.newInstance() : recurringFragment)
                     .commit();
         } else if(newView == PENDING) {
             currentView = PENDING;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainerView, PendingFragment.newInstance())
+                    .replace(R.id.fragmentContainerView, pendingFragment == null ?
+                            PendingFragment.newInstance() : pendingFragment)
                     .commit();
         }
     }

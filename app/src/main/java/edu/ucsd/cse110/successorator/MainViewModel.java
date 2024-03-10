@@ -96,16 +96,22 @@ public class MainViewModel extends ViewModel implements Observer {
         }
     }
 
-    public static void refreshAdapter(ArrayAdapter<Goal> adapter, GoalLists todoList) {
+    public static void refreshTodayAdapter(ArrayAdapter<Goal> adapter, GoalLists todoList) {
         adapter.clear();
         adapter.addAll(todoList.getUnfinishedGoals());
         adapter.notifyDataSetChanged();
     }
 
-    public static void refreshFinishedAdapter(ArrayAdapter<Goal> finishedAdapter, GoalLists todoList) {
+    public static void refreshTodayFinishedAdapter(ArrayAdapter<Goal> finishedAdapter, GoalLists todoList) {
         finishedAdapter.clear();
         finishedAdapter.addAll(todoList.getFinishedGoals());
         finishedAdapter.notifyDataSetChanged();
+    }
+
+    public static void refreshRecurringAdapter(ArrayAdapter<RecurringGoal> adapter, RecurringGoalLists recurringList) {
+        adapter.clear();
+        adapter.addAll(recurringList.getRecurringGoals());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
