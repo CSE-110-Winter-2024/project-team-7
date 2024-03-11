@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.MainViewModel;
@@ -36,12 +37,17 @@ public class TomorrowFragment extends Fragment implements Observer {
     private MainActivity mainActivity;
     private DateHandler currentDate;
     private RoomDateStorage storedDate;
+    private String formattedStoredDate;
     private TextView dateTextView;
     TomorrowBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
+
+    private ArrayAdapter<Goal> todayAdapter;
     //THIS MAY BE TEMPORARY IF WE WANT TO MAKE A TOMORROWLIST CLASS
     private GoalLists tomorrowList;
+
+
 
     private GoalLists todayList;
 
@@ -68,6 +74,8 @@ public class TomorrowFragment extends Fragment implements Observer {
         tomorrowList = app.getTomorrowList(); //NOT YET IMPLEMENTED
         todayList = app.getTodoList();
         storedDate = app.getStoredDate();
+        formattedStoredDate = storedDate.formattedDate();
+        todayAdapter = mainActivity.getTodayFragment().getAdapter();
         //tomorrowList = app.getTodoList(); //TO AVOID CRASHES
 
     }
@@ -145,13 +153,8 @@ public class TomorrowFragment extends Fragment implements Observer {
     public void onChanged(@Nullable Object value) {
         dateTextView.setText(currentDate.getTomorrowDate());
         //TODO: rollover all tomorrow goals to today, and delete(i think?) the finished goals
-        System.out.println("HERE 1");
         if (tomorrowList != null && finishedAdapter != null) {
-            System.out.println("HERE 2");
-            System.out.println(currentDate.getFormattedDate());
-            System.out.println(storedDate.formattedDate());
-            if (!currentDate.getTomorrowDate().equals(storedDate.formattedDate())) {
-                System.out.println("HERE 3");
+            if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
                 tomorrowList.clearFinished();
                 finishedAdapter.clear();
                 finishedAdapter.notifyDataSetChanged();
@@ -164,6 +167,18 @@ public class TomorrowFragment extends Fragment implements Observer {
 
                 updatePlaceholderVisibility();
                 storedDate.replace(currentDate);
+            }
+        }
+
+        if (adapter != null) {
+            if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
+                List<Goal> unfinishedGoals = tomorrowList.getUnfinishedGoals();
+                for (int i = 0; i < unfinishedGoals.size(); i++) {
+                    MainViewModel.addItemToTodoList(unfinishedGoals.get(i), todayAdapter, todayList);
+                }
+                tomorrowList.clearUnfinished();
+                adapter.clear();
+                adapter.notifyDataSetChanged();
             }
         }
 

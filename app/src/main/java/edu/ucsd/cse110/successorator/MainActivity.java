@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void addPendingItemToTodoList(Goal goal) {
         MainViewModel.addItemToTodoList(goal, pendingFragment.getAdapter(), pendingList);
         pendingFragment.updatePlaceholderVisibility();
+    }
 
     public void addItemToTomorrowList(Goal goal) {
         MainViewModel.addItemToTodoList(goal, tomorrowFragment.getAdapter(), tomorrowList);
