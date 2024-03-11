@@ -6,13 +6,72 @@
     android:layout_height="match_parent">
 
     <RadioGroup
+        android:id="@+id/context_type_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_name_edit_text"
+        app:layout_constraintBottom_toTopOf="@+id/recurring_type_buttons">
+
+        <RadioButton
+            android:id="@+id/button_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="H"
+            android:button="@android:color/transparent"
+            android:background="@drawable/radio_h"
+            android:textColor="@drawable/text_color"
+            android:padding="20dp"
+            android:layout_margin="10dp"
+            android:onClick="onRadioButtonClick"/>
+
+        <RadioButton
+            android:id="@+id/button_w"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="W"
+            android:button="@android:color/transparent"
+            android:background="@drawable/radio_w"
+            android:textColor="@drawable/text_color"
+            android:padding="20dp"
+            android:layout_margin="10dp"
+            android:onClick="onRadioButtonClick"/>
+
+        <RadioButton
+            android:id="@+id/button_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S"
+            android:button="@android:color/transparent"
+            android:background="@drawable/radio_s"
+            android:textColor="@drawable/text_color"
+            android:padding="20dp"
+            android:layout_margin="10dp"
+            android:onClick="onRadioButtonClick"/>
+
+        <RadioButton
+            android:id="@+id/button_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E"
+            android:button="@android:color/transparent"
+            android:background="@drawable/radio_e"
+            android:textColor="@drawable/text_color"
+            android:padding="20dp"
+            android:layout_margin="10dp"
+            android:onClick="onRadioButtonClick"/>
+    </RadioGroup>
+
+    <RadioGroup
         android:id="@+id/recurring_type_buttons"
         android:layout_width="333dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_name_edit_text">
+        app:layout_constraintTop_toBottomOf="@+id/context_type_buttons">
 
         <RadioButton
             android:id="@+id/one_time_button"
