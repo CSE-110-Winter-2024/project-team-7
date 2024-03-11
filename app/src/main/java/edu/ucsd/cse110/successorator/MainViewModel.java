@@ -66,9 +66,12 @@ public class MainViewModel extends ViewModel implements Observer {
 
     //UPDATE THIS WHEN THE RECURRING LIST UI IS CREATED TO UPDATE THE UI
     //OR DO THAT IN A SEPARATE METHOD
-    public static void addItemToRecurringList(RecurringGoal rgoal, ArrayAdapter<Goal> adapter, GoalLists todoList, RecurringGoalLists recurringList) {
+    public static void addItemToRecurringList(RecurringGoal rgoal, ArrayAdapter<Goal> adapter, GoalLists todoList,
+                                              RecurringGoalLists recurringList, LocalDate todayDate) {
         recurringList.add(rgoal);
-        addItemToTodoList(rgoal.toGoal(), adapter, todoList);
+        if(rgoal.recurToday(todayDate)) {
+            addItemToTodoList(rgoal.toGoal(), adapter, todoList);
+        }
     }
 
     public static void addRecurringGoalsToTodoList(RecurringGoalLists recurringList, GoalLists todoList,

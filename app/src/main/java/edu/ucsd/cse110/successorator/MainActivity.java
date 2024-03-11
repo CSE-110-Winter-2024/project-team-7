@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 dialogFragment.show(getSupportFragmentManager(), "AddTomorrowGoalDialogFragment");
             } else if(currentView == RECURRING) {
                 var dialogFragment = AddRecurringGoalDialogFragment.newInstance();
-                //dialogFragment.setCurrentDate(currentDate);
+                dialogFragment.setCurrentDate(currentDate);
                 dialogFragment.show(getSupportFragmentManager(), "AddRecurringGoalDialogFragment");
             } else if(currentView == PENDING) {
                 var dialogFragment = AddPendingGoalDialogFragment.newInstance();
@@ -136,8 +136,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void addItemToRecurringList(RecurringGoal rgoal) {
-        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(), todoList, recurringList);
+        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(), todoList,
+                recurringList, currentDate.dateTime().toLocalDate());
         todayFragment.updatePlaceholderVisibility();
+        recurringFragment.updatePlaceholderVisibility();
     }
 
     @Override
