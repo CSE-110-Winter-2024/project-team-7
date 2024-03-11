@@ -18,15 +18,17 @@ public class RecurringGoal implements Serializable {
     private final @NonNull String content;
     private final int recurringType;
     private final LocalDate date;
+    private final @NonNull String context;
     private DayOfWeek dayOfWeek;
     private int weekOfMonth;
 
     public RecurringGoal(@Nullable Integer id, @NonNull String content, int recurringType,
-                         LocalDate date) {
+                         LocalDate date, @NonNull String context) {
         this.id = id;
         this.content = content;
         this.recurringType = recurringType;
         this.date = date;
+        this.context = context;
         this.dayOfWeek = date.getDayOfWeek();
         this.weekOfMonth = ((date.getDayOfMonth()-1) / 7) + 1;
     }
@@ -47,6 +49,14 @@ public class RecurringGoal implements Serializable {
         return date;
     }
 
+    public @NonNull String getContext() {
+        return context;
+    }
+
+    public Goal toGoal() {
+        return new Goal(null, content, false, true, context);
+    }
+
     public boolean recurToday(LocalDate today) {
         if(recurringType == DAILY) {
             return true;
@@ -57,6 +67,7 @@ public class RecurringGoal implements Serializable {
             }
         }
         else if(recurringType == MONTHLY) {
+            System.out.println(dayOfWeek + "     " + weekOfMonth);
             LocalDate prevMonth;
             if(today.getMonthValue() == 1) {
                 prevMonth = today.withMonth(12);
@@ -67,11 +78,13 @@ public class RecurringGoal implements Serializable {
             }
 
             LocalDate targetDate = prevMonth.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
+            System.out.println(targetDate);
             if(targetDate.isEqual(today)) {
                 return true;
             }
 
             targetDate = today.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
+            System.out.println(targetDate);
             if(targetDate.isEqual(today)) {
                 return true;
             }
@@ -84,14 +97,6 @@ public class RecurringGoal implements Serializable {
             }
         }
         return false;
-    }
-
-    public Goal toGoal() {
-        return new Goal(null, content, false, true);
-    }
-
-    public String toString() {
-        return content;
     }
 
 }

@@ -33,24 +33,27 @@ public class RecurringGoalEntity {
     @ColumnInfo(name = "dayOfMonth")
     public int dayOfMonth;
 
-    RecurringGoalEntity(@NonNull String content, int recurringType, int year, int month, int dayOfMonth) {
+    @ColumnInfo(name = "context")
+    public String context;
+
+    RecurringGoalEntity(@NonNull String content, int recurringType, int year, int month, int dayOfMonth, @NonNull String context) {
         this.content = content;
         this.recurringType = recurringType;
         this.year = year;
         this.month = month;
         this.dayOfMonth = dayOfMonth;
+        this.context = context;
     }
 
     public static RecurringGoalEntity fromRecurringGoal(@NonNull RecurringGoal rgoal) {
         LocalDate date = rgoal.getDate();
         var newGoal = new RecurringGoalEntity(rgoal.content(), rgoal.getRecurringType(),
-                date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-
+                date.getYear(), date.getMonthValue(), date.getDayOfMonth(), rgoal.getContext());
         newGoal.id = rgoal.id();
         return newGoal;
     }
 
     public @NonNull RecurringGoal toRecurringGoal() {
-        return new RecurringGoal(id, content, recurringType, LocalDate.of(year, month, dayOfMonth));
+        return new RecurringGoal(id, content, recurringType, LocalDate.of(year, month, dayOfMonth), context);
     }
 }

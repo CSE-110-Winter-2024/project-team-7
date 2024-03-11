@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
 
-
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
@@ -49,13 +48,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private ActivityMainBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
-
     private DateHandler currentDate;
-
     private GoalLists todoList;
-
     private RecurringGoalLists recurringList;
-
     private RoomDateStorage storedDate;
 
     private TodayFragment todayFragment;
