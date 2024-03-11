@@ -1,9 +1,13 @@
 package edu.ucsd.cse110.successorator.ui.pending;
 
+import static edu.ucsd.cse110.successorator.MainViewModel.moveToFinished;
+import static edu.ucsd.cse110.successorator.MainViewModel.refreshTodayAdapter;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.Nullable;
@@ -20,10 +24,9 @@ import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 
-public class PendingFragment extends Fragment implements Observer {
+public class PendingFragment extends Fragment{
 
     private MainActivity mainActivity;
-    private DateHandler currentDate;
     PendingBinding view;
     private ArrayAdapter<Goal> adapter;
     private GoalLists pendingList; //might need its own class
@@ -46,9 +49,8 @@ public class PendingFragment extends Fragment implements Observer {
         mainActivity = (MainActivity) requireActivity();
         SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
         mainActivity.setPendingFragment(this);
-        currentDate = app.getCurrentDate();
-        //pendingList = app.getRecurringList(); NOT YET IMPLEMENTED
-        pendingList = app.getTodoList(); //TEMPORARY TO AVOID CRASHES
+        pendingList = app.getPendingList();
+
 
     }
 
@@ -56,8 +58,6 @@ public class PendingFragment extends Fragment implements Observer {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = PendingBinding.inflate(inflater, container, false);
         setupListView();
-        currentDate.observe(this);
-        setupDateMock();
         updatePlaceholderVisibility();
 
         return view.getRoot();
@@ -68,7 +68,15 @@ public class PendingFragment extends Fragment implements Observer {
 
         view.goalsListPendingView.setAdapter(adapter);
 
-        //TODO: SETUP THE HOLD THING TO DELETE RECURRING GOALS HERE
+        view.goalsListPendingView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Goal selectedItem = adapter.getItem(position);
+                //TO DO: OPTIONS TO MOVE TO TODAY, TOMORROW, FINISH, OR DELETE.
+                updatePlaceholderVisibility();
+                return true;
+            }
+        });
 
     }
 
@@ -80,17 +88,11 @@ public class PendingFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderPendingText.setText(R.string.placeholder_pending_text);
         } else {
-            //refreshTodayAdapter(adapter, recurringList); //WRITE REFRESH ADAPTER THAT TAKES RECURRINGLIST ARGUMENT
+            refreshTodayAdapter(adapter, pendingList);
         }
-
         return isEmpty;
     }
 
-    private void setupDateMock() {
-        view.dateMockButton.setOnClickListener(v -> {
-            currentDate.skipDay();
-        });
-    }
 
     public void onChanged(@Nullable Object value) {
         //TODO: might not have to do anything here, might not need to observe date
