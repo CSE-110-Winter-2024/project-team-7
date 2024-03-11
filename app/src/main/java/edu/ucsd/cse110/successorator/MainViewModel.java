@@ -75,16 +75,14 @@ public class MainViewModel extends ViewModel implements Observer {
     }
 
     public static void addRecurringGoalsToTodoList(RecurringGoalLists recurringList, GoalLists todoList,
-                                                   ArrayAdapter<Goal> adapter, DateHandler currentDate) {
+                                                   ArrayAdapter<Goal> adapter, DateHandler currentDate, int tomorrowOffset) {
 
         List<RecurringGoal> recurringGoals = recurringList.getRecurringGoals();
-        LocalDate today = currentDate.dateTime().toLocalDate();
-        //for future use with a tomorrow list
-        LocalDate tomorrow = today.plusDays(1);
+        LocalDate compareDate = currentDate.dateTime().toLocalDate().plusDays(tomorrowOffset);
 
         List<Goal> unfinished = todoList.getUnfinishedGoals();
         for(RecurringGoal rgoal : recurringGoals) {
-            if(rgoal.recurToday(today)) {
+            if(rgoal.recurToday(compareDate)) {
                 //DOESN'T ADD THE GOAL IF THERE IS A GOAL WITH THE SAME TEXT
                 //BUT HYPOTHETICALLY A PERSON COULD MAKE TWO DIFFERENT GOALS WITH SAME TEXT
                 boolean alreadyExists = false;

@@ -21,12 +21,14 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 import edu.ucsd.cse110.successorator.MainActivity;
+import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.SuccessoratorApplication;
 import edu.ucsd.cse110.successorator.databinding.TomorrowBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 
 public class TomorrowFragment extends Fragment implements Observer {
@@ -60,6 +62,9 @@ public class TomorrowFragment extends Fragment implements Observer {
         mainActivity.setTomorrowFragment(this);
         currentDate = app.getCurrentDate();
         tomorrowList = app.getTomorrowList(); //NOT YET IMPLEMENTED
+
+        RecurringGoalLists recurringList = app.getRecurringList();
+        MainViewModel.addRecurringGoalsToTodoList(recurringList, tomorrowList, adapter, currentDate, 1);
         //tomorrowList = app.getTodoList(); //TO AVOID CRASHES
 
     }
