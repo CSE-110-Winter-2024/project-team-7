@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.MainViewModel;
@@ -29,6 +30,7 @@ import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
+import edu.ucsd.cse110.successorator.ui.tomorrow.TomorrowFragment;
 
 public class TodayFragment extends Fragment implements Observer {
     private TodayBinding view;
@@ -37,8 +39,8 @@ public class TodayFragment extends Fragment implements Observer {
     private ArrayAdapter<Goal> finishedAdapter;
     private DateHandler currentDate;
     private RoomDateStorage storedDate;
-
     private GoalLists todoList;
+    private GoalLists tomorrowList;
 
     public TodayFragment() {
 
@@ -60,6 +62,7 @@ public class TodayFragment extends Fragment implements Observer {
         mainActivity.setTodayFragment(this);
         currentDate = app.getCurrentDate();
         todoList = app.getTodoList();
+        tomorrowList = app.getTomorrowList();
         storedDate = app.getStoredDate();
 
     }
@@ -135,8 +138,9 @@ public class TodayFragment extends Fragment implements Observer {
     }
 
     public void onChanged(@Nullable Object value) {
+        String formattedStoredDate = storedDate.formattedDate();
         if (todoList != null && finishedAdapter != null) {
-            if (!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
+            if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
                 todoList.clearFinished();
                 finishedAdapter.clear();
                 finishedAdapter.notifyDataSetChanged();
@@ -149,6 +153,18 @@ public class TodayFragment extends Fragment implements Observer {
 
                 updatePlaceholderVisibility();
                 storedDate.replace(currentDate);
+            }
+        }
+
+        if (tomorrowList != null) {
+            if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
+                List<Goal> unfinishedGoals = tomorrowList.getUnfinishedGoals();
+                for (int i = 0; i < unfinishedGoals.size(); i++) {
+                    MainViewModel.addItemToTodoList(unfinishedGoals.get(i), adapter, todoList);
+                }
+                adapter.notifyDataSetChanged();
+                tomorrowList.clearUnfinished();
+                updatePlaceholderVisibility();
             }
         }
     }
