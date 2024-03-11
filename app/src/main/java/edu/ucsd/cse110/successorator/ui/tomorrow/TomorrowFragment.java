@@ -24,6 +24,7 @@ import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.SuccessoratorApplication;
+import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
 import edu.ucsd.cse110.successorator.databinding.TomorrowBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
@@ -34,12 +35,15 @@ import edu.ucsd.cse110.successorator.lib.util.Observer;
 public class TomorrowFragment extends Fragment implements Observer {
     private MainActivity mainActivity;
     private DateHandler currentDate;
+    private RoomDateStorage storedDate;
     private TextView dateTextView;
     TomorrowBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
     //THIS MAY BE TEMPORARY IF WE WANT TO MAKE A TOMORROWLIST CLASS
     private GoalLists tomorrowList;
+
+    private GoalLists todayList;
 
 
     public TomorrowFragment() {
@@ -62,9 +66,8 @@ public class TomorrowFragment extends Fragment implements Observer {
         mainActivity.setTomorrowFragment(this);
         currentDate = app.getCurrentDate();
         tomorrowList = app.getTomorrowList(); //NOT YET IMPLEMENTED
-
-        RecurringGoalLists recurringList = app.getRecurringList();
-        MainViewModel.addRecurringGoalsToTodoList(recurringList, tomorrowList, adapter, currentDate, 1);
+        todayList = app.getTodoList();
+        storedDate = app.getStoredDate();
         //tomorrowList = app.getTodoList(); //TO AVOID CRASHES
 
     }
@@ -142,6 +145,28 @@ public class TomorrowFragment extends Fragment implements Observer {
     public void onChanged(@Nullable Object value) {
         dateTextView.setText(currentDate.getTomorrowDate());
         //TODO: rollover all tomorrow goals to today, and delete(i think?) the finished goals
+        System.out.println("HERE 1");
+        if (tomorrowList != null && finishedAdapter != null) {
+            System.out.println("HERE 2");
+            System.out.println(currentDate.getFormattedDate());
+            System.out.println(storedDate.formattedDate());
+            if (!currentDate.getTomorrowDate().equals(storedDate.formattedDate())) {
+                System.out.println("HERE 3");
+                tomorrowList.clearFinished();
+                finishedAdapter.clear();
+                finishedAdapter.notifyDataSetChanged();
+
+                SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
+
+                RecurringGoalLists recurringList = app.getRecurringList();
+
+                MainViewModel.addRecurringGoalsToTodoList(recurringList, tomorrowList, adapter, currentDate, 1);
+
+                updatePlaceholderVisibility();
+                storedDate.replace(currentDate);
+            }
+        }
+
     }
 
     public ArrayAdapter<Goal> getAdapter() {
