@@ -30,7 +30,7 @@ public class RecurringGoal implements Serializable {
         this.date = date;
         this.context = context;
         this.dayOfWeek = date.getDayOfWeek();
-        this.weekOfMonth = ((date.getDayOfMonth()-1) / 7) + 1;
+        this.weekOfMonth = ((date.getDayOfMonth() - 1) / 7) + 1;
     }
 
     public @Nullable Integer id() {
