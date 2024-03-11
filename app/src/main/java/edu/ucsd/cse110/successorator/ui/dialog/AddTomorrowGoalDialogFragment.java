@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import edu.ucsd.cse110.successorator.MainActivity;
+import edu.ucsd.cse110.successorator.lib.domain.Goal;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoal;
 import edu.ucsd.cse110.successorator.ui.tomorrow.TomorrowFragment;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentDialogAddTomorrowGoalBinding;
@@ -57,26 +60,26 @@ public class AddTomorrowGoalDialogFragment extends DialogFragment {
             return;
         }
 
-        //TomorrowFragment activity = (TomorrowFragment) requireActivity();
+        MainActivity activity = (MainActivity) requireActivity();
 
-//        if(view.oneTimeButton.isChecked()) {
-//            var goal = new Goal(null, content, false);
-//            activity.addItemToTodoList(goal);
-//        } else if(view.dailyButton.isChecked()) {
-//            var rgoal = new RecurringGoal(null, content, RecurringGoal.DAILY, currentDate.dateTime().toLocalDate());
-//            activity.addItemToRecurringList(rgoal);
-//        } else if(view.weeklyButton.isChecked()) {
-//            var rgoal = new RecurringGoal(null, content, RecurringGoal.WEEKLY, currentDate.dateTime().toLocalDate());
-//            activity.addItemToRecurringList(rgoal);
-//        } else if(view.monthlyButton.isChecked()) {
-//            var rgoal = new RecurringGoal(null, content, RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate());
-//            activity.addItemToRecurringList(rgoal);
-//        } else if(view.yearlyButton.isChecked()) {
-//            var rgoal = new RecurringGoal(null, content, RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate());
-//            activity.addItemToRecurringList(rgoal);
-//        } else {
-//            throw new IllegalStateException("No radio button is checked.");
-//        }
+        if(view.oneTimeButton.isChecked()) {
+            var goal = new Goal(null, content, false);
+            activity.addItemToTomorrowList(goal);
+        } else if(view.dailyButton.isChecked()) {
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.DAILY, currentDate.dateTime().toLocalDate().plusDays(1));
+            activity.addItemToRecurringList(rgoal);
+        } else if(view.weeklyButton.isChecked()) {
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.WEEKLY, currentDate.dateTime().toLocalDate().plusDays(1));
+            activity.addItemToRecurringList(rgoal);
+        } else if(view.monthlyButton.isChecked()) {
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate().plusDays(1));
+            activity.addItemToRecurringList(rgoal);
+        } else if(view.yearlyButton.isChecked()) {
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate().plusDays(1));
+            activity.addItemToRecurringList(rgoal);
+        } else {
+            throw new IllegalStateException("No radio button is checked.");
+        }
 
 
 

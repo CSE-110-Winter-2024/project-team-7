@@ -22,6 +22,7 @@ public class MainViewModel extends ViewModel implements Observer {
 
     private final RoomDateStorage storedDate;
     private final GoalLists todoList;
+    private final GoalLists tomorrowList;
     private final DateHandler currentDate;
 
     private final RecurringGoalLists recurringList;
@@ -32,12 +33,13 @@ public class MainViewModel extends ViewModel implements Observer {
                     creationExtras -> {
                         var app = (SuccessoratorApplication) creationExtras.get(APPLICATION_KEY);
                         assert app != null;
-                        return new MainViewModel(app.getStoredDate(), app.getTodoList(), app.getCurrentDate(), app.getRecurringList());
+                        return new MainViewModel(app.getStoredDate(), app.getTodoList(), app.getTomorrowList(), app.getCurrentDate(), app.getRecurringList());
                     });
 
-    public MainViewModel(RoomDateStorage storedDate, GoalLists todoList, DateHandler currentDate, RecurringGoalLists recurringList) {
+    public MainViewModel(RoomDateStorage storedDate, GoalLists todoList, GoalLists tomorrowList, DateHandler currentDate, RecurringGoalLists recurringList) {
         this.storedDate = storedDate;
         this.todoList = todoList;
+        this.tomorrowList = tomorrowList;
         this.currentDate = currentDate;
         this.recurringList = recurringList;
     }
@@ -63,6 +65,7 @@ public class MainViewModel extends ViewModel implements Observer {
         adapter.add(goal);
         adapter.notifyDataSetChanged();
     }
+
 
     //UPDATE THIS WHEN THE RECURRING LIST UI IS CREATED TO UPDATE THE UI
     //OR DO THAT IN A SEPARATE METHOD

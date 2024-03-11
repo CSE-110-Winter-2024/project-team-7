@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private GoalLists todoList;
 
+    private GoalLists tomorrowList;
+
     private RecurringGoalLists recurringList;
 
     private RoomDateStorage storedDate;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         SuccessoratorApplication app = (SuccessoratorApplication) getApplication();
         currentDate = app.getCurrentDate();
         todoList = app.getTodoList();
+        tomorrowList = app.getTomorrowList();
         storedDate = app.getStoredDate();
         recurringList = app.getRecurringList();
 
@@ -133,6 +136,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void addItemToTodoList(Goal goal) {
         MainViewModel.addItemToTodoList(goal, todayFragment.getAdapter(), todoList);
         todayFragment.updatePlaceholderVisibility();
+    }
+
+    public void addItemToTomorrowList(Goal goal) {
+        MainViewModel.addItemToTodoList(goal, tomorrowFragment.getAdapter(), tomorrowList);
+        tomorrowFragment.updatePlaceholderVisibility();
     }
 
     public void addItemToRecurringList(RecurringGoal rgoal) {

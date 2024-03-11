@@ -59,8 +59,8 @@ public class TomorrowFragment extends Fragment implements Observer {
         SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
         mainActivity.setTomorrowFragment(this);
         currentDate = app.getCurrentDate();
-        //tomorrowList = app.getTomorrowList(); NOT YET IMPLEMENTED
-        tomorrowList = app.getTodoList(); //TO AVOID CRASHES
+        tomorrowList = app.getTomorrowList(); //NOT YET IMPLEMENTED
+        //tomorrowList = app.getTodoList(); //TO AVOID CRASHES
 
     }
 

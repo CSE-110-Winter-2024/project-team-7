@@ -22,6 +22,8 @@ public class SuccessoratorApplication extends Application {
 
     private GoalLists todoList;
 
+    private GoalLists tomorrowList;
+
     private RecurringGoalLists recurringList;
 
     @Override
@@ -37,6 +39,15 @@ public class SuccessoratorApplication extends Application {
         ).allowMainThreadQueries().build();
 
         this.todoList = new RoomGoalLists(goalDatabase.goalDao());
+
+        // Tomorrow Database Setup
+        var tomorrowGoalDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                GoalDatabase.class,
+                "tomorrow-goals-database"
+        ).allowMainThreadQueries().build();
+
+        this.tomorrowList = new RoomGoalLists(tomorrowGoalDatabase.goalDao());
 
         //Recurring Goal Database Setup
         var recurringDatabase = Room.databaseBuilder(
@@ -76,6 +87,10 @@ public class SuccessoratorApplication extends Application {
 
     public GoalLists getTodoList() {
         return todoList;
+    }
+
+    public GoalLists getTomorrowList() {
+        return tomorrowList;
     }
 
     public RoomDateStorage getStoredDate() {
