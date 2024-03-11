@@ -22,7 +22,11 @@ public class SuccessoratorApplication extends Application {
 
     private GoalLists todoList;
 
+
+    private GoalLists pendingList;
+
     private GoalLists tomorrowList;
+
 
     private RecurringGoalLists recurringList;
 
@@ -57,6 +61,15 @@ public class SuccessoratorApplication extends Application {
         ).allowMainThreadQueries().build();
 
         this.recurringList = new RoomRecurringGoalLists(recurringDatabase.rgoalDao());
+
+        //Pending Goal Database Setup
+        var pendingDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                GoalDatabase.class,
+                "pending-database"
+        ).allowMainThreadQueries().build();
+
+        this.pendingList = new RoomGoalLists(pendingDatabase.goalDao());
 
         // Date Database Setup
         var dateDatabase = Room.databaseBuilder(
@@ -100,5 +113,7 @@ public class SuccessoratorApplication extends Application {
     public RecurringGoalLists getRecurringList() {
         return recurringList;
     }
+
+    public GoalLists getPendingList() { return pendingList; }
 
 }
