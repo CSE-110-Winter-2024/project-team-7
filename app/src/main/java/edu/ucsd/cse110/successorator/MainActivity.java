@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private GoalLists todoList;
 
+    private GoalLists tomorrowList;
+
     private RecurringGoalLists recurringList;
 
     private GoalLists pendingList;
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentDate = app.getCurrentDate();
         todoList = app.getTodoList();
         pendingList = app.getPendingList();
+        tomorrowList = app.getTomorrowList();
+
         storedDate = app.getStoredDate();
         recurringList = app.getRecurringList();
 
@@ -116,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 dialogFragment.show(getSupportFragmentManager(), "AddTomorrowGoalDialogFragment");
             } else if(currentView == RECURRING) {
                 var dialogFragment = AddRecurringGoalDialogFragment.newInstance();
-                //dialogFragment.setCurrentDate(currentDate);
+                dialogFragment.setCurrentDate(currentDate);
                 dialogFragment.show(getSupportFragmentManager(), "AddRecurringGoalDialogFragment");
             } else if(currentView == PENDING) {
                 var dialogFragment = AddPendingGoalDialogFragment.newInstance();
@@ -138,14 +142,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
         todayFragment.updatePlaceholderVisibility();
     }
 
+
     public void addPendingItemToTodoList(Goal goal) {
         MainViewModel.addItemToTodoList(goal, pendingFragment.getAdapter(), pendingList);
         pendingFragment.updatePlaceholderVisibility();
+
+    public void addItemToTomorrowList(Goal goal) {
+        MainViewModel.addItemToTodoList(goal, tomorrowFragment.getAdapter(), tomorrowList);
+        tomorrowFragment.updatePlaceholderVisibility();
+
     }
 
     public void addItemToRecurringList(RecurringGoal rgoal) {
-        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(), todoList, recurringList);
+        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(), todoList,
+                recurringList, currentDate.dateTime().toLocalDate());
         todayFragment.updatePlaceholderVisibility();
+        recurringFragment.updatePlaceholderVisibility();
     }
 
     @Override

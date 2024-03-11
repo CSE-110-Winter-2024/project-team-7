@@ -5,12 +5,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="215dp"
-        android:layout_height="92dp"
-        android:text="RECURRING GOAL FRAGMENT PLACEHOLDER"
+    <RadioGroup
+        android:id="@+id/recurring_type_buttons"
+        android:layout_width="333dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/goal_name_edit_text">
+
+        <RadioButton
+            android:id="@+id/daily_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Daily" />
+
+        <RadioButton
+            android:id="@+id/weekly_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Weekly on weekday" />
+
+        <RadioButton
+            android:id="@+id/monthly_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Monthly on" />
+
+        <RadioButton
+            android:id="@+id/yearly_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Yearly on" />
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/goal_name_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="3dp"
+        android:ems="10"
+        android:hint="Write your goal here..."
+        android:inputType="text"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.56"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.002" />
+
+    <Button
+        android:id="@+id/setDateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starting on:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recurring_type_buttons" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

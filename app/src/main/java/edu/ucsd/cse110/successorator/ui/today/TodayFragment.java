@@ -145,7 +145,7 @@ public class TodayFragment extends Fragment implements Observer {
 
                 RecurringGoalLists recurringList = app.getRecurringList();
 
-                MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate);
+                MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate, 0);
 
                 updatePlaceholderVisibility();
                 storedDate.replace(currentDate);
