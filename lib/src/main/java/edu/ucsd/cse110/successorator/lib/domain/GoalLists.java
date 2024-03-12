@@ -23,6 +23,7 @@ public interface GoalLists {
 
     //for day update
     void clearFinished();
+    void clearUnfinished();
 
     Goal get(int i);
 }

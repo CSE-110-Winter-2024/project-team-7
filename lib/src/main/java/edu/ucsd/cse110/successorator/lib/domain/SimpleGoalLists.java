@@ -84,6 +84,12 @@ public class SimpleGoalLists implements GoalLists {
         size = unfinished.size();
     }
 
+    @Override
+    public void clearUnfinished() {
+        unfinished.clear();
+        size = finished.size();
+    }
+
     public String toString() {
         String retval = "unfinished: \n";
         for(int i = 0; i < size; i++) {
