@@ -36,13 +36,13 @@ public class AddTomorrowGoalDialogFragment extends DialogFragment {
         this.view = FragmentDialogAddTomorrowGoalBinding.inflate(getLayoutInflater());
 
         RadioButton weeklyButton = view.getRoot().findViewById(R.id.weekly_button);
-        weeklyButton.setText("Weekly on " + currentDate.getWeekday());
+        weeklyButton.setText("Weekly on " + currentDate.getWeekday(1));
 
         RadioButton monthlyButton = view.getRoot().findViewById(R.id.monthly_button);
-        monthlyButton.setText("Monthly on " + currentDate.getWeekdayInMonth());
+        monthlyButton.setText("Monthly on " + currentDate.getWeekdayInMonth(1));
 
         RadioButton yearlyButton = view.getRoot().findViewById(R.id.yearly_button);
-        yearlyButton.setText("Yearly on " + currentDate.getMonthAndDate());
+        yearlyButton.setText("Yearly on " + currentDate.getMonthAndDate(1));
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle("New Goal for Tomorrow")

@@ -69,16 +69,16 @@ public class AddRecurringGoalDialogFragment extends DialogFragment {
         newStartDateHandler.updateTodayDate(startDate.atStartOfDay());
 
         RadioButton weeklyButton = view.getRoot().findViewById(R.id.weekly_button);
-        weeklyButton.setText("Weekly on " + newStartDateHandler.getWeekday());
+        weeklyButton.setText("Weekly on " + newStartDateHandler.getWeekday(0));
 
         RadioButton monthlyButton = view.getRoot().findViewById(R.id.monthly_button);
-        monthlyButton.setText("Monthly on " + newStartDateHandler.getWeekdayInMonth());
+        monthlyButton.setText("Monthly on " + newStartDateHandler.getWeekdayInMonth(0));
 
         RadioButton yearlyButton = view.getRoot().findViewById(R.id.yearly_button);
-        yearlyButton.setText("Yearly on " + newStartDateHandler.getMonthAndDate());
+        yearlyButton.setText("Yearly on " + newStartDateHandler.getMonthAndDate(0));
 
         Button changeStartDateButton = view.setDateButton;
-        changeStartDateButton.setText("Starting on " + newStartDateHandler.getMonthAndDate());
+        changeStartDateButton.setText("Starting on " + newStartDateHandler.getMonthAndDate(0));
     }
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
