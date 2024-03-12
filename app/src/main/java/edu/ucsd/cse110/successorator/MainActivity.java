@@ -150,8 +150,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void addItemToTomorrowList(Goal goal) {
-        MainViewModel.addItemToTodoList(goal, tomorrowFragment.getAdapter(), tomorrowList);
-        tomorrowFragment.updatePlaceholderVisibility();
+        ArrayAdapter<Goal> addAdapter = todayFragment.getTomorrowAdapter();
+        if (tomorrowFragment != null) {
+            addAdapter = tomorrowFragment.getAdapter();
+        }
+        MainViewModel.addItemToTodoList(goal, addAdapter, tomorrowList);
+        if (tomorrowFragment != null) {
+            tomorrowFragment.updatePlaceholderVisibility();
+        }
+
 
     }
 
