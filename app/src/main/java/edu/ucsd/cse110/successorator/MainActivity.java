@@ -166,6 +166,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     }
 
+    public void addItemToRecurringListTomorrow(RecurringGoal rgoal) {
+        MainViewModel.addItemToRecurringList(rgoal, tomorrowFragment.getAdapter(), tomorrowList,
+                recurringList, currentDate.dateTime().toLocalDate().plusDays(1));
+        tomorrowFragment.updatePlaceholderVisibility();
+
+        if(recurringFragment != null) {
+            recurringFragment.updatePlaceholderVisibility();
+        }
+
+    }
+
     @Override
     public void onChanged(@Nullable Object value) {
         if (todoList != null && todayFragment.getAdapter() != null) {
@@ -246,6 +257,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     //for testing
     public TodayFragment getTodayFragment() {
         return todayFragment;
+    }
+
+    public TomorrowFragment getTomorrowFragment() {
+        return tomorrowFragment;
     }
 
     public int getCurrentView() {

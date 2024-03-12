@@ -185,6 +185,7 @@ public class TodayFragment extends Fragment implements Observer {
                 adapter.notifyDataSetChanged();
                 tomorrowList.clearUnfinished();
                 updatePlaceholderVisibility();
+
             }
         }
     }

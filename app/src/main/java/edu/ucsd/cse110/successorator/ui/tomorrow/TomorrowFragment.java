@@ -177,6 +177,9 @@ public class TomorrowFragment extends Fragment implements Observer {
                 MainViewModel.addRecurringGoalsToTodoList(recurringList, tomorrowList, adapter, currentDate, 1);
 
                 updatePlaceholderVisibility();
+                if (mainActivity.getTomorrowFragment() != null) {
+                    mainActivity.getTomorrowFragment().updatePlaceholderVisibility();
+                }
                 storedDate.replace(currentDate);
             }
         }

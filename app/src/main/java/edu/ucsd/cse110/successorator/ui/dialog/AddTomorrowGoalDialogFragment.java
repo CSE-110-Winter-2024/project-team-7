@@ -67,16 +67,16 @@ public class AddTomorrowGoalDialogFragment extends DialogFragment {
             activity.addItemToTomorrowList(goal);
         } else if(view.dailyButton.isChecked()) {
             var rgoal = new RecurringGoal(null, content, RecurringGoal.DAILY, currentDate.dateTime().toLocalDate().plusDays(1));
-            activity.addItemToRecurringList(rgoal);
+            activity.addItemToRecurringListTomorrow(rgoal);
         } else if(view.weeklyButton.isChecked()) {
             var rgoal = new RecurringGoal(null, content, RecurringGoal.WEEKLY, currentDate.dateTime().toLocalDate().plusDays(1));
-            activity.addItemToRecurringList(rgoal);
+            activity.addItemToRecurringListTomorrow(rgoal);
         } else if(view.monthlyButton.isChecked()) {
             var rgoal = new RecurringGoal(null, content, RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate().plusDays(1));
-            activity.addItemToRecurringList(rgoal);
+            activity.addItemToRecurringListTomorrow(rgoal);
         } else if(view.yearlyButton.isChecked()) {
             var rgoal = new RecurringGoal(null, content, RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate().plusDays(1));
-            activity.addItemToRecurringList(rgoal);
+            activity.addItemToRecurringListTomorrow(rgoal);
         } else {
             throw new IllegalStateException("No radio button is checked.");
         }
