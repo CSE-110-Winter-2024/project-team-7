@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         currentView = TODAY;
 
+
     }
 
     public void onResume() {
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void addPendingItemToTodoList(Goal goal) {
         MainViewModel.addItemToTodoList(goal, pendingFragment.getAdapter(), pendingList);
         pendingFragment.updatePlaceholderVisibility();
+    }
 
     public void addItemToTomorrowList(Goal goal) {
         MainViewModel.addItemToTodoList(goal, tomorrowFragment.getAdapter(), tomorrowList);
@@ -157,7 +159,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(), todoList,
                 recurringList, currentDate.dateTime().toLocalDate());
         todayFragment.updatePlaceholderVisibility();
-        recurringFragment.updatePlaceholderVisibility();
+
+        if(recurringFragment != null) {
+            recurringFragment.updatePlaceholderVisibility();
+        }
+
     }
 
     @Override

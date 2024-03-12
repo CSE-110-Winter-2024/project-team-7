@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
+import edu.ucsd.cse110.successorator.data.db.recurringgoal.RecurringGoalEntity;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
@@ -71,9 +72,12 @@ public class MainViewModel extends ViewModel implements Observer {
     //OR DO THAT IN A SEPARATE METHOD
     public static void addItemToRecurringList(RecurringGoal rgoal, ArrayAdapter<Goal> adapter, GoalLists todoList,
                                               RecurringGoalLists recurringList, LocalDate todayDate) {
-        recurringList.add(rgoal);
+        int id = recurringList.add(rgoal);
+
         if(rgoal.recurToday(todayDate)) {
             addItemToTodoList(rgoal.toGoal(), adapter, todoList);
+            rgoal.setId(id);
+            recurringList.add(rgoal);
         }
     }
 
@@ -96,6 +100,7 @@ public class MainViewModel extends ViewModel implements Observer {
                 if(!alreadyExists) {
                     addItemToTodoList(rgoal.toGoal(), adapter, todoList);
                 }
+                recurringList.add(rgoal);
             }
         }
     }

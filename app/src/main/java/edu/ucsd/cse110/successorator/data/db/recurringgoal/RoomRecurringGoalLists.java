@@ -34,8 +34,8 @@ public class RoomRecurringGoalLists implements RecurringGoalLists {
         return nonEntityGoals;
     }
 
-    public void add(RecurringGoal rgoal) {
-        rgoalDao.insert(RecurringGoalEntity.fromRecurringGoal(rgoal));
+    public int add(RecurringGoal rgoal) {
+        return Math.toIntExact(rgoalDao.insert(RecurringGoalEntity.fromRecurringGoal(rgoal)));
     }
 
     public void delete(RecurringGoal rgoal) {
