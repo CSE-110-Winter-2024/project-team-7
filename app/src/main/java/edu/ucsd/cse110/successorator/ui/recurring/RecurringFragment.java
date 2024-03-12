@@ -51,13 +51,15 @@ public class RecurringFragment extends Fragment implements Observer {
         currentDate = app.getCurrentDate();
         recurringList = app.getRecurringList();
 
+        currentDate.observe(this);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = RecurringBinding.inflate(inflater, container, false);
         setupListView();
-        currentDate.observe(this);
+
         setupDateMock();
         updatePlaceholderVisibility();
 

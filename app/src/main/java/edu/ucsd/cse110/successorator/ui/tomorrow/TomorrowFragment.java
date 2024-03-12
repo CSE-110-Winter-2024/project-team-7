@@ -78,6 +78,8 @@ public class TomorrowFragment extends Fragment implements Observer {
         todayAdapter = mainActivity.getTodayFragment().getAdapter();
         //tomorrowList = app.getTodoList(); //TO AVOID CRASHES
 
+
+
     }
 
     @Override
@@ -86,7 +88,9 @@ public class TomorrowFragment extends Fragment implements Observer {
         setupListView();
         dateTextView = view.dateTomorrowText;
         dateTextView.setText(currentDate.getTomorrowDate());
-        currentDate.observe(this);
+        if(!currentDate.getObservers().contains(this)) {
+            currentDate.observe(this);
+        }
         setupDateMock();
         updatePlaceholderVisibility();
 
@@ -151,7 +155,14 @@ public class TomorrowFragment extends Fragment implements Observer {
     }
 
     public void onChanged(@Nullable Object value) {
-        dateTextView.setText(currentDate.getTomorrowDate());
+        if(dateTextView != null) {
+            dateTextView.setText(currentDate.getTomorrowDate());
+        }
+
+        if (adapter != null) {
+            adapter.clear();
+            adapter.notifyDataSetChanged();
+        }
         //TODO: rollover all tomorrow goals to today, and delete(i think?) the finished goals
         if (tomorrowList != null && finishedAdapter != null) {
             if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
@@ -170,17 +181,6 @@ public class TomorrowFragment extends Fragment implements Observer {
             }
         }
 
-        if (adapter != null) {
-            if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
-                List<Goal> unfinishedGoals = tomorrowList.getUnfinishedGoals();
-                for (int i = 0; i < unfinishedGoals.size(); i++) {
-                    MainViewModel.addItemToTodoList(unfinishedGoals.get(i), todayAdapter, todayList);
-                }
-                tomorrowList.clearUnfinished();
-                adapter.clear();
-                adapter.notifyDataSetChanged();
-            }
-        }
 
     }
 

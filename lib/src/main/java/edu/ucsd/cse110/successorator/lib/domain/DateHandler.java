@@ -48,6 +48,7 @@ public class DateHandler implements Subject {
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
+
         }
     }
 
@@ -76,6 +77,7 @@ public class DateHandler implements Subject {
     public void observe(Observer observer) {
         observers.add(observer);
         observer.onChanged(formattedDate);
+        System.out.println(observers.size());
     }
 
     @Override
@@ -90,8 +92,8 @@ public class DateHandler implements Subject {
         }
     }
 
-    public String getObservers() {
-        return observers.toString();
+    public List<Observer> getObservers() {
+        return observers;
     }
 
     public LocalDateTime dateTime() {

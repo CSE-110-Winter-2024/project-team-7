@@ -65,6 +65,8 @@ public class TodayFragment extends Fragment implements Observer {
         tomorrowList = app.getTomorrowList();
         storedDate = app.getStoredDate();
 
+
+
     }
 
     @Override
@@ -73,7 +75,9 @@ public class TodayFragment extends Fragment implements Observer {
         setupListView();
         TextView dateTextView = view.dateText;
         currentDate.observe(new DateDisplay(dateTextView));
-        currentDate.observe(this);
+        if(!currentDate.getObservers().contains(this)) {
+            currentDate.observe(this);
+        }
         setupDateMock();
         updatePlaceholderVisibility();
 
@@ -159,8 +163,24 @@ public class TodayFragment extends Fragment implements Observer {
         if (tomorrowList != null) {
             if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
                 List<Goal> unfinishedGoals = tomorrowList.getUnfinishedGoals();
-                for (int i = 0; i < unfinishedGoals.size(); i++) {
-                    MainViewModel.addItemToTodoList(unfinishedGoals.get(i), adapter, todoList);
+                List<Goal> todayUnfinished = todoList.getUnfinishedGoals();
+                for (Goal tomorrow : unfinishedGoals) {
+                    System.out.println("here");
+                    boolean alreadyExists = false;
+                    for(Goal g : todayUnfinished) {
+                        System.out.println(g.isFromRecurring());
+                        System.out.println(g.content());
+                        System.out.println(tomorrow.content());
+                        if(g.isFromRecurring() && g.content().equals(tomorrow.content())) {
+                            alreadyExists = true;
+                            break;
+                        }
+
+                    }
+                    if(!alreadyExists) {
+                        MainViewModel.addItemToTodoList(tomorrow, adapter, todoList);
+                    }
+
                 }
                 adapter.notifyDataSetChanged();
                 tomorrowList.clearUnfinished();
