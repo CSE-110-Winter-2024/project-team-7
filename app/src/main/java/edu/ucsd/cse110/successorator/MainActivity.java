@@ -145,8 +145,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
 
     public void addPendingItemToTodoList(Goal goal) {
-        MainViewModel.addItemToTodoList(goal, pendingFragment.getAdapter(), pendingList);
-        pendingFragment.updatePlaceholderVisibility();
+        ArrayAdapter<Goal> addAdapter = todayFragment.getPendingAdapter();
+        if (pendingFragment != null) {
+            addAdapter = pendingFragment.getAdapter();
+        }
+        MainViewModel.addItemToTodoList(goal, addAdapter, pendingList);
+        if (pendingFragment != null) {
+            pendingFragment.updatePlaceholderVisibility();
+        }
     }
 
     public void addItemToTomorrowList(Goal goal) {
@@ -269,6 +275,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public TomorrowFragment getTomorrowFragment() {
         return tomorrowFragment;
     }
+
+    public RecurringFragment getRecurringFragment() { return recurringFragment; }
+
+    public PendingFragment getPendingFragment() { return pendingFragment; }
 
     public int getCurrentView() {
         return currentView;

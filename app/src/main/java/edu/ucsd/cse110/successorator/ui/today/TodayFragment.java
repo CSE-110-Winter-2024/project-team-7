@@ -38,6 +38,8 @@ public class TodayFragment extends Fragment implements Observer {
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
     private ArrayAdapter<Goal> tomorrowAdapter;
+
+    private ArrayAdapter<Goal> pendingAdapter;
     private DateHandler currentDate;
     private RoomDateStorage storedDate;
     private GoalLists todoList;
@@ -101,6 +103,10 @@ public class TodayFragment extends Fragment implements Observer {
 
         if (mainActivity.getTomorrowFragment() == null) {
             tomorrowAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
+        }
+
+        if (mainActivity.getPendingFragment() == null) {
+            pendingAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
         }
 
         view.goalsListView.setAdapter(adapter);
@@ -205,6 +211,8 @@ public class TodayFragment extends Fragment implements Observer {
     public ArrayAdapter<Goal> getTomorrowAdapter() {
         return tomorrowAdapter;
     }
+
+    public ArrayAdapter<Goal> getPendingAdapter() { return pendingAdapter; }
 
 
 
