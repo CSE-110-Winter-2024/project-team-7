@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,8 @@ import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.util.DateUpdater;
+import edu.ucsd.cse110.successorator.util.GoalArrayAdapter;
+import edu.ucsd.cse110.successorator.util.GoalFinishedArrayAdapter;
 
 public class TodayFragment extends Fragment implements Observer {
     private TodayBinding view;
@@ -80,18 +83,65 @@ public class TodayFragment extends Fragment implements Observer {
     }
 
     private void setupListView() {
-        adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
-        finishedAdapter = new ArrayAdapter<Goal>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textViewGoal = (TextView) view.findViewById(android.R.id.text1);
-                textViewGoal.setPaintFlags(textViewGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        adapter = new GoalArrayAdapter(this.getContext(), R.layout.goals_with_context_list_view_items, new ArrayList<>());
 
-                return view;
-            }
-        };
+//        adapter = new ArrayAdapter<>(this.getContext(), R.layout.goals_with_context_list_view_items, new ArrayList<>()) {
+//            @NonNull
+//            @Override
+//            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+//                View view = super.getView(position, convertView, parent);
+//                Button button = view.findViewById(R.id.button);
+//
+//                var goal = getItem(position).getContext();
+//                if (goal == "Home") {
+//                    button.setText("H");
+//                    button.setBackgroundResource(R.drawable.radio_h);
+//                } else if (goal == "Work") {
+//                    button.setText("W");
+//                    button.setBackgroundResource(R.drawable.radio_w);
+//                } else if (goal == "School") {
+//                    button.setText("S");
+//                    button.setBackgroundResource(R.drawable.radio_s);
+//                } else if (goal == "Errand") {
+//                    button.setText("E");
+//                    button.setBackgroundResource(R.drawable.radio_e);
+//                } else {
+//                    throw new IllegalArgumentException("Invalid Context: " + goal);
+//                }
+//
+//                return view;
+//            }
+//        };
+
+        finishedAdapter = new GoalFinishedArrayAdapter(this.getContext(), R.layout.goals_with_context_list_view_items, new ArrayList<Goal>());
+
+//        finishedAdapter = new ArrayAdapter<Goal>(this.getContext(), R.layout.goals_with_context_list_view_items, new ArrayList<Goal>()) {
+//            @NonNull
+//            @Override
+//            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+//                View view = super.getView(position, convertView, parent);
+//                TextView textViewGoal = (TextView) view.findViewById(android.R.id.text1);
+//                textViewGoal.setPaintFlags(textViewGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//
+//                Button button = view.findViewById(R.id.button);
+//
+//                var goal = getItem(position).getContext();
+//                if (goal == "Home") {
+//                    button.setText("H");
+//                } else if (goal == "Work") {
+//                    button.setText("W");
+//                } else if (goal == "School") {
+//                    button.setText("S");
+//                } else if (goal == "Errand") {
+//                    button.setText("E");
+//                } else {
+//                    throw new IllegalArgumentException("Invalid Context: " + goal);
+//                }
+//
+//                button.setBackgroundResource(R.drawable.radio_finished);
+//                return view;
+//            }
+//        };
 
         view.goalsListView.setAdapter(adapter);
         view.finishedListView.setAdapter(finishedAdapter);
