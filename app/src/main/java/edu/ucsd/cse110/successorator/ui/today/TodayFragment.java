@@ -82,66 +82,14 @@ public class TodayFragment extends Fragment implements Observer {
         return view.getRoot();
     }
 
+
     private void setupListView() {
-        adapter = new GoalArrayAdapter(this.getContext(), R.layout.goals_with_context_list_view_items, new ArrayList<>());
+        adapter = new GoalArrayAdapter(getContext(), R.layout.list_item_goal, new ArrayList<>());
+        finishedAdapter = new GoalFinishedArrayAdapter(this.getContext(), R.layout.list_item_goal, new ArrayList<Goal>());
 
-//        adapter = new ArrayAdapter<>(this.getContext(), R.layout.goals_with_context_list_view_items, new ArrayList<>()) {
-//            @NonNull
-//            @Override
-//            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//                View view = super.getView(position, convertView, parent);
-//                Button button = view.findViewById(R.id.button);
-//
-//                var goal = getItem(position).getContext();
-//                if (goal == "Home") {
-//                    button.setText("H");
-//                    button.setBackgroundResource(R.drawable.radio_h);
-//                } else if (goal == "Work") {
-//                    button.setText("W");
-//                    button.setBackgroundResource(R.drawable.radio_w);
-//                } else if (goal == "School") {
-//                    button.setText("S");
-//                    button.setBackgroundResource(R.drawable.radio_s);
-//                } else if (goal == "Errand") {
-//                    button.setText("E");
-//                    button.setBackgroundResource(R.drawable.radio_e);
-//                } else {
-//                    throw new IllegalArgumentException("Invalid Context: " + goal);
-//                }
-//
-//                return view;
-//            }
-//        };
+        view.goalsListView.setAdapter(adapter);
+        view.finishedListView.setAdapter(finishedAdapter);
 
-        finishedAdapter = new GoalFinishedArrayAdapter(this.getContext(), R.layout.goals_with_context_list_view_items, new ArrayList<Goal>());
-
-//        finishedAdapter = new ArrayAdapter<Goal>(this.getContext(), R.layout.goals_with_context_list_view_items, new ArrayList<Goal>()) {
-//            @NonNull
-//            @Override
-//            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//                View view = super.getView(position, convertView, parent);
-//                TextView textViewGoal = (TextView) view.findViewById(android.R.id.text1);
-//                textViewGoal.setPaintFlags(textViewGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//
-//                Button button = view.findViewById(R.id.button);
-//
-//                var goal = getItem(position).getContext();
-//                if (goal == "Home") {
-//                    button.setText("H");
-//                } else if (goal == "Work") {
-//                    button.setText("W");
-//                } else if (goal == "School") {
-//                    button.setText("S");
-//                } else if (goal == "Errand") {
-//                    button.setText("E");
-//                } else {
-//                    throw new IllegalArgumentException("Invalid Context: " + goal);
-//                }
-//
-//                button.setBackgroundResource(R.drawable.radio_finished);
-//                return view;
-//            }
-//        };
 
         view.goalsListView.setAdapter(adapter);
         view.finishedListView.setAdapter(finishedAdapter);
@@ -204,6 +152,8 @@ public class TodayFragment extends Fragment implements Observer {
             }
         }
     }
+
+
 
     public ArrayAdapter<Goal> getAdapter() {
         return adapter;

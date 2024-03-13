@@ -69,7 +69,7 @@ public class AddGoalDialogFragment extends DialogFragment {
         } else if (view.buttonS.isChecked()) {
             context = "School";
         } else if (view.buttonE.isChecked()) {
-            context = "Errand";
+            context = "Errands";
         } else {
             throw new IllegalStateException("No radio button is checked.");
         }

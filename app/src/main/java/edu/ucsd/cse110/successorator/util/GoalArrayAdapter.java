@@ -1,12 +1,17 @@
 package edu.ucsd.cse110.successorator.util;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import android.util.Log;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,40 +34,42 @@ public class GoalArrayAdapter extends ArrayAdapter<Goal> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            view = inflater.inflate(mResource, parent, false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_goal, parent, false);
         }
 
-        // Get the current goal
         Goal goal = getItem(position);
-
-        // Get references to the Button and TextView in your custom layout
-        Button button = view.findViewById(R.id.button);
-        TextView textView = view.findViewById(R.id.textView);
-
-        // Set data to views
         if (goal != null) {
-            textView.setText(goal.getContext());
-            // Set button properties based on context
-            if ("Home".equals(goal.getContext())) {
-                button.setText("H");
-                button.setBackgroundResource(R.drawable.radio_h);
-            } else if ("Work".equals(goal.getContext())) {
-                button.setText("W");
-                button.setBackgroundResource(R.drawable.radio_w);
-            } else if ("School".equals(goal.getContext())) {
-                button.setText("S");
-                button.setBackgroundResource(R.drawable.radio_s);
-            } else if ("Errand".equals(goal.getContext())) {
-                button.setText("E");
-                button.setBackgroundResource(R.drawable.radio_e);
-            } else {
-                throw new IllegalArgumentException("Invalid Context: " + mContext);
+            TextView goalDescriptionTextView = convertView.findViewById(R.id.goalDescriptionTextView);
+            TextView contextSymbolView = convertView.findViewById(R.id.contextSymbolView);
+
+            goalDescriptionTextView.setText(goal.content());
+
+            switch (goal.getContext()) {
+                case "Home":
+                    contextSymbolView.setBackgroundResource(R.drawable.shape_home);
+                    contextSymbolView.setText("H");
+                    break;
+                case "Work":
+                    contextSymbolView.setBackgroundResource(R.drawable.shape_work);
+                    contextSymbolView.setText("W");
+                    break;
+                case "School":
+                    contextSymbolView.setBackgroundResource(R.drawable.shape_school);
+                    contextSymbolView.setText("S");
+                    break;
+                case "Errands":
+                    contextSymbolView.setBackgroundResource(R.drawable.shape_errands);
+                    contextSymbolView.setText("E");
+                    break;
             }
+            contextSymbolView.setTextColor(Color.WHITE); // Set text color to white
+            contextSymbolView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12); // Set text size
         }
 
-        return view;
+        return convertView;
     }
+
+
+
 }

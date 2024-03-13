@@ -21,7 +21,7 @@
             android:checked="true"
             android:text="@string/Home"
             android:button="@android:color/transparent"
-            android:background="@drawable/radio_h"
+            android:background="@drawable/shape_home"
             android:textColor="@drawable/text_color"
             android:padding="20dp"
             android:layout_margin="10dp" />
@@ -33,7 +33,7 @@
             android:checked="false"
             android:text="@string/Work"
             android:button="@android:color/transparent"
-            android:background="@drawable/radio_w"
+            android:background="@drawable/shape_work"
             android:textColor="@drawable/text_color"
             android:padding="20dp"
             android:layout_margin="10dp" />
@@ -45,7 +45,7 @@
             android:checked="false"
             android:text="@string/School"
             android:button="@android:color/transparent"
-            android:background="@drawable/radio_s"
+            android:background="@drawable/shape_school"
             android:textColor="@drawable/text_color"
             android:padding="20dp"
             android:layout_margin="10dp" />
@@ -57,7 +57,7 @@
             android:checked="false"
             android:text="@string/Errand"
             android:button="@android:color/transparent"
-            android:background="@drawable/radio_e"
+            android:background="@drawable/shape_errands"
             android:textColor="@drawable/text_color"
             android:padding="20dp"
             android:layout_margin="10dp" />
