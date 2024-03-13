@@ -9,7 +9,7 @@ public interface RecurringGoalLists {
 
     List<RecurringGoal> getRecurringGoals();
 
-    void add(RecurringGoal rgoal);
+    int add(RecurringGoal rgoal);
 
     void delete(RecurringGoal rgoal);
 }

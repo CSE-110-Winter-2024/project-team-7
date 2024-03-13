@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentDialogAddPendingGoalBinding;
 import edu.ucsd.cse110.successorator.databinding.FragmentDialogAddRecurringGoalBinding;
+import edu.ucsd.cse110.successorator.lib.domain.Goal;
 
 public class AddPendingGoalDialogFragment extends DialogFragment {
     private FragmentDialogAddPendingGoalBinding view;
@@ -39,6 +41,15 @@ public class AddPendingGoalDialogFragment extends DialogFragment {
     }
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
+        var content = view.pendingGoalText.getText().toString().trim();
+
+        if(content.equals("")) {
+            dialog.dismiss();
+            return;
+        }
+
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.addPendingItemToTodoList(new Goal(null, content, false));
         dialog.dismiss();
     }
 

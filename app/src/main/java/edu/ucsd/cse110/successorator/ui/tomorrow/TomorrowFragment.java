@@ -2,14 +2,12 @@ package edu.ucsd.cse110.successorator.ui.tomorrow;
 
 import static edu.ucsd.cse110.successorator.MainViewModel.moveToFinished;
 import static edu.ucsd.cse110.successorator.MainViewModel.moveToUnfinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshAdapter;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshFinishedAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.refreshTodayAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.refreshTodayFinishedAdapter;
 
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,35 +16,40 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.ucsd.cse110.successorator.MainActivity;
+import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.SuccessoratorApplication;
-import edu.ucsd.cse110.successorator.databinding.TodayBinding;
+import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
 import edu.ucsd.cse110.successorator.databinding.TomorrowBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
+import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
-import edu.ucsd.cse110.successorator.ui.DateDisplay;
-import edu.ucsd.cse110.successorator.ui.dialog.AddTomorrowGoalDialogFragment;
-import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
-import edu.ucsd.cse110.successorator.ui.today.TodayFragment;
-import edu.ucsd.cse110.successorator.util.DateUpdater;
 
 public class TomorrowFragment extends Fragment implements Observer {
     private MainActivity mainActivity;
     private DateHandler currentDate;
+    private RoomDateStorage storedDate;
+    private String formattedStoredDate;
     private TextView dateTextView;
     TomorrowBinding view;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
+
+    private ArrayAdapter<Goal> todayAdapter;
     //THIS MAY BE TEMPORARY IF WE WANT TO MAKE A TOMORROWLIST CLASS
     private GoalLists tomorrowList;
+
+
+
+    private GoalLists todayList;
 
 
     public TomorrowFragment() {
@@ -68,8 +71,14 @@ public class TomorrowFragment extends Fragment implements Observer {
         SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
         mainActivity.setTomorrowFragment(this);
         currentDate = app.getCurrentDate();
-        //tomorrowList = app.getTomorrowList(); NOT YET IMPLEMENTED
-        tomorrowList = app.getTodoList(); //TO AVOID CRASHES
+        tomorrowList = app.getTomorrowList(); //NOT YET IMPLEMENTED
+        todayList = app.getTodoList();
+        storedDate = app.getStoredDate();
+        formattedStoredDate = storedDate.formattedDate();
+        todayAdapter = mainActivity.getTodayFragment().getAdapter();
+        //tomorrowList = app.getTodoList(); //TO AVOID CRASHES
+
+
 
     }
 
@@ -79,11 +88,28 @@ public class TomorrowFragment extends Fragment implements Observer {
         setupListView();
         dateTextView = view.dateTomorrowText;
         dateTextView.setText(currentDate.getTomorrowDate());
-        currentDate.observe(this);
+        if(!currentDate.getObservers().contains(this)) {
+            currentDate.observe(this);
+        }
         setupDateMock();
         updatePlaceholderVisibility();
+        System.out.println("herererereerererere");
 
         return view.getRoot();
+    }
+
+    public void manualOnCreateView() {
+        view = TomorrowBinding.inflate(LayoutInflater.from(getContext()));
+        setupListView();
+        dateTextView = view.dateTomorrowText;
+        dateTextView.setText(currentDate.getTomorrowDate());
+        if(!currentDate.getObservers().contains(this)) {
+            currentDate.observe(this);
+        }
+        setupDateMock();
+        updatePlaceholderVisibility();
+        System.out.println("herererereerererere");
+
     }
 
     private void setupListView() {
@@ -130,8 +156,8 @@ public class TomorrowFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderTomorrowText.setText(R.string.placeholder_tomorrow_text);
         } else {
-            refreshAdapter(adapter, tomorrowList);
-            refreshFinishedAdapter(finishedAdapter, tomorrowList);
+            refreshTodayAdapter(adapter, tomorrowList);
+            refreshTodayFinishedAdapter(finishedAdapter, tomorrowList);
         }
 
         return isEmpty;
@@ -144,8 +170,36 @@ public class TomorrowFragment extends Fragment implements Observer {
     }
 
     public void onChanged(@Nullable Object value) {
-        dateTextView.setText(currentDate.getTomorrowDate());
+        if(dateTextView != null) {
+            dateTextView.setText(currentDate.getTomorrowDate());
+        }
+
+        if (adapter != null) {
+            adapter.clear();
+            adapter.notifyDataSetChanged();
+        }
         //TODO: rollover all tomorrow goals to today, and delete(i think?) the finished goals
+        if (tomorrowList != null && finishedAdapter != null) {
+            if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
+                tomorrowList.clearFinished();
+                finishedAdapter.clear();
+                finishedAdapter.notifyDataSetChanged();
+
+                SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
+
+                RecurringGoalLists recurringList = app.getRecurringList();
+
+                MainViewModel.addRecurringGoalsToTodoList(recurringList, tomorrowList, adapter, currentDate, 1);
+
+                updatePlaceholderVisibility();
+                if (mainActivity.getTomorrowFragment() != null) {
+                    mainActivity.getTomorrowFragment().updatePlaceholderVisibility();
+                }
+                storedDate.replace(currentDate);
+            }
+        }
+
+
     }
 
     public ArrayAdapter<Goal> getAdapter() {

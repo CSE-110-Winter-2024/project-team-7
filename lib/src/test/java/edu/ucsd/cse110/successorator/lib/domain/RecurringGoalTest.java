@@ -82,9 +82,6 @@ public class RecurringGoalTest {
             testDate = testDate.plusDays(1);
         }
 
-        //extra test
-        testDate = LocalDate.of(2024, 4, 4);
-        assertTrue(rgoal.recurToday(testDate));
     }
 
     @Test
@@ -93,14 +90,39 @@ public class RecurringGoalTest {
         RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.YEARLY, febNine);
         LocalDate testDate = LocalDate.of(2024, 2, 9);
 
+        assertTrue(rgoal.recurToday(febNine));
+
         for(int i = 0; i < 364; i++) {
             testDate = testDate.plusDays(1);
             assertFalse(rgoal.recurToday(testDate));
         }
-        testDate = LocalDate.of(2024, 2, 9);
+        testDate = LocalDate.of(2025, 2, 9);
         for(int i = 0; i < 25; i++) {
             assertTrue(rgoal.recurToday(testDate));
             testDate = testDate.plusYears(1);
         }
+    }
+
+    @Test
+    public void skipPastDayTest() {
+        LocalDate febNine = LocalDate.of(2024, 2, 9);
+        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.WEEKLY, febNine);
+        LocalDate testDate = LocalDate.of(2024, 2, 9);
+
+        assertTrue(rgoal.recurToday(febNine));
+
+        testDate = testDate.plusDays(3);
+        assertFalse(rgoal.recurToday(testDate));
+
+        //skips past the day here
+        testDate = testDate.plusWeeks(1);
+        assertTrue(rgoal.recurToday(testDate));
+
+        //goes back to the day that was skipped
+        testDate = testDate.plusDays(-3);
+        assertFalse(rgoal.recurToday(testDate));
+
+        testDate = testDate.plusWeeks(1);
+        assertTrue(rgoal.recurToday(testDate));
     }
 }

@@ -82,6 +82,14 @@ public class RoomGoalLists implements GoalLists {
     }
 
     @Override
+    public void clearUnfinished() {
+        List<GoalEntity> unfinished = goalDao.findAllUnfinished();
+        for(int i = 0; i < unfinished.size(); i++) {
+            goalDao.delete(unfinished.get(i).id);
+        }
+    }
+
+    @Override
     public Goal get(int index) {
         List<Goal> unfinished = getUnfinishedGoals();
         List<Goal> finished = getFinishedGoals();

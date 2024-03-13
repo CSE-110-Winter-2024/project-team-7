@@ -8,27 +8,39 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class RecurringGoal implements Serializable {
 
     public static final int DAILY = 0, WEEKLY = 1, MONTHLY = 2, YEARLY = 3;
 
-    private final @Nullable Integer id;
+    private @Nullable Integer id;
     private final @NonNull String content;
     private final int recurringType;
-    private final LocalDate date;
+    private final LocalDate startDate;
+    private LocalDate nextRecurringDate;
     private DayOfWeek dayOfWeek;
     private int weekOfMonth;
 
     public RecurringGoal(@Nullable Integer id, @NonNull String content, int recurringType,
-                         LocalDate date) {
+                         LocalDate startDate) {
         this.id = id;
         this.content = content;
         this.recurringType = recurringType;
-        this.date = date;
-        this.dayOfWeek = date.getDayOfWeek();
-        this.weekOfMonth = ((date.getDayOfMonth()-1) / 7) + 1;
+        this.startDate = startDate;
+        this.dayOfWeek = startDate.getDayOfWeek();
+        this.weekOfMonth = ((startDate.getDayOfMonth()-1) / 7) + 1;
+        this.nextRecurringDate = startDate.plusDays(0);
+    }
+
+    public RecurringGoal(@Nullable Integer id, @NonNull String content, int recurringType,
+                         LocalDate startDate, LocalDate nextRecurringDate) {
+        this.id = id;
+        this.content = content;
+        this.recurringType = recurringType;
+        this.startDate = startDate;
+        this.dayOfWeek = startDate.getDayOfWeek();
+        this.weekOfMonth = ((startDate.getDayOfMonth()-1) / 7) + 1;
+        this.nextRecurringDate = nextRecurringDate;
     }
 
     public @Nullable Integer id() {
@@ -43,47 +55,54 @@ public class RecurringGoal implements Serializable {
         return recurringType;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getNextRecurringDate() {
+        return nextRecurringDate;
     }
 
     public boolean recurToday(LocalDate today) {
-        if(recurringType == DAILY) {
+        if(today.isEqual(nextRecurringDate) || today.isAfter(nextRecurringDate)) {
+            findNextRecurringDate(today);
             return true;
         }
-        else if(recurringType == WEEKLY) {
-            if(today.getDayOfWeek().getValue() == date.getDayOfWeek().getValue()) {
-                return true;
+        return false;
+    }
+
+    public void findNextRecurringDate(LocalDate today) {
+        if(recurringType == DAILY) {
+            nextRecurringDate = today.plusDays(1);
+        } else if(recurringType == WEEKLY) {
+            nextRecurringDate = today.with(TemporalAdjusters.next(dayOfWeek));
+            if(nextRecurringDate.isEqual(today)) {
+                nextRecurringDate = today.plusWeeks(1);
             }
-        }
-        else if(recurringType == MONTHLY) {
-            LocalDate prevMonth;
-            if(today.getMonthValue() == 1) {
-                prevMonth = today.withMonth(12);
-                prevMonth = prevMonth.withYear(prevMonth.getYear()-1);
-            }
-            else {
-                prevMonth = today.withMonth(today.getMonthValue()-1);
-            }
+        } else if(recurringType == MONTHLY) {
+            LocalDate prevMonth = today.plusMonths(-1);
+            LocalDate nextMonth = today.plusMonths(1);
+
 
             LocalDate targetDate = prevMonth.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
-            if(targetDate.isEqual(today)) {
-                return true;
+            if(targetDate.isAfter(today)) {
+                nextRecurringDate = targetDate;
+                return;
             }
-
             targetDate = today.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
-            if(targetDate.isEqual(today)) {
-                return true;
+            if(targetDate.isAfter(today)) {
+                nextRecurringDate = targetDate;
+                return;
             }
 
-        }
-        else { //recurringType == YEARLY
-            if(today.getMonthValue() == date.getMonthValue() &&
-                    today.getDayOfMonth() == date.getDayOfMonth()) {
-                return true;
+            targetDate = nextMonth.with(TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek));
+            nextRecurringDate = targetDate;
+        } else if(recurringType == YEARLY) {
+            nextRecurringDate = startDate.withYear(today.getYear());
+            if(nextRecurringDate.isBefore(today) || nextRecurringDate.isEqual(today)) {
+                nextRecurringDate = nextRecurringDate.plusYears(1);
             }
         }
-        return false;
     }
 
     public Goal toGoal() {
@@ -92,6 +111,10 @@ public class RecurringGoal implements Serializable {
 
     public String toString() {
         return content;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 }
