@@ -166,6 +166,7 @@ public class TodayFragment extends Fragment implements Observer {
 
                 MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate, 0);
 
+
                 updatePlaceholderVisibility();
                 storedDate.replace(currentDate);
             }
@@ -189,12 +190,13 @@ public class TodayFragment extends Fragment implements Observer {
 
                     }
                     if(!alreadyExists) {
-                        MainViewModel.addItemToTodoList(tomorrow, adapter, todoList);
+                        MainViewModel.addItemToTodoList(tomorrow.copyWithoutId(), adapter, todoList);
                     }
 
                 }
                 adapter.notifyDataSetChanged();
                 tomorrowList.clearUnfinished();
+                tomorrowList.clearFinished();
                 updatePlaceholderVisibility();
 
             }

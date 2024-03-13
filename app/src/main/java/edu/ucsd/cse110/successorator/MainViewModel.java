@@ -63,19 +63,39 @@ public class MainViewModel extends ViewModel implements Observer {
 
     public static void addItemToTodoList(Goal goal, ArrayAdapter<Goal> adapter, GoalLists todoList) {
         todoList.add(goal);
-        adapter.add(goal);
-        adapter.notifyDataSetChanged();
+        if(adapter != null) {
+            adapter.add(goal);
+            adapter.notifyDataSetChanged();
+        }
     }
 
 
     //UPDATE THIS WHEN THE RECURRING LIST UI IS CREATED TO UPDATE THE UI
     //OR DO THAT IN A SEPARATE METHOD
-    public static void addItemToRecurringList(RecurringGoal rgoal, ArrayAdapter<Goal> adapter, GoalLists todoList,
-                                              RecurringGoalLists recurringList, LocalDate todayDate) {
+    public static void addItemToRecurringList(RecurringGoal rgoal, ArrayAdapter<Goal> todayAdapter, GoalLists todoList,
+                                              GoalLists tomorrowList, RecurringGoalLists recurringList,
+                                              LocalDate todayDate) {
         int id = recurringList.add(rgoal);
 
         if(rgoal.recurToday(todayDate)) {
-            addItemToTodoList(rgoal.toGoal(), adapter, todoList);
+            addItemToTodoList(rgoal.toGoal(), todayAdapter, todoList);
+            rgoal.setId(id);
+            recurringList.add(rgoal);
+        }
+        if(rgoal.recurToday(todayDate.plusDays(1))) {
+            tomorrowList.add(rgoal.toGoal());
+            rgoal.setId(id);
+            recurringList.add(rgoal);
+        }
+    }
+
+    public static void addItemToRecurringListTomorrow(RecurringGoal rgoal, ArrayAdapter<Goal> todayAdapter,
+                                              GoalLists tomorrowList, RecurringGoalLists recurringList,
+                                              LocalDate tomorrowDate) {
+        int id = recurringList.add(rgoal);
+
+        if(rgoal.recurToday(tomorrowDate)) {
+            addItemToTodoList(rgoal.toGoal(), todayAdapter, tomorrowList);
             rgoal.setId(id);
             recurringList.add(rgoal);
         }

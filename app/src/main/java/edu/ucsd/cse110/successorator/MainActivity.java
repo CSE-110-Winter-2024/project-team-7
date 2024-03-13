@@ -169,18 +169,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void addItemToRecurringList(RecurringGoal rgoal) {
-        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(), todoList,
-                recurringList, currentDate.dateTime().toLocalDate());
+        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(),
+                todoList, tomorrowList, recurringList, currentDate.dateTime().toLocalDate());
         todayFragment.updatePlaceholderVisibility();
 
         if(recurringFragment != null) {
             recurringFragment.updatePlaceholderVisibility();
         }
 
+        if(tomorrowFragment != null) {
+            tomorrowFragment.updatePlaceholderVisibility();
+        }
+
     }
 
     public void addItemToRecurringListTomorrow(RecurringGoal rgoal) {
-        MainViewModel.addItemToRecurringList(rgoal, tomorrowFragment.getAdapter(), tomorrowList,
+        MainViewModel.addItemToRecurringListTomorrow(rgoal, tomorrowFragment.getAdapter(), tomorrowList,
                 recurringList, currentDate.dateTime().toLocalDate().plusDays(1));
         tomorrowFragment.updatePlaceholderVisibility();
 
