@@ -66,6 +66,14 @@ public class RecurringFragment extends Fragment implements Observer {
         return view.getRoot();
     }
 
+    public void manualOnCreateView() {
+        view = RecurringBinding.inflate(LayoutInflater.from(getContext()));
+        setupListView();
+
+        setupDateMock();
+        updatePlaceholderVisibility();
+    }
+
     private void setupListView() {
         adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
 

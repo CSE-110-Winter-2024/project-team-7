@@ -89,7 +89,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentDate.observe(this);
         DateUpdater.scheduleDateUpdates(currentDate);
 
-        currentView = TODAY;
+        changeView(TODAY);
+        todayFragment.manualOnCreateView();
+        changeView(TOMORROW);
+        tomorrowFragment.manualOnCreateView();
+        changeView(RECURRING);
+        recurringFragment.manualOnCreateView();
+        changeView(PENDING);
+        pendingFragment.manualOnCreateView();
+        changeView(TODAY);
+
 
 
     }
@@ -214,28 +223,33 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     .beginTransaction()
                     .replace(R.id.fragmentContainerView, todayFragment == null ?
                             TodayFragment.newInstance() : todayFragment)
-                    .commit();
+                    .setReorderingAllowed(true)
+                    .commitNow();
+
         } else if(newView == TOMORROW) {
             currentView = TOMORROW;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragmentContainerView, tomorrowFragment == null ?
                             TomorrowFragment.newInstance() : tomorrowFragment)
-                    .commit();
+                    .setReorderingAllowed(true)
+                    .commitNow();
         } else if(newView == RECURRING) {
             currentView = RECURRING;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragmentContainerView, recurringFragment == null ?
                             RecurringFragment.newInstance() : recurringFragment)
-                    .commit();
+                    .setReorderingAllowed(true)
+                    .commitNow();
         } else if(newView == PENDING) {
             currentView = PENDING;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragmentContainerView, pendingFragment == null ?
                             PendingFragment.newInstance() : pendingFragment)
-                    .commit();
+                    .setReorderingAllowed(true)
+                    .commitNow();
         }
     }
 

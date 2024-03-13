@@ -87,6 +87,18 @@ public class TodayFragment extends Fragment implements Observer {
         return view.getRoot();
     }
 
+    public void manualOnCreateView() {
+        view = TodayBinding.inflate(LayoutInflater.from(getContext()));
+        setupListView();
+        TextView dateTextView = view.dateText;
+        currentDate.observe(new DateDisplay(dateTextView));
+        if(!currentDate.getObservers().contains(this)) {
+            currentDate.observe(this);
+        }
+        setupDateMock();
+        updatePlaceholderVisibility();
+    }
+
     private void setupListView() {
         adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
         finishedAdapter = new ArrayAdapter<Goal>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
@@ -101,6 +113,7 @@ public class TodayFragment extends Fragment implements Observer {
             }
         };
 
+
         if (mainActivity.getTomorrowFragment() == null) {
             tomorrowAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
         }
@@ -108,6 +121,7 @@ public class TodayFragment extends Fragment implements Observer {
         if (mainActivity.getPendingFragment() == null) {
             pendingAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
         }
+
 
         view.goalsListView.setAdapter(adapter);
         view.finishedListView.setAdapter(finishedAdapter);

@@ -93,8 +93,23 @@ public class TomorrowFragment extends Fragment implements Observer {
         }
         setupDateMock();
         updatePlaceholderVisibility();
+        System.out.println("herererereerererere");
 
         return view.getRoot();
+    }
+
+    public void manualOnCreateView() {
+        view = TomorrowBinding.inflate(LayoutInflater.from(getContext()));
+        setupListView();
+        dateTextView = view.dateTomorrowText;
+        dateTextView.setText(currentDate.getTomorrowDate());
+        if(!currentDate.getObservers().contains(this)) {
+            currentDate.observe(this);
+        }
+        setupDateMock();
+        updatePlaceholderVisibility();
+        System.out.println("herererereerererere");
+
     }
 
     private void setupListView() {

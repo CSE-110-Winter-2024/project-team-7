@@ -63,6 +63,12 @@ public class PendingFragment extends Fragment{
         return view.getRoot();
     }
 
+    public void manualOnCreateView() {
+        view = PendingBinding.inflate(LayoutInflater.from(getContext()));
+        setupListView();
+        updatePlaceholderVisibility();
+    }
+
     private void setupListView() {
         adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
 
