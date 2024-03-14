@@ -159,7 +159,7 @@ public class RecurringTest {
                 DateHandler currentDate = app.getCurrentDate();
                 RecurringGoalLists recurringList = app.getRecurringList();
                 activity.addItemToRecurringList(new RecurringGoal(null,"daily",
-                                RecurringGoal.DAILY, currentDate.dateTime().toLocalDate()));
+                                RecurringGoal.DAILY, currentDate.dateTime().toLocalDate(), ""));
                 assertTrue(recurringList.size() == 1);
                 RecurringGoal selected = recurringList.get(0);
                 activity.deleteRecurringGoal(selected);
