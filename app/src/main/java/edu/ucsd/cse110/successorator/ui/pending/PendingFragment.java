@@ -31,9 +31,16 @@ public class PendingFragment extends Fragment{
 
     private MainActivity mainActivity;
     PendingBinding view;
+<<<<<<< HEAD
     private GoalLists pendingList;
     private DateHandler currentDate;
     private static ArrayAdapter<Goal> adapter;
+=======
+
+    private ArrayAdapter<Goal> adapter;
+    private GoalLists pendingList;
+    private DateHandler currentDate;
+>>>>>>> 3e01a28 (pending skip day button works)
 
     public PendingFragment() {
 
@@ -111,6 +118,7 @@ public class PendingFragment extends Fragment{
         //TODO: might not have to do anything here, might not need to observe date
     }
 
+
     private void setupDateMock() {
         view.dateMockButton.setOnClickListener(v -> {
             currentDate.skipDay();
@@ -119,6 +127,7 @@ public class PendingFragment extends Fragment{
 
 
     public static ArrayAdapter<Goal> getAdapter() {
+
         return adapter;
     }
 }
