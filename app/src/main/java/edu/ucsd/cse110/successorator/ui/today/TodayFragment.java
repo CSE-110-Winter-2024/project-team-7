@@ -15,9 +15,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.ucsd.cse110.successorator.MainActivity;
 import edu.ucsd.cse110.successorator.MainViewModel;
@@ -34,16 +34,20 @@ import edu.ucsd.cse110.successorator.ui.DateDisplay;
 import edu.ucsd.cse110.successorator.util.DateUpdater;
 import edu.ucsd.cse110.successorator.util.GoalArrayAdapter;
 import edu.ucsd.cse110.successorator.util.GoalFinishedArrayAdapter;
+import edu.ucsd.cse110.successorator.ui.tomorrow.TomorrowFragment;
 
 public class TodayFragment extends Fragment implements Observer {
     private TodayBinding view;
     private MainActivity mainActivity;
     private ArrayAdapter<Goal> adapter;
     private ArrayAdapter<Goal> finishedAdapter;
+    private ArrayAdapter<Goal> tomorrowAdapter;
+
+    private ArrayAdapter<Goal> pendingAdapter;
     private DateHandler currentDate;
     private RoomDateStorage storedDate;
-
     private GoalLists todoList;
+    private GoalLists tomorrowList;
 
     public TodayFragment() {
 
@@ -65,7 +69,10 @@ public class TodayFragment extends Fragment implements Observer {
         mainActivity.setTodayFragment(this);
         currentDate = app.getCurrentDate();
         todoList = app.getTodoList();
+        tomorrowList = app.getTomorrowList();
         storedDate = app.getStoredDate();
+
+
 
     }
 
@@ -75,13 +82,26 @@ public class TodayFragment extends Fragment implements Observer {
         setupListView();
         TextView dateTextView = view.dateText;
         currentDate.observe(new DateDisplay(dateTextView));
-        currentDate.observe(this);
+        if(!currentDate.getObservers().contains(this)) {
+            currentDate.observe(this);
+        }
         setupDateMock();
         updatePlaceholderVisibility();
 
         return view.getRoot();
     }
 
+    public void manualOnCreateView() {
+        view = TodayBinding.inflate(LayoutInflater.from(getContext()));
+        setupListView();
+        TextView dateTextView = view.dateText;
+        currentDate.observe(new DateDisplay(dateTextView));
+        if(!currentDate.getObservers().contains(this)) {
+            currentDate.observe(this);
+        }
+        setupDateMock();
+        updatePlaceholderVisibility();
+    }
 
     private void setupListView() {
         adapter = new GoalArrayAdapter(getContext(), R.layout.list_item_goal, new ArrayList<>());
@@ -89,6 +109,16 @@ public class TodayFragment extends Fragment implements Observer {
 
         view.goalsListView.setAdapter(adapter);
         view.finishedListView.setAdapter(finishedAdapter);
+
+
+
+        if (mainActivity.getTomorrowFragment() == null) {
+            tomorrowAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
+        }
+
+        if (mainActivity.getPendingFragment() == null) {
+            pendingAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
+        }
 
 
         view.goalsListView.setAdapter(adapter);
@@ -127,16 +157,17 @@ public class TodayFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderText.setText(R.string.default_message);
         } else {
-            refreshAdapter(adapter, todoList);
-            refreshFinishedAdapter(finishedAdapter, todoList);
+            refreshTodayAdapter(adapter, todoList);
+            refreshTodayFinishedAdapter(finishedAdapter, todoList);
         }
 
         return isEmpty;
     }
 
     public void onChanged(@Nullable Object value) {
+        String formattedStoredDate = storedDate.formattedDate();
         if (todoList != null && finishedAdapter != null) {
-            if (!currentDate.getFormattedDate().equals(storedDate.formattedDate())) {
+            if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
                 todoList.clearFinished();
                 finishedAdapter.clear();
                 finishedAdapter.notifyDataSetChanged();
@@ -145,10 +176,41 @@ public class TodayFragment extends Fragment implements Observer {
 
                 RecurringGoalLists recurringList = app.getRecurringList();
 
-                MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate);
+                MainViewModel.addRecurringGoalsToTodoList(recurringList, todoList, adapter, currentDate, 0);
+
 
                 updatePlaceholderVisibility();
                 storedDate.replace(currentDate);
+            }
+        }
+
+        if (tomorrowList != null) {
+            if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
+                List<Goal> unfinishedGoals = tomorrowList.getUnfinishedGoals();
+                List<Goal> todayUnfinished = todoList.getUnfinishedGoals();
+                for (Goal tomorrow : unfinishedGoals) {
+                    System.out.println("here");
+                    boolean alreadyExists = false;
+                    for(Goal g : todayUnfinished) {
+                        System.out.println(g.isFromRecurring());
+                        System.out.println(g.content());
+                        System.out.println(tomorrow.content());
+                        if(g.isFromRecurring() && g.content().equals(tomorrow.content())) {
+                            alreadyExists = true;
+                            break;
+                        }
+
+                    }
+                    if(!alreadyExists) {
+                        MainViewModel.addItemToTodoList(tomorrow.copyWithoutId(), adapter, todoList);
+                    }
+
+                }
+                adapter.notifyDataSetChanged();
+                tomorrowList.clearUnfinished();
+                tomorrowList.clearFinished();
+                updatePlaceholderVisibility();
+
             }
         }
     }
@@ -162,6 +224,12 @@ public class TodayFragment extends Fragment implements Observer {
     public ArrayAdapter<Goal> getFinishedAdapter() {
         return finishedAdapter;
     }
+    public ArrayAdapter<Goal> getTomorrowAdapter() {
+        return tomorrowAdapter;
+    }
+
+    public ArrayAdapter<Goal> getPendingAdapter() { return pendingAdapter; }
+
 
 
 }

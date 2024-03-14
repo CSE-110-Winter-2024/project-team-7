@@ -48,6 +48,7 @@ public class DateHandler implements Subject {
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
+
         }
     }
 
@@ -76,6 +77,7 @@ public class DateHandler implements Subject {
     public void observe(Observer observer) {
         observers.add(observer);
         observer.onChanged(formattedDate);
+        System.out.println(observers.size());
     }
 
     @Override
@@ -90,8 +92,8 @@ public class DateHandler implements Subject {
         }
     }
 
-    public String getObservers() {
-        return observers.toString();
+    public List<Observer> getObservers() {
+        return observers;
     }
 
     public LocalDateTime dateTime() {
@@ -102,13 +104,13 @@ public class DateHandler implements Subject {
         return dateFormat.format(dateTime);
     }
 
-    public String getMonthAndDate(){
+    public String getMonthAndDate(long offset){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d");
-        return dateTime.format(formatter);
+        return dateTime.plusDays(offset).format(formatter);
     }
 
-    public String getWeekdayInMonth(){
-        DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
+    public String getWeekdayInMonth(long offset){
+        DayOfWeek dayOfWeek = dateTime.plusDays(offset).getDayOfWeek();
 
         // Get the ordinal value for the day of the week (e.g., 3rd Tuesday)
         int ordinal = (dateTime.getDayOfMonth() - 1) / 7 + 1;
@@ -134,6 +136,6 @@ public class DateHandler implements Subject {
         return ordinal + ordinalSuffix + " " + dayOfWeekText;
     }
 
-    public String getWeekday() { return dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());}
+    public String getWeekday(long offset) { return dateTime.plusDays(offset).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());}
 
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import edu.ucsd.cse110.successorator.data.db.date.RoomDateStorage;
+import edu.ucsd.cse110.successorator.data.db.recurringgoal.RecurringGoalEntity;
 import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
@@ -22,6 +23,7 @@ public class MainViewModel extends ViewModel implements Observer {
 
     private final RoomDateStorage storedDate;
     private final GoalLists todoList;
+    private final GoalLists tomorrowList;
     private final DateHandler currentDate;
 
     private final RecurringGoalLists recurringList;
@@ -32,12 +34,13 @@ public class MainViewModel extends ViewModel implements Observer {
                     creationExtras -> {
                         var app = (SuccessoratorApplication) creationExtras.get(APPLICATION_KEY);
                         assert app != null;
-                        return new MainViewModel(app.getStoredDate(), app.getTodoList(), app.getCurrentDate(), app.getRecurringList());
+                        return new MainViewModel(app.getStoredDate(), app.getTodoList(), app.getTomorrowList(), app.getCurrentDate(), app.getRecurringList());
                     });
 
-    public MainViewModel(RoomDateStorage storedDate, GoalLists todoList, DateHandler currentDate, RecurringGoalLists recurringList) {
+    public MainViewModel(RoomDateStorage storedDate, GoalLists todoList, GoalLists tomorrowList, DateHandler currentDate, RecurringGoalLists recurringList) {
         this.storedDate = storedDate;
         this.todoList = todoList;
+        this.tomorrowList = tomorrowList;
         this.currentDate = currentDate;
         this.recurringList = recurringList;
     }
@@ -60,28 +63,53 @@ public class MainViewModel extends ViewModel implements Observer {
 
     public static void addItemToTodoList(Goal goal, ArrayAdapter<Goal> adapter, GoalLists todoList) {
         todoList.add(goal);
-        adapter.add(goal);
-        adapter.notifyDataSetChanged();
+        if(adapter != null) {
+            adapter.add(goal);
+            adapter.notifyDataSetChanged();
+        }
     }
+
 
     //UPDATE THIS WHEN THE RECURRING LIST UI IS CREATED TO UPDATE THE UI
     //OR DO THAT IN A SEPARATE METHOD
-    public static void addItemToRecurringList(RecurringGoal rgoal, ArrayAdapter<Goal> adapter, GoalLists todoList, RecurringGoalLists recurringList) {
-        recurringList.add(rgoal);
-        addItemToTodoList(rgoal.toGoal(), adapter, todoList);
+    public static void addItemToRecurringList(RecurringGoal rgoal, ArrayAdapter<Goal> todayAdapter, GoalLists todoList,
+                                              GoalLists tomorrowList, RecurringGoalLists recurringList,
+                                              LocalDate todayDate) {
+        int id = recurringList.add(rgoal);
+
+        if(rgoal.recurToday(todayDate)) {
+            addItemToTodoList(rgoal.toGoal(), todayAdapter, todoList);
+            rgoal.setId(id);
+            recurringList.add(rgoal);
+        }
+        if(rgoal.recurToday(todayDate.plusDays(1))) {
+            tomorrowList.add(rgoal.toGoal());
+            rgoal.setId(id);
+            recurringList.add(rgoal);
+        }
+    }
+
+    public static void addItemToRecurringListTomorrow(RecurringGoal rgoal, ArrayAdapter<Goal> todayAdapter,
+                                              GoalLists tomorrowList, RecurringGoalLists recurringList,
+                                              LocalDate tomorrowDate) {
+        int id = recurringList.add(rgoal);
+
+        if(rgoal.recurToday(tomorrowDate)) {
+            addItemToTodoList(rgoal.toGoal(), todayAdapter, tomorrowList);
+            rgoal.setId(id);
+            recurringList.add(rgoal);
+        }
     }
 
     public static void addRecurringGoalsToTodoList(RecurringGoalLists recurringList, GoalLists todoList,
-                                                   ArrayAdapter<Goal> adapter, DateHandler currentDate) {
+                                                   ArrayAdapter<Goal> adapter, DateHandler currentDate, int tomorrowOffset) {
 
         List<RecurringGoal> recurringGoals = recurringList.getRecurringGoals();
-        LocalDate today = currentDate.dateTime().toLocalDate();
-        //for future use with a tomorrow list
-        LocalDate tomorrow = today.plusDays(1);
+        LocalDate compareDate = currentDate.dateTime().toLocalDate().plusDays(tomorrowOffset);
 
         List<Goal> unfinished = todoList.getUnfinishedGoals();
         for(RecurringGoal rgoal : recurringGoals) {
-            if(rgoal.recurToday(today)) {
+            if(rgoal.recurToday(compareDate)) {
                 //DOESN'T ADD THE GOAL IF THERE IS A GOAL WITH THE SAME TEXT
                 //BUT HYPOTHETICALLY A PERSON COULD MAKE TWO DIFFERENT GOALS WITH SAME TEXT
                 boolean alreadyExists = false;
@@ -92,20 +120,27 @@ public class MainViewModel extends ViewModel implements Observer {
                 if(!alreadyExists) {
                     addItemToTodoList(rgoal.toGoal(), adapter, todoList);
                 }
+                recurringList.add(rgoal);
             }
         }
     }
 
-    public static void refreshAdapter(ArrayAdapter<Goal> adapter, GoalLists todoList) {
+    public static void refreshTodayAdapter(ArrayAdapter<Goal> adapter, GoalLists todoList) {
         adapter.clear();
         adapter.addAll(todoList.getUnfinishedGoals());
         adapter.notifyDataSetChanged();
     }
 
-    public static void refreshFinishedAdapter(ArrayAdapter<Goal> finishedAdapter, GoalLists todoList) {
+    public static void refreshTodayFinishedAdapter(ArrayAdapter<Goal> finishedAdapter, GoalLists todoList) {
         finishedAdapter.clear();
         finishedAdapter.addAll(todoList.getFinishedGoals());
         finishedAdapter.notifyDataSetChanged();
+    }
+
+    public static void refreshRecurringAdapter(ArrayAdapter<RecurringGoal> adapter, RecurringGoalLists recurringList) {
+        adapter.clear();
+        adapter.addAll(recurringList.getRecurringGoals());
+        adapter.notifyDataSetChanged();
     }
 
     @Override

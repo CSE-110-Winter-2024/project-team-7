@@ -83,6 +83,7 @@ public class RecurringGoalTest {
             }
             testDate = testDate.plusDays(1);
         }
+
     }
 
 
@@ -92,6 +93,8 @@ public class RecurringGoalTest {
         // Adding a context parameter to the constructor call, e.g., "Anniversary"
         RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.YEARLY, febNine, "Home");
         LocalDate testDate = LocalDate.of(2024, 2, 9);
+
+        assertTrue(rgoal.recurToday(febNine));
 
         // Test for all days in a year except Feb 9, should not recur
         for(int i = 0; i < 364; i++) {
@@ -107,6 +110,29 @@ public class RecurringGoalTest {
             assertTrue("Expected to recur today: " + testDate, rgoal.recurToday(testDate));
             testDate = testDate.plusYears(1);
         }
+    }
+
+    @Test
+    public void skipPastDayTest() {
+        LocalDate febNine = LocalDate.of(2024, 2, 9);
+        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.WEEKLY, febNine);
+        LocalDate testDate = LocalDate.of(2024, 2, 9);
+
+        assertTrue(rgoal.recurToday(febNine));
+
+        testDate = testDate.plusDays(3);
+        assertFalse(rgoal.recurToday(testDate));
+
+        //skips past the day here
+        testDate = testDate.plusWeeks(1);
+        assertTrue(rgoal.recurToday(testDate));
+
+        //goes back to the day that was skipped
+        testDate = testDate.plusDays(-3);
+        assertFalse(rgoal.recurToday(testDate));
+
+        testDate = testDate.plusWeeks(1);
+        assertTrue(rgoal.recurToday(testDate));
     }
 
     @Test

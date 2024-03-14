@@ -86,6 +86,12 @@ public class SimpleGoalLists implements GoalLists {
         size = unfinished.size();
     }
 
+    @Override
+    public void clearUnfinished() {
+        unfinished.clear();
+        size = finished.size();
+    }
+
     public List<Goal> getGoalsByContext(String context, boolean isFinished) {
         if (isFinished) {
             return finished.stream()

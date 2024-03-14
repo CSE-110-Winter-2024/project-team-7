@@ -50,7 +50,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private ArrayAdapter<Goal> finishedAdapter;
     private DateHandler currentDate;
     private GoalLists todoList;
+
+    private GoalLists tomorrowList;
+
     private RecurringGoalLists recurringList;
+
+    private GoalLists pendingList;
+
     private RoomDateStorage storedDate;
 
     private TodayFragment todayFragment;
@@ -71,13 +77,26 @@ public class MainActivity extends AppCompatActivity implements Observer {
         SuccessoratorApplication app = (SuccessoratorApplication) getApplication();
         currentDate = app.getCurrentDate();
         todoList = app.getTodoList();
+        pendingList = app.getPendingList();
+        tomorrowList = app.getTomorrowList();
+
         storedDate = app.getStoredDate();
         recurringList = app.getRecurringList();
 
         currentDate.observe(this);
         DateUpdater.scheduleDateUpdates(currentDate);
 
-        currentView = TODAY;
+        changeView(TODAY);
+        todayFragment.manualOnCreateView();
+        changeView(TOMORROW);
+        tomorrowFragment.manualOnCreateView();
+        changeView(RECURRING);
+        recurringFragment.manualOnCreateView();
+        changeView(PENDING);
+        pendingFragment.manualOnCreateView();
+        changeView(TODAY);
+
+
 
     }
 
@@ -108,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 dialogFragment.show(getSupportFragmentManager(), "AddTomorrowGoalDialogFragment");
             } else if(currentView == RECURRING) {
                 var dialogFragment = AddRecurringGoalDialogFragment.newInstance();
-                //dialogFragment.setCurrentDate(currentDate);
+                dialogFragment.setCurrentDate(currentDate);
                 dialogFragment.show(getSupportFragmentManager(), "AddRecurringGoalDialogFragment");
             } else if(currentView == PENDING) {
                 var dialogFragment = AddPendingGoalDialogFragment.newInstance();
@@ -130,9 +149,55 @@ public class MainActivity extends AppCompatActivity implements Observer {
         todayFragment.updatePlaceholderVisibility();
     }
 
+
+    public void addPendingItemToTodoList(Goal goal) {
+        ArrayAdapter<Goal> addAdapter = todayFragment.getPendingAdapter();
+        if (pendingFragment != null) {
+            addAdapter = pendingFragment.getAdapter();
+        }
+        MainViewModel.addItemToTodoList(goal, addAdapter, pendingList);
+        if (pendingFragment != null) {
+            pendingFragment.updatePlaceholderVisibility();
+        }
+    }
+
+    public void addItemToTomorrowList(Goal goal) {
+        ArrayAdapter<Goal> addAdapter = todayFragment.getTomorrowAdapter();
+        if (tomorrowFragment != null) {
+            addAdapter = tomorrowFragment.getAdapter();
+        }
+        MainViewModel.addItemToTodoList(goal, addAdapter, tomorrowList);
+        if (tomorrowFragment != null) {
+            tomorrowFragment.updatePlaceholderVisibility();
+        }
+
+
+    }
+
     public void addItemToRecurringList(RecurringGoal rgoal) {
-        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(), todoList, recurringList);
+        MainViewModel.addItemToRecurringList(rgoal, todayFragment.getAdapter(),
+                todoList, tomorrowList, recurringList, currentDate.dateTime().toLocalDate());
         todayFragment.updatePlaceholderVisibility();
+
+        if(recurringFragment != null) {
+            recurringFragment.updatePlaceholderVisibility();
+        }
+
+        if(tomorrowFragment != null) {
+            tomorrowFragment.updatePlaceholderVisibility();
+        }
+
+    }
+
+    public void addItemToRecurringListTomorrow(RecurringGoal rgoal) {
+        MainViewModel.addItemToRecurringListTomorrow(rgoal, tomorrowFragment.getAdapter(), tomorrowList,
+                recurringList, currentDate.dateTime().toLocalDate().plusDays(1));
+        tomorrowFragment.updatePlaceholderVisibility();
+
+        if(recurringFragment != null) {
+            recurringFragment.updatePlaceholderVisibility();
+        }
+
     }
 
     @Override
@@ -153,26 +218,35 @@ public class MainActivity extends AppCompatActivity implements Observer {
             currentView = TODAY;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainerView, TodayFragment.newInstance())
-                    .commit();
+                    .replace(R.id.fragmentContainerView, todayFragment == null ?
+                            TodayFragment.newInstance() : todayFragment)
+                    .setReorderingAllowed(true)
+                    .commitNow();
+
         } else if(newView == TOMORROW) {
             currentView = TOMORROW;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainerView, TomorrowFragment.newInstance())
-                    .commit();
+                    .replace(R.id.fragmentContainerView, tomorrowFragment == null ?
+                            TomorrowFragment.newInstance() : tomorrowFragment)
+                    .setReorderingAllowed(true)
+                    .commitNow();
         } else if(newView == RECURRING) {
             currentView = RECURRING;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainerView, RecurringFragment.newInstance())
-                    .commit();
+                    .replace(R.id.fragmentContainerView, recurringFragment == null ?
+                            RecurringFragment.newInstance() : recurringFragment)
+                    .setReorderingAllowed(true)
+                    .commitNow();
         } else if(newView == PENDING) {
             currentView = PENDING;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainerView, PendingFragment.newInstance())
-                    .commit();
+                    .replace(R.id.fragmentContainerView, pendingFragment == null ?
+                            PendingFragment.newInstance() : pendingFragment)
+                    .setReorderingAllowed(true)
+                    .commitNow();
         }
     }
 
@@ -212,6 +286,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public TodayFragment getTodayFragment() {
         return todayFragment;
     }
+
+    public TomorrowFragment getTomorrowFragment() {
+        return tomorrowFragment;
+    }
+
+    public RecurringFragment getRecurringFragment() { return recurringFragment; }
+
+    public PendingFragment getPendingFragment() { return pendingFragment; }
 
     public int getCurrentView() {
         return currentView;

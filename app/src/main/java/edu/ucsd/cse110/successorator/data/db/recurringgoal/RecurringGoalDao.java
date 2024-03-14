@@ -1,12 +1,12 @@
 package edu.ucsd.cse110.successorator.data.db.recurringgoal;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Dao
@@ -29,7 +29,8 @@ public interface RecurringGoalDao {
     @Transaction
     default int add(RecurringGoalEntity goal) {
         var newGoal = new RecurringGoalEntity(goal.content, goal.recurringType,
-                goal.year, goal.month, goal.dayOfMonth, goal.context);
+                goal.startYear, goal.startMonth, goal.startDayOfMonth,
+                goal.nextYear, goal.nextMonth, goal.nextDayOfMonth, goal.context);
         return Math.toIntExact(insert(newGoal));
     }
 

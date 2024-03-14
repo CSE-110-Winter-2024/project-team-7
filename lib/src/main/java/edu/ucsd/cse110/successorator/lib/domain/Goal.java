@@ -54,9 +54,14 @@ public class Goal implements Serializable {
         return new Goal(this.id, this.content, finished, this.fromRecurring, this.context);
     }
 
+    public Goal copyWithoutId() {
+        return new Goal(null, this.content, this.finished, this.fromRecurring, this.context);
+    }
+
     public @NonNull String getContext() {
         return context;
     }
+
 
     @Override
     public boolean equals(Object o) {
