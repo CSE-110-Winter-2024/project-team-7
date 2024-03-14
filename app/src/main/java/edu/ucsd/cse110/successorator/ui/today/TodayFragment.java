@@ -236,6 +236,4 @@ public class TodayFragment extends Fragment implements Observer {
 
     public ArrayAdapter<Goal> getPendingAdapter() { return pendingAdapter; }
 
-
-
 }
