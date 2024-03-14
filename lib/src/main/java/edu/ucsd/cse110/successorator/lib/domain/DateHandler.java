@@ -36,7 +36,7 @@ public class DateHandler implements Subject {
             dateTime = dateTime.minusDays(1);
         }
         String newFormattedDate = "Today, " + dateTime.format(dateFormat);
-        if (formattedDate == null || !(formattedDate.equals(newFormattedDate)) || !(previousDate.equals(newFormattedDate))) {
+        if (formattedDate == null || !(formattedDate.equals(newFormattedDate)) || !(newFormattedDate.equals(previousDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
         }
@@ -44,12 +44,21 @@ public class DateHandler implements Subject {
 
     public void updateTodayDate(LocalDateTime dateInput) {
         this.dateTime = dateInput;
+
+        LocalTime currentTime = dateTime.toLocalTime();
+        if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(2, 0))) {
+            dateTime = dateTime.minusDays(1);
+            System.out.println("datehandler print: " + dateTime);
+        }
+
         String newFormattedDate = "Today, " + dateTime.format(dateFormat);
+
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
 
         }
+        System.out.println("datehandler print: " + formattedDate);
     }
 
     public void skipDay() {

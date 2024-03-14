@@ -25,6 +25,7 @@ public class DateUpdater {
                     @Override
                     public void run() {
                         dateData.updateTodayDate((String) null);
+                        System.out.println("dateupdater print");
                     }
                 });
             }
