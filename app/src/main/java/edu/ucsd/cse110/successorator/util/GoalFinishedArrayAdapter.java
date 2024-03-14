@@ -48,6 +48,7 @@ public class GoalFinishedArrayAdapter extends ArrayAdapter<Goal> {
             goalDescriptionTextView.setText(goal.content());
             goalDescriptionTextView.setPaintFlags(goalDescriptionTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+
             // Set the context symbol's background color
             String contextSymbol = "";
             int contextBackground = 0;

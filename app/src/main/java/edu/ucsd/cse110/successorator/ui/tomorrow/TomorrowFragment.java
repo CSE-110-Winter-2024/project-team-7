@@ -46,7 +46,6 @@ public class TomorrowFragment extends Fragment implements Observer {
     private ArrayAdapter<Goal> finishedAdapter;
 
     private ArrayAdapter<Goal> todayAdapter;
-    //THIS MAY BE TEMPORARY IF WE WANT TO MAKE A TOMORROWLIST CLASS
     private GoalLists tomorrowList;
 
 
@@ -73,15 +72,11 @@ public class TomorrowFragment extends Fragment implements Observer {
         SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
         mainActivity.setTomorrowFragment(this);
         currentDate = app.getCurrentDate();
-        tomorrowList = app.getTomorrowList(); //NOT YET IMPLEMENTED
+        tomorrowList = app.getTomorrowList();
         todayList = app.getTodoList();
         storedDate = app.getStoredDate();
         formattedStoredDate = storedDate.formattedDate();
         todayAdapter = mainActivity.getTodayFragment().getAdapter();
-        //tomorrowList = app.getTodoList(); //TO AVOID CRASHES
-
-
-
     }
 
     @Override
@@ -111,13 +106,10 @@ public class TomorrowFragment extends Fragment implements Observer {
         setupDateMock();
         updatePlaceholderVisibility();
         System.out.println("herererereerererere");
-
     }
 
     private void setupListView() {
-        // Use GoalArrayAdapter instead of the default ArrayAdapter to handle context colors and labels
         adapter = new GoalArrayAdapter(this.getContext(), R.layout.list_item_goal, new ArrayList<>());
-        // Use GoalFinishedArrayAdapter for finished goals to handle context colors and labels
         finishedAdapter = new GoalFinishedArrayAdapter(this.getContext(), R.layout.list_item_goal, new ArrayList<Goal>());
 
         view.goalsListTomorrowView.setAdapter(adapter);
