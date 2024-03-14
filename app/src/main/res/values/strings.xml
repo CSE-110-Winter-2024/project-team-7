@@ -7,4 +7,5 @@
     <string name="placeholder_pending_text">No Pending Goals.\nClick the + at the upper right to enter your Pending Goals.</string>
     <string name="placeholder_recurring_text">No Recurring Goals.\nClick the + at the upper right to enter your Recurring Goals.</string>
     <string name="placeholder_tomorrow_text">No goals for Tomorrow.\nClick the + at the upper right to enter your Most Important Thing Tomorrow.</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
 </resources>
