@@ -32,6 +32,8 @@ import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
+import edu.ucsd.cse110.successorator.util.GoalArrayAdapter;
+import edu.ucsd.cse110.successorator.util.GoalFinishedArrayAdapter;
 
 public class TomorrowFragment extends Fragment implements Observer {
     private MainActivity mainActivity;
@@ -113,18 +115,10 @@ public class TomorrowFragment extends Fragment implements Observer {
     }
 
     private void setupListView() {
-        adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
-        finishedAdapter = new ArrayAdapter<Goal>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textViewGoal = (TextView) view.findViewById(android.R.id.text1);
-                textViewGoal.setPaintFlags(textViewGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                return view;
-            }
-        };
+        // Use GoalArrayAdapter instead of the default ArrayAdapter to handle context colors and labels
+        adapter = new GoalArrayAdapter(this.getContext(), R.layout.list_item_goal, new ArrayList<>());
+        // Use GoalFinishedArrayAdapter for finished goals to handle context colors and labels
+        finishedAdapter = new GoalFinishedArrayAdapter(this.getContext(), R.layout.list_item_goal, new ArrayList<Goal>());
 
         view.goalsListTomorrowView.setAdapter(adapter);
         view.finishedListTomorrowView.setAdapter(finishedAdapter);
@@ -145,8 +139,8 @@ public class TomorrowFragment extends Fragment implements Observer {
                 updatePlaceholderVisibility();
             }
         });
-
     }
+
 
     public boolean updatePlaceholderVisibility() {
         boolean isEmpty = tomorrowList.empty();

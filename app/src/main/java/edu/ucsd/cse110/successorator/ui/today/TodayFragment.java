@@ -110,8 +110,6 @@ public class TodayFragment extends Fragment implements Observer {
         view.goalsListView.setAdapter(adapter);
         view.finishedListView.setAdapter(finishedAdapter);
 
-
-
         if (mainActivity.getTomorrowFragment() == null) {
             tomorrowAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
         }
