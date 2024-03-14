@@ -25,6 +25,7 @@ import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
 import edu.ucsd.cse110.successorator.ui.dialog.MovePendingGoalDialogFragment;
+import edu.ucsd.cse110.successorator.util.GoalArrayAdapter;
 
 public class PendingFragment extends Fragment{
 
@@ -72,7 +73,7 @@ public class PendingFragment extends Fragment{
     }
 
     private void setupListView() {
-        adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
+        adapter = new GoalArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
 
         view.goalsListPendingView.setAdapter(adapter);
 
