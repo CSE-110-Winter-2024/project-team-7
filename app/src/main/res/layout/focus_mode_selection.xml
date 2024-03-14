@@ -5,45 +5,49 @@
     android:padding="16dp"
     android:scrollbars="none">
 
-    <LinearLayout
+    <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <RadioButton
             android:id="@+id/button_h"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/shape_home"
+            android:button="@android:color/transparent"
+            android:background="@drawable/shape_home"
             android:contentDescription="@string/Home"
             android:padding="10dp"
             android:layout_margin="10dp" />
 
-        <ImageView
+        <RadioButton
             android:id="@+id/button_w"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/shape_work"
+            android:button="@android:color/transparent"
+            android:background="@drawable/shape_work"
             android:contentDescription="@string/Work"
             android:padding="10dp"
             android:layout_margin="10dp" />
 
-        <ImageView
+        <RadioButton
             android:id="@+id/button_s"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/shape_school"
+            android:button="@android:color/transparent"
+            android:background="@drawable/shape_school"
             android:contentDescription="@string/School"
             android:padding="10dp"
             android:layout_margin="10dp" />
 
-        <ImageView
+        <RadioButton
             android:id="@+id/button_e"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/shape_errands"
+            android:button="@android:color/transparent"
+            android:background="@drawable/shape_errands"
             android:contentDescription="@string/Errand"
             android:padding="10dp"
             android:layout_margin="10dp" />
-    </LinearLayout>
+    </RadioGroup>
 </HorizontalScrollView>
