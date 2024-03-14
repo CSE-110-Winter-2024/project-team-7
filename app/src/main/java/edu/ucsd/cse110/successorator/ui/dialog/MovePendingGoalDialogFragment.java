@@ -44,7 +44,7 @@ public class MovePendingGoalDialogFragment extends DialogFragment {
     private void onPositiveButtonClick(DialogInterface dialog, int position) {
 
         MainActivity activity = (MainActivity) requireActivity();
-        Goal selected = PendingFragment.getAdapter().getItem(goalPosition);
+        Goal selected = PendingFragment.getAdapter().getItem(goalPosition).copyWithoutId();
         if(view.moveTodayButton.isChecked()) {
             activity.addItemToTodoList(selected);
             activity.deletePendingGoal(selected);
