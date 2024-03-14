@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.successorator.ui.recurring;
 
 import static edu.ucsd.cse110.successorator.MainViewModel.refreshRecurringAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.refreshRecurringAdapterByContext;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -103,7 +104,12 @@ public class RecurringFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderRecurringText.setText(R.string.placeholder_recurring_text);
         } else {
-             refreshRecurringAdapter(adapter, recurringList);
+            if (mainActivity.getFocus() == "All") {
+                refreshRecurringAdapter(adapter, recurringList);
+            }
+            else {
+                refreshRecurringAdapterByContext(adapter, recurringList, mainActivity.getFocus());
+            }
         }
 
         return isEmpty;

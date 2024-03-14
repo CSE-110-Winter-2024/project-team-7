@@ -1,53 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:scrollbars="none">
+    android:layout_height="match_parent">
 
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
             android:id="@+id/button_h"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/Home"
             android:button="@android:color/transparent"
             android:background="@drawable/shape_home"
-            android:contentDescription="@string/Home"
-            android:padding="10dp"
-            android:layout_margin="10dp" />
+            android:textColor="@drawable/text_color"
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/button_w"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/Work"
             android:button="@android:color/transparent"
             android:background="@drawable/shape_work"
-            android:contentDescription="@string/Work"
-            android:padding="10dp"
-            android:layout_margin="10dp" />
+            android:textColor="@drawable/text_color"
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/button_s"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/School"
             android:button="@android:color/transparent"
             android:background="@drawable/shape_school"
-            android:contentDescription="@string/School"
-            android:padding="10dp"
-            android:layout_margin="10dp" />
+            android:textColor="@drawable/text_color"
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/button_e"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/Errand"
             android:button="@android:color/transparent"
             android:background="@drawable/shape_errands"
-            android:contentDescription="@string/Errand"
-            android:padding="10dp"
-            android:layout_margin="10dp" />
+            android:textColor="@drawable/text_color"
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
     </RadioGroup>
-</HorizontalScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

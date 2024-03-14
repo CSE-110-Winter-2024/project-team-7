@@ -139,6 +139,13 @@ public class MainViewModel extends ViewModel implements Observer {
         adapter.notifyDataSetChanged();
     }
 
+    public static void refreshTodayAdapterByContext(ArrayAdapter<Goal> adapter, GoalLists todoList, String context) {
+        List<Goal> sortedGoals = todoList.getUnfinishedGoalsByContext(context);
+        adapter.clear();
+        adapter.addAll(sortedGoals);
+        adapter.notifyDataSetChanged();
+    }
+
 
     public static void refreshTodayFinishedAdapter(ArrayAdapter<Goal> finishedAdapter, GoalLists todoList) {
         List<Goal> sortedGoalsStepOne =
@@ -152,6 +159,13 @@ public class MainViewModel extends ViewModel implements Observer {
         finishedAdapter.notifyDataSetChanged();
     }
 
+    public static void refreshTodayFinishedByContext(ArrayAdapter<Goal> finishedAdapter, GoalLists todoList, String context) {
+        List<Goal> sortedGoals = todoList.getFinishedGoalsByContext(context);
+        finishedAdapter.clear();
+        finishedAdapter.addAll(sortedGoals);
+        finishedAdapter.notifyDataSetChanged();
+    }
+
     public static void refreshRecurringAdapter(ArrayAdapter<RecurringGoal> adapter, RecurringGoalLists recurringList) {
         List<RecurringGoal> sortedGoalsStepOne =
                 Stream.concat(recurringList.getRecurringGoalsByContext("Home").stream(), recurringList.getRecurringGoalsByContext("Work").stream()).collect(Collectors.toList()); ;
@@ -159,6 +173,13 @@ public class MainViewModel extends ViewModel implements Observer {
                 Stream.concat(sortedGoalsStepOne.stream(), recurringList.getRecurringGoalsByContext("School").stream()).collect(Collectors.toList()); ;
         List<RecurringGoal> sortedGoals =
                 Stream.concat(sortedGoalsStepTwo.stream(), recurringList.getRecurringGoalsByContext("Errands").stream()).collect(Collectors.toList());
+        adapter.clear();
+        adapter.addAll(sortedGoals);
+        adapter.notifyDataSetChanged();
+    }
+
+    public static void refreshRecurringAdapterByContext(ArrayAdapter<RecurringGoal> adapter, RecurringGoalLists recurringList, String context) {
+        List<RecurringGoal> sortedGoals = recurringList.getRecurringGoalsByContext(context);
         adapter.clear();
         adapter.addAll(sortedGoals);
         adapter.notifyDataSetChanged();

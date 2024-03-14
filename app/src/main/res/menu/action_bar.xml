@@ -2,14 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Hamburger (Navigation drawer toggle) -->
-    <item
-        android:id="@+id/action_hamburger"
-        android:icon="@drawable/baseline_dehaze_24"
-    android:title="@string/navigation_drawer_open"
-    app:showAsAction="always"
-    app:iconTint="@color/white" />
-
     <item
         android:id="@+id/action_bar_add_button"
         android:icon="@drawable/add_button"
@@ -23,4 +15,12 @@
         android:title="@string/arrow_drop_down"
         app:showAsAction="always"
         app:iconTint="@color/white" />
+
+    <item
+        android:id="@+id/action_bar_focus_button"
+        android:icon="@drawable/baseline_dehaze_24"
+        android:title="@string/focus_button"
+        app:showAsAction="always"
+        app:iconTint="@color/white" />
+
 </menu>
