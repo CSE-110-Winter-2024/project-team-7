@@ -30,7 +30,7 @@ public class RecurringGoal implements Serializable {
         this.startDate = startDate;
         this.dayOfWeek = startDate.getDayOfWeek();
         this.weekOfMonth = ((startDate.getDayOfMonth()-1) / 7) + 1;
-        findNextRecurringDate(startDate);
+        this.nextRecurringDate = startDate.plusDays(0);
         this.context = context;
     }
 

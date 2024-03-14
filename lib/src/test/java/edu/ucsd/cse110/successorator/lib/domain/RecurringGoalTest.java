@@ -150,6 +150,8 @@ public class RecurringGoalTest {
         LocalDate startDate = LocalDate.of(2024, 2, 9);
         RecurringGoal schoolGoal = new RecurringGoal(null, "Math class", RecurringGoal.DAILY, startDate, "School");
         RecurringGoal errandsGoal = new RecurringGoal(null, "Grocery shopping", RecurringGoal.MONTHLY, startDate, "Errands");
+        schoolGoal.recurToday(startDate);
+        errandsGoal.recurToday(startDate);
 
         assertTrue("Expected school goal to recur today", schoolGoal.recurToday(startDate.plusDays(1)));
         assertFalse("Errands goal should not recur today", errandsGoal.recurToday(startDate.plusDays(1)));
@@ -159,6 +161,7 @@ public class RecurringGoalTest {
     public void testRecurringGoalsDoNotRecurOutsideContext() {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         RecurringGoal errandsGoal = new RecurringGoal(null, "Pharmacy visit", RecurringGoal.MONTHLY, startDate, "Errands");
+        errandsGoal.recurToday(startDate);
 
         assertFalse("Errands goal should not recur today", errandsGoal.recurToday(LocalDate.of(2024, 3, 2)));
     }
