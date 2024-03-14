@@ -102,8 +102,8 @@ public class RecurringGoalTest {
             assertFalse("Expected not to recur today: " + testDate, rgoal.recurToday(testDate));
         }
 
-        // Reset testDate to Feb 9, 2024, for yearly recurrence test
-        testDate = LocalDate.of(2024, 2, 9);
+        // Reset testDate to Feb 9, 2025, for yearly recurrence test
+        testDate = LocalDate.of(2025, 2, 9);
 
         // Test for the next 25 years, should recur on Feb 9 each year
         for(int i = 0; i < 25; i++) {
