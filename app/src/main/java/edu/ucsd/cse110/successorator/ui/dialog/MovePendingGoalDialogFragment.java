@@ -52,8 +52,7 @@ public class MovePendingGoalDialogFragment extends DialogFragment {
             activity.addItemToTomorrowList(selected.copyWithoutId());
             activity.deletePendingGoal(selected);
         } else if(view.finishPendingButton.isChecked()) {
-            activity.addItemToTodoList(selected.copyWithoutId());
-            activity.moveToFinished(selected);
+            activity.addItemToTodoList(selected.copyWithoutIdFinished());
             activity.deletePendingGoal(selected);
         } else if(view.deletePendingButton.isChecked()) {
             activity.deletePendingGoal(selected);

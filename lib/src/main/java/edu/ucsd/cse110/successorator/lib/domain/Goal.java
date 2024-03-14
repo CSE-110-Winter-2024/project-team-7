@@ -62,6 +62,10 @@ public class Goal implements Serializable {
         return new Goal(null, this.content, this.finished, this.fromRecurring);
     }
 
+    public @NonNull Goal copyWithoutIdFinished() {
+        return new Goal(null, this.content, true, this.fromRecurring);
+    }
+
 
     @Override
     public boolean equals(Object o) {
