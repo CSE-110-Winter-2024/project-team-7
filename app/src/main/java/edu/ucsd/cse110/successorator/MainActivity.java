@@ -164,6 +164,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void deletePendingGoal(Goal goal) {
         pendingList.finishTask(goal);
         pendingList.clearFinished();
+        if (pendingFragment != null) {
+            pendingFragment.updatePlaceholderVisibility();
+        }
         MainViewModel.deletePendingGoal(goal, PendingFragment.getAdapter());
     }
 
