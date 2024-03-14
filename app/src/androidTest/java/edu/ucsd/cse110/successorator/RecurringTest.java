@@ -46,10 +46,10 @@ public class RecurringTest {
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 assertTrue(todoList.unfinishedSize() == 0);
                 assertTrue(todoList.finishedSize() == 1);
-                assertTrue(todoList.getFinishedGoals().get(0).toString().equals("daily"));
+                assertTrue(todoList.getFinishedGoals().get(0).content().equals("daily"));
                 currentDate.skipDay();
                 assertTrue(todoList.unfinishedSize() == 1);
-                assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("daily"));
+                assertTrue(todoList.getUnfinishedGoals().get(0).content().equals("daily"));
                 assertTrue(todoList.finishedSize() == 0);
                 assertTrue(recurringList.size() == 1);
 
@@ -77,7 +77,7 @@ public class RecurringTest {
                     currentDate.skipDay();
                     if(i == 6) {
                         assertTrue(todoList.unfinishedSize() == 1);
-                        assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("weekly"));
+                        assertTrue(todoList.getUnfinishedGoals().get(0).content().equals("weekly"));
                     } else {
                         assertTrue(todoList.unfinishedSize() == 0);
                         assertTrue(todoList.finishedSize() == 0);
@@ -97,7 +97,7 @@ public class RecurringTest {
                 RecurringGoalLists recurringList = app.getRecurringList();
                 DateHandler currentDate = app.getCurrentDate();
 
-                currentDate.updateTodayDate(LocalDateTime.of(2024, 3, 5, 1, 1));
+                currentDate.updateTodayDate(LocalDateTime.of(2024, 3, 5, 3, 1));
 
                 activity.addItemToRecurringList(new RecurringGoal(null, "monthly",
                         RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate(), ""));
@@ -109,7 +109,7 @@ public class RecurringTest {
                     currentDate.skipDay();
                     if(i >= 27) {
                         assertTrue(todoList.unfinishedSize() == 1);
-                        assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("monthly"));
+                        assertTrue(todoList.getUnfinishedGoals().get(0).content().equals("monthly"));
                     } else {
                         assertTrue(todoList.unfinishedSize() == 0);
                         assertTrue(todoList.finishedSize() == 0);
@@ -141,7 +141,7 @@ public class RecurringTest {
                     currentDate.skipDay();
                     if(i == 364) {
                         assertTrue(todoList.unfinishedSize() == 1);
-                        assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("yearly"));
+                        assertTrue(todoList.getUnfinishedGoals().get(0).content().equals("yearly"));
                     } else {
                         assertTrue(todoList.unfinishedSize() == 0);
                         assertTrue(todoList.finishedSize() == 0);

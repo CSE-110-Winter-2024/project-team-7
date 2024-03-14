@@ -63,10 +63,10 @@ public class MainActivityTest {
 
                 assertTrue("todoList should not be empty after adding a goal", !todoList.empty());
                 assertEquals("Size of todoList should be 1 after adding one goal", 1, todoList.size());
-                assertEquals("First goal in the todoList should be the one that was added", newGoal, todoList.get(0));
+                assertEquals("First goal in the todoList should be the one that was added", newGoal.content(), todoList.get(0).content());
 
                 ArrayAdapter<Goal> adapter = activity.getTodayFragment().getAdapter();
-                assertEquals("Adapter should contain the new goal", newGoal, adapter.getItem(adapter.getCount() - 1));
+                assertEquals("Adapter should contain the new goal", newGoal.content(), adapter.getItem(adapter.getCount() - 1).content());
 
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 todoList.clearFinished();

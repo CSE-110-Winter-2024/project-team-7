@@ -15,7 +15,7 @@ public class Goal implements Serializable {
 
     // Constructor without 'fromRecurring' and 'context' for backward compatibility
     public Goal(@Nullable Integer id, @NonNull String content, boolean finished) {
-        this(id, content, finished, false, "");
+        this(id, content, finished, false, "Home");
     }
 
     public Goal(@Nullable Integer id, @NonNull String content, boolean finished, boolean fromRecurring, @NonNull String context) {

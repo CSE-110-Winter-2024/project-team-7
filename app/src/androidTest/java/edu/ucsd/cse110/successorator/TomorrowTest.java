@@ -55,7 +55,7 @@ public class TomorrowTest {
                 assertTrue(todoList.unfinishedSize() == 0);
                 assertTrue(todoList.finishedSize() == 1);
                 assertTrue(tomorrowList.empty());
-                assertTrue(todoList.getFinishedGoals().get(0).toString().equals("TestGoal"));
+                assertTrue(todoList.getFinishedGoals().get(0).content().equals("TestGoal"));
                 currentDate.skipDay();
                 assertTrue(todoList.empty());
                 assertTrue(tomorrowList.empty());

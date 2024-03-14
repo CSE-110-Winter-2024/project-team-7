@@ -41,9 +41,9 @@ public class AppEndToEndTest {
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
-                assertTrue(todoList.get(0).toString().equals("Prepare for Tomorrow's Presentation"));
+                assertTrue(todoList.get(0).content().equals("Prepare for Tomorrow's Presentation"));
                 assertTrue(todoList.finishedSize() == 1);
-                assertTrue(todoList.getFinishedGoals().get(0).toString().equals("Finish Project Report"));
+                assertTrue(todoList.getFinishedGoals().get(0).content().equals("Finish Project Report"));
 
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 todoList.clearFinished();
@@ -70,9 +70,9 @@ public class AppEndToEndTest {
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
-                assertTrue(todoList.get(0).toString().equals("Prepare for Tomorrow's Presentation"));
+                assertTrue(todoList.get(0).content().equals("Prepare for Tomorrow's Presentation"));
                 assertTrue(todoList.finishedSize() == 1);
-                assertTrue(todoList.getFinishedGoals().get(0).toString().equals("Finish Project Report"));
+                assertTrue(todoList.getFinishedGoals().get(0).content().equals("Finish Project Report"));
             });
 
             // Code consulted from an AI language model developed by OpenAI
@@ -89,9 +89,9 @@ public class AppEndToEndTest {
                 String currentDate = app.getCurrentDate().getFormattedDate();
                 assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
-                assertTrue(todoList.get(0).toString().equals("Prepare for Tomorrow's Presentation"));
+                assertTrue(todoList.get(0).content().equals("Prepare for Tomorrow's Presentation"));
                 assertTrue(todoList.finishedSize() == 1);
-                assertTrue(todoList.getFinishedGoals().get(0).toString().equals("Finish Project Report"));
+                assertTrue(todoList.getFinishedGoals().get(0).content().equals("Finish Project Report"));
 
                 System.out.println(currentDate);
                 app.getCurrentDate().skipDay();
@@ -100,7 +100,7 @@ public class AppEndToEndTest {
 
                 assertFalse(activity.getTodayFragment().updatePlaceholderVisibility());
                 assertTrue(todoList.unfinishedSize() == 1);
-                assertTrue(todoList.get(0).toString().equals("Prepare for Tomorrow's Presentation"));
+                assertTrue(todoList.get(0).content().equals("Prepare for Tomorrow's Presentation"));
                 assertEquals(0, todoList.finishedSize());
 
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
@@ -146,10 +146,10 @@ public class AppEndToEndTest {
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
                 assertTrue(todoList.unfinishedSize() == 0);
                 assertTrue(todoList.finishedSize() == 1);
-                assertTrue(todoList.getFinishedGoals().get(0).toString().equals("daily"));
+                assertTrue(todoList.getFinishedGoals().get(0).content().equals("daily"));
                 currentDate.skipDay();
                 assertTrue(todoList.unfinishedSize() == 1);
-                assertTrue(todoList.getUnfinishedGoals().get(0).toString().equals("daily"));
+                assertTrue(todoList.getUnfinishedGoals().get(0).content().equals("daily"));
                 assertTrue(todoList.finishedSize() == 0);
                 assertTrue(recurringList.size() == 1);
             });
