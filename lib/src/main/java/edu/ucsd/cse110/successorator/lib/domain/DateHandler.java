@@ -65,6 +65,10 @@ public class DateHandler implements Subject {
 
     public void skipDay() {
         this.dateTime = dateTime.plusDays(1);
+        LocalTime currentTime = dateTime.toLocalTime();
+        if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(2, 0))) {
+            dateTime = dateTime.plusDays(1);
+        }
         updateTodayDate(dateTime);
 
     }
