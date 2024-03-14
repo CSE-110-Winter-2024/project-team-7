@@ -119,13 +119,8 @@ public class PendingFragment extends Fragment{
         });
     }
 
-<<<<<<< HEAD
 
     public static ArrayAdapter<Goal> getAdapter() {
-
-=======
-    public static ArrayAdapter<Goal> getAdapter() {
->>>>>>> fb0a643 (#84: making adapter static)
         return adapter;
     }
 }
