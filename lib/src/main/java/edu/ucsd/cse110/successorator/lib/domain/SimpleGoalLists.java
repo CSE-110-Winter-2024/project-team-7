@@ -120,5 +120,11 @@ public class SimpleGoalLists implements GoalLists {
                 .collect(Collectors.toList());
     }
 
+    public List<Goal> getUnfinishedGoalsByContext(String context) {
+        return unfinished.stream()
+                .filter(goal -> goal.getContext().equalsIgnoreCase(context))
+                .collect(Collectors.toList());
+    }
+
 
 }
