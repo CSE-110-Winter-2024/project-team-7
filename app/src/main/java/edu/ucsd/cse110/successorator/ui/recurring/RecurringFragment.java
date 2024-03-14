@@ -21,6 +21,7 @@ import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.RecurringGoal;
 import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
+import edu.ucsd.cse110.successorator.util.RecurringGoalArrayAdapter;
 
 public class RecurringFragment extends Fragment implements Observer {
 
@@ -75,7 +76,7 @@ public class RecurringFragment extends Fragment implements Observer {
     }
 
     private void setupListView() {
-        adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
+        adapter = new RecurringGoalArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
 
         view.goalsListRecurringView.setAdapter(adapter);
 
