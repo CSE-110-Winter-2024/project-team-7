@@ -1,7 +1,9 @@
 package edu.ucsd.cse110.successorator.util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,6 @@ import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 
 public class GoalFinishedArrayAdapter extends ArrayAdapter<Goal> {
-    private static final String TAG = "GoalFinishedAdapter";
     private Context mContext;
     private int mResource;
 
@@ -33,49 +34,45 @@ public class GoalFinishedArrayAdapter extends ArrayAdapter<Goal> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Log.d(TAG, "getView called for position: " + position);
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
-            Log.d(TAG, "Inflating new view for position: " + position);
         }
 
         Goal goal = getItem(position);
         if (goal != null) {
             TextView goalDescriptionTextView = convertView.findViewById(R.id.goalDescriptionTextView);
-            View contextSymbolView = convertView.findViewById(R.id.contextSymbolView);
+            TextView contextSymbolView = convertView.findViewById(R.id.contextSymbolView);
 
-            if (goalDescriptionTextView == null) {
-                Log.e(TAG, "goalDescriptionTextView is null!");
-            }
-            if (contextSymbolView == null) {
-                Log.e(TAG, "contextSymbolView is null!");
-            }
 
             // Set the text and strikethrough to show the goal is finished
             goalDescriptionTextView.setText(goal.content());
             goalDescriptionTextView.setPaintFlags(goalDescriptionTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             // Set the context symbol's background color
+            String contextSymbol = "";
+            int contextBackground = 0;
             switch (goal.getContext()) {
                 case "Home":
-                    contextSymbolView.setBackgroundResource(R.drawable.shape_home);
-                    Log.d(TAG, "Setting context symbol to Home");
+                    contextSymbol = "H";
+                    contextBackground = R.drawable.shape_home;
                     break;
                 case "Work":
-                    contextSymbolView.setBackgroundResource(R.drawable.shape_work);
-                    Log.d(TAG, "Setting context symbol to Work");
+                    contextSymbol = "W";
+                    contextBackground = R.drawable.shape_work;
                     break;
                 case "School":
-                    contextSymbolView.setBackgroundResource(R.drawable.shape_school);
-                    Log.d(TAG, "Setting context symbol to School");
+                    contextSymbol = "S";
+                    contextBackground = R.drawable.shape_school;
                     break;
                 case "Errands":
-                    contextSymbolView.setBackgroundResource(R.drawable.shape_errands);
-                    Log.d(TAG, "Setting context symbol to Errands");
+                    contextSymbol = "E";
+                    contextBackground = R.drawable.shape_errands;
                     break;
             }
-        } else {
-            Log.d(TAG, "Goal is null for position: " + position);
+            contextSymbolView.setBackgroundResource(contextBackground);
+            contextSymbolView.setText(contextSymbol);
+            contextSymbolView.setTextColor(Color.WHITE); // Set text color to white
+            contextSymbolView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12); // Set text size
         }
 
         return convertView;
