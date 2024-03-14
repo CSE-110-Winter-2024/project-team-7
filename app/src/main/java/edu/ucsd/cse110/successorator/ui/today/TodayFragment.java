@@ -148,6 +148,7 @@ public class TodayFragment extends Fragment implements Observer {
     private void setupDateMock() {
         view.dateMockButton.setOnClickListener(v -> {
             currentDate.skipDay();
+            updatePlaceholderVisibility();
         });
     }
 
