@@ -9,6 +9,8 @@ public interface RecurringGoalLists {
 
     List<RecurringGoal> getRecurringGoals();
 
+    List<RecurringGoal> getRecurringGoalsByContext(String context);
+
     int add(RecurringGoal rgoal);
 
     void delete(RecurringGoal rgoal);

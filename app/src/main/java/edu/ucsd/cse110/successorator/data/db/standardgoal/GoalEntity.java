@@ -23,19 +23,23 @@ public class GoalEntity {
     @ColumnInfo(name = "fromRecurring")
     public boolean fromRecurring;
 
-    GoalEntity(@NonNull String content, boolean finished, boolean fromRecurring) {
+    @ColumnInfo(name = "context")
+    public String context;
+
+    GoalEntity(@NonNull String content, boolean finished, boolean fromRecurring, @NonNull String context) {
         this.content = content;
         this.finished = finished;
         this.fromRecurring = fromRecurring;
+        this.context = context;
     }
 
     public static GoalEntity fromGoal(@NonNull Goal goal) {
-        var newGoal = new GoalEntity(goal.content(), goal.getFinished(), goal.isFromRecurring());
+        var newGoal = new GoalEntity(goal.content(), goal.finished(), goal.isFromRecurring(), goal.getContext());
         newGoal.id = goal.id();
         return newGoal;
     }
 
     public @NonNull Goal toGoal() {
-        return new Goal(id, content, finished, fromRecurring);
+        return new Goal(id, content, finished, fromRecurring, context);
     }
 }

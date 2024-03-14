@@ -25,5 +25,8 @@ public interface GoalLists {
     void clearFinished();
     void clearUnfinished();
 
+    List<Goal> getFinishedGoalsByContext(String context);
+    List<Goal> getUnfinishedGoalsByContext(String context);
+
     Goal get(int i);
 }

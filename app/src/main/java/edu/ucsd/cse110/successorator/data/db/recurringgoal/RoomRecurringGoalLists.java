@@ -34,6 +34,16 @@ public class RoomRecurringGoalLists implements RecurringGoalLists {
         return nonEntityGoals;
     }
 
+    @Override
+    public List<RecurringGoal> getRecurringGoalsByContext(String context) {
+        List<RecurringGoal> goalsByContext = new ArrayList<>();
+        List<RecurringGoalEntity> entityGoals = rgoalDao.findByContext(context);
+        for (RecurringGoalEntity entityGoal : entityGoals) {
+            goalsByContext.add(entityGoal.toRecurringGoal());
+        }
+        return goalsByContext;
+    }
+
     public int add(RecurringGoal rgoal) {
         return Math.toIntExact(rgoalDao.insert(RecurringGoalEntity.fromRecurringGoal(rgoal)));
     }
