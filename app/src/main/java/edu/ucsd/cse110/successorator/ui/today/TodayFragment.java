@@ -207,6 +207,8 @@ public class TodayFragment extends Fragment implements Observer {
                 }
                 refreshTodayAdapter(adapter, todoList);
                 adapter.notifyDataSetChanged();
+                refreshTodayFinishedAdapter(finishedAdapter, todoList);
+                finishedAdapter.notifyDataSetChanged();
                 tomorrowList.clearUnfinished();
                 tomorrowList.clearFinished();
                 updatePlaceholderVisibility();
