@@ -36,6 +36,7 @@ import edu.ucsd.cse110.successorator.ui.dialog.AddPendingGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.dialog.AddRecurringGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.dialog.AddTomorrowGoalDialogFragment;
 import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
+import edu.ucsd.cse110.successorator.ui.dialog.FocusSelectDialogFragment;
 import edu.ucsd.cse110.successorator.ui.pending.PendingFragment;
 import edu.ucsd.cse110.successorator.ui.recurring.RecurringFragment;
 import edu.ucsd.cse110.successorator.ui.today.TodayFragment;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private GoalLists pendingList;
 
     private RoomDateStorage storedDate;
+
+    private String focus = "All";
 
     private TodayFragment todayFragment;
     private TomorrowFragment tomorrowFragment;
@@ -126,13 +129,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 dialogFragment.show(getSupportFragmentManager(), "AddRecurringGoalDialogFragment");
             } else if(currentView == PENDING) {
                 var dialogFragment = AddPendingGoalDialogFragment.newInstance();
-                //dialogFragment.setCurrentDate(currentDate);
                 dialogFragment.show(getSupportFragmentManager(), "AddPendingGoalDialogFragment");
             }
         }
 
         if (itemId == R.id.action_arrow_drop_down_button) {
             swapFragments();
+        }
+
+        if (itemId == R.id.action_bar_focus_button) {
+            var dialogFragment = FocusSelectDialogFragment.newInstance();
+            dialogFragment.show(getSupportFragmentManager(), "FocusSelectDialogFragment");
         }
 
         return super.onOptionsItemSelected(item);
@@ -229,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void changeView(int newView) {
         if(newView == TODAY) {
+            System.out.println("SWITCHING TO TODAY");
             currentView = TODAY;
             getSupportFragmentManager()
                     .beginTransaction()
@@ -238,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     .commitNow();
 
         } else if(newView == TOMORROW) {
+            System.out.println("SWITCHING TO TOMORROW");
             currentView = TOMORROW;
             getSupportFragmentManager()
                     .beginTransaction()
@@ -246,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     .setReorderingAllowed(true)
                     .commitNow();
         } else if(newView == RECURRING) {
+            System.out.println("SWITCHING TO RECURRING");
             currentView = RECURRING;
             getSupportFragmentManager()
                     .beginTransaction()
@@ -254,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     .setReorderingAllowed(true)
                     .commitNow();
         } else if(newView == PENDING) {
+            System.out.println("SWITCHING TO PENDING");
             currentView = PENDING;
             getSupportFragmentManager()
                     .beginTransaction()
@@ -308,6 +319,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
         changeView(TODAY);
     }
 
+    public void setFocus(String focus) {
+        this.focus = focus;
+        System.out.println(focus);
+        pendingFragment.updatePlaceholderVisibility();
+        tomorrowFragment.updatePlaceholderVisibility();
+        todayFragment.updatePlaceholderVisibility();
+        recurringFragment.updatePlaceholderVisibility();
+    }
+
     //for testing
     public TodayFragment getTodayFragment() {
         return todayFragment;
@@ -323,5 +343,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public int getCurrentView() {
         return currentView;
+    }
+
+    public String getFocus() {
+        return focus;
     }
 }

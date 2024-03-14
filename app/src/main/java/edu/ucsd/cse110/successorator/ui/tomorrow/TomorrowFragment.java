@@ -1,9 +1,6 @@
 package edu.ucsd.cse110.successorator.ui.tomorrow;
 
-import static edu.ucsd.cse110.successorator.MainViewModel.moveToFinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.moveToUnfinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshTodayAdapter;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshTodayFinishedAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.*;
 
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -142,8 +139,14 @@ public class TomorrowFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderTomorrowText.setText(R.string.placeholder_tomorrow_text);
         } else {
-            refreshTodayAdapter(adapter, tomorrowList);
-            refreshTodayFinishedAdapter(finishedAdapter, tomorrowList);
+            if (mainActivity.getFocus() == "All") {
+                refreshTodayAdapter(adapter, tomorrowList);
+                refreshTodayFinishedAdapter(finishedAdapter, tomorrowList);
+            }
+            else {
+                refreshTodayAdapterByContext(adapter, tomorrowList, mainActivity.getFocus());
+                refreshTodayFinishedByContext(finishedAdapter, tomorrowList, mainActivity.getFocus());
+            }
         }
 
         return isEmpty;

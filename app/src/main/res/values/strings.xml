@@ -17,4 +17,5 @@
     <string name="one_time">One-time</string>
     <string name="weekly_on_weekday">Weekly on weekday</string>
     <string name="yearly_on">Yearly on</string>
+    <string name="focus_button">Focus Button</string>
 </resources>
