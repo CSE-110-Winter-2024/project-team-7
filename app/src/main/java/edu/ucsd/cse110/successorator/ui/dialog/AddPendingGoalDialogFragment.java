@@ -49,7 +49,20 @@ public class AddPendingGoalDialogFragment extends DialogFragment {
         }
 
         MainActivity activity = (MainActivity) requireActivity();
-        activity.addPendingItemToTodoList(new Goal(null, content, false));
+        String context = "Home";
+        if (view.buttonH.isChecked()) {
+            context = "Home";
+        } else if (view.buttonW.isChecked()) {
+            context = "Work";
+        } else if (view.buttonS.isChecked()) {
+            context = "School";
+        } else if (view.buttonE.isChecked()) {
+            context = "Errands";
+        } else {
+            throw new IllegalStateException("No radio button is checked.");
+        }
+
+        activity.addPendingItemToTodoList(new Goal(null, content, false, false, context));
         dialog.dismiss();
     }
 

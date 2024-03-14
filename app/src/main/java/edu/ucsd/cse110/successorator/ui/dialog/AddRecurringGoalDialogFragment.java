@@ -90,18 +90,30 @@ public class AddRecurringGoalDialogFragment extends DialogFragment {
         }
 
         MainActivity activity = (MainActivity) requireActivity();
+        String context = "Home";
+        if (view.buttonH.isChecked()) {
+            context = "Home";
+        } else if (view.buttonW.isChecked()) {
+            context = "Work";
+        } else if (view.buttonS.isChecked()) {
+            context = "School";
+        } else if (view.buttonE.isChecked()) {
+            context = "Errands";
+        } else {
+            throw new IllegalStateException("No radio button is checked.");
+        }
 
         if(view.dailyButton.isChecked()) {
-            var rgoal = new RecurringGoal(null, content, RecurringGoal.DAILY, startDate);
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.DAILY, startDate, context);
             activity.addItemToRecurringList(rgoal);
         } else if(view.weeklyButton.isChecked()) {
-            var rgoal = new RecurringGoal(null, content, RecurringGoal.WEEKLY, startDate);
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.WEEKLY, startDate, context);
             activity.addItemToRecurringList(rgoal);
         } else if(view.monthlyButton.isChecked()) {
-            var rgoal = new RecurringGoal(null, content, RecurringGoal.MONTHLY, startDate);
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.MONTHLY, startDate, context);
             activity.addItemToRecurringList(rgoal);
         } else if(view.yearlyButton.isChecked()) {
-            var rgoal = new RecurringGoal(null, content, RecurringGoal.YEARLY, startDate);
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.YEARLY, startDate, context);
             activity.addItemToRecurringList(rgoal);
         } else {
             throw new IllegalStateException("No radio button is checked.");

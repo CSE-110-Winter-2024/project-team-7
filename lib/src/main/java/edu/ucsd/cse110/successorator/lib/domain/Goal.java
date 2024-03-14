@@ -9,24 +9,21 @@ import java.util.Objects;
 public class Goal implements Serializable {
     private final @Nullable Integer id;
     private final @NonNull String content;
-
     private final @NonNull boolean finished;
-
     private final @NonNull boolean fromRecurring;
+    private final @NonNull String context;
 
-    public Goal(@Nullable Integer id, @NonNull String content, @NonNull boolean finished) {
-        this.id = id;
-        this.content = content;
-        this.finished = finished;
-        this.fromRecurring = false;
+    // Constructor without 'fromRecurring' and 'context' for backward compatibility
+    public Goal(@Nullable Integer id, @NonNull String content, boolean finished) {
+        this(id, content, finished, false, "");
     }
 
-    public Goal(@Nullable Integer id, @NonNull String content,
-                @NonNull boolean finished, @NonNull boolean fromRecurring) {
+    public Goal(@Nullable Integer id, @NonNull String content, boolean finished, boolean fromRecurring, @NonNull String context) {
         this.id = id;
         this.content = content;
         this.finished = finished;
         this.fromRecurring = fromRecurring;
+        this.context = context;
     }
 
     public @Nullable Integer id() {
@@ -46,7 +43,7 @@ public class Goal implements Serializable {
     }
 
     public Goal withId(int id) {
-        return new Goal(id, this.content, this.finished);
+        return new Goal(id, this.content, this.finished, this.fromRecurring, this.context);
     }
 
     public @NonNull boolean isFromRecurring() {
@@ -54,16 +51,19 @@ public class Goal implements Serializable {
     }
 
     public Goal withFinished(boolean finished) {
-        return new Goal(this.id, this.content, finished);
+        return new Goal(this.id, this.content, finished, this.fromRecurring, this.context);
     }
 
-
     public @NonNull Goal copyWithoutId() {
-        return new Goal(null, this.content, this.finished, this.fromRecurring);
+        return new Goal(null, this.content, this.finished, this.fromRecurring, this.context);
+    }
+
+    public @NonNull String getContext() {
+        return context;
     }
 
     public @NonNull Goal copyWithoutIdFinished() {
-        return new Goal(null, this.content, true, this.fromRecurring);
+        return new Goal(null, this.content, true, this.fromRecurring, this.context);
     }
 
 
@@ -72,16 +72,20 @@ public class Goal implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Goal goal = (Goal) o;
-        return Objects.equals(content, goal.content) && (finished == goal.finished);
+        return finished == goal.finished &&
+                fromRecurring == goal.fromRecurring &&
+                Objects.equals(id, goal.id) &&
+                Objects.equals(content, goal.content) &&
+                Objects.equals(context, goal.context); // Include context in equality check
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, finished);
+        return Objects.hash(id, content, finished, fromRecurring, context);
     }
 
     @Override
     public String toString() {
-        return content;
+        return content + " [" + context + "]";
     }
 }

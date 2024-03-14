@@ -36,6 +36,12 @@ public interface GoalDao {
     @Query("SELECT * FROM Goals WHERE finished = true")
     LiveData<List<GoalEntity>> findAllFinishedAsLiveData();
 
+    @Query("SELECT * FROM Goals WHERE context = :context AND finished = false")
+    List<GoalEntity> findUnfinishedByContext(String context);
+
+    @Query("SELECT * FROM Goals WHERE context = :context AND finished = true")
+    List<GoalEntity> findFinishedByContext(String context);
+
     @Query("SELECT COUNT(*) FROM Goals")
     int count();
 
@@ -47,28 +53,22 @@ public interface GoalDao {
 
     @Transaction
     default int add(GoalEntity goal) {
-        var newGoal = new GoalEntity(goal.content, goal.finished, goal.fromRecurring);
+        var newGoal = new GoalEntity(goal.content, goal.finished, goal.fromRecurring, goal.context);
         return Math.toIntExact(insert(newGoal));
     }
 
-    @Transaction
-    default int finish(int id) {
-        var finishedGoal = find(id);
-        var newlyFinishedGoal = new GoalEntity(finishedGoal.content, true, finishedGoal.fromRecurring);
-        delete(id);
-        return Math.toIntExact(insert(newlyFinishedGoal));
-    }
+    @Query("UPDATE Goals SET finished = :finished WHERE id = :id")
+    void updateFinishedStatus(int id, boolean finished);
 
     @Transaction
     default int unfinish(int id) {
         var unfinishedGoal = find(id);
-        var newlyUnfinishedGoal = new GoalEntity(unfinishedGoal.content, false, unfinishedGoal.fromRecurring);
+        var newlyUnfinishedGoal = new GoalEntity(unfinishedGoal.content, false, unfinishedGoal.fromRecurring, unfinishedGoal.context);
         delete(id);
         return Math.toIntExact(insert(newlyUnfinishedGoal));
     }
 
     @Query("DELETE FROM Goals WHERE id = :id")
     void delete(int id);
-
 
 }

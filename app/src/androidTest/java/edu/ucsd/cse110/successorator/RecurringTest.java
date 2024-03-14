@@ -36,7 +36,7 @@ public class RecurringTest {
                 DateHandler currentDate = app.getCurrentDate();
 
                 activity.addItemToRecurringList(new RecurringGoal(null,"daily",
-                        RecurringGoal.DAILY, currentDate.dateTime().toLocalDate()));
+                        RecurringGoal.DAILY, currentDate.dateTime().toLocalDate(), ""));
                 System.out.println(todoList.unfinishedSize());
                 assertTrue(todoList.unfinishedSize() == 1);
                 assertTrue(recurringList.size() == 1);
@@ -68,7 +68,7 @@ public class RecurringTest {
                 DateHandler currentDate = app.getCurrentDate();
 
                 activity.addItemToRecurringList(new RecurringGoal(null, "weekly",
-                        RecurringGoal.WEEKLY, currentDate.dateTime().toLocalDate()));
+                        RecurringGoal.WEEKLY, currentDate.dateTime().toLocalDate(), ""));
                 System.out.println(todoList.unfinishedSize());
                 assertTrue(todoList.unfinishedSize() == 1);
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
@@ -100,7 +100,7 @@ public class RecurringTest {
                 currentDate.updateTodayDate(LocalDateTime.of(2024, 3, 5, 1, 1));
 
                 activity.addItemToRecurringList(new RecurringGoal(null, "monthly",
-                        RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate()));
+                        RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate(), ""));
                 System.out.println(todoList.unfinishedSize());
                 assertTrue(todoList.unfinishedSize() == 1);
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
@@ -132,7 +132,7 @@ public class RecurringTest {
                 currentDate.updateTodayDate(LocalDateTime.of(2024, 3, 5, 1, 1));
 
                 activity.addItemToRecurringList(new RecurringGoal(null, "yearly",
-                        RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate()));
+                        RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate(), ""));
                 System.out.println(todoList.unfinishedSize());
                 assertTrue(todoList.unfinishedSize() == 1);
                 moveToFinished(todoList.get(0), activity.getTodayFragment().getAdapter(), activity.getTodayFragment().getFinishedAdapter(), todoList);
@@ -159,7 +159,7 @@ public class RecurringTest {
                 DateHandler currentDate = app.getCurrentDate();
                 RecurringGoalLists recurringList = app.getRecurringList();
                 activity.addItemToRecurringList(new RecurringGoal(null,"daily",
-                                RecurringGoal.DAILY, currentDate.dateTime().toLocalDate()));
+                                RecurringGoal.DAILY, currentDate.dateTime().toLocalDate(), ""));
                 assertTrue(recurringList.size() == 1);
                 RecurringGoal selected = recurringList.get(0);
                 activity.deleteRecurringGoal(selected);

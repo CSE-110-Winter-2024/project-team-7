@@ -7,5 +7,15 @@
     <string name="placeholder_pending_text">No Pending Goals.\nClick the + at the upper right to enter your Pending Goals.</string>
     <string name="placeholder_recurring_text">No Recurring Goals.\nClick the + at the upper right to enter your Recurring Goals.</string>
     <string name="placeholder_tomorrow_text">No goals for Tomorrow.\nClick the + at the upper right to enter your Most Important Thing Tomorrow.</string>
+    <string name="Home">H</string>
+    <string name="Errand">E</string>
+    <string name="School">S</string>
+    <string name="Work">W</string>
+    <string name="daily">Daily</string>
+    <string name="write_your_goal_here">Write your goal here...</string>
+    <string name="monthly_on">Monthly on</string>
+    <string name="one_time">One-time</string>
+    <string name="weekly_on_weekday">Weekly on weekday</string>
+    <string name="yearly_on">Yearly on</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
 </resources>

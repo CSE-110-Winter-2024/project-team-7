@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,9 @@ import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.ui.DateDisplay;
+import edu.ucsd.cse110.successorator.util.DateUpdater;
+import edu.ucsd.cse110.successorator.util.GoalArrayAdapter;
+import edu.ucsd.cse110.successorator.util.GoalFinishedArrayAdapter;
 import edu.ucsd.cse110.successorator.ui.tomorrow.TomorrowFragment;
 
 public class TodayFragment extends Fragment implements Observer {
@@ -100,19 +104,11 @@ public class TodayFragment extends Fragment implements Observer {
     }
 
     private void setupListView() {
-        adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
-        finishedAdapter = new ArrayAdapter<Goal>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<Goal>()) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textViewGoal = (TextView) view.findViewById(android.R.id.text1);
-                textViewGoal.setPaintFlags(textViewGoal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        adapter = new GoalArrayAdapter(getContext(), R.layout.list_item_goal, new ArrayList<>());
+        finishedAdapter = new GoalFinishedArrayAdapter(this.getContext(), R.layout.list_item_goal, new ArrayList<Goal>());
 
-                return view;
-            }
-        };
-
+        view.goalsListView.setAdapter(adapter);
+        view.finishedListView.setAdapter(finishedAdapter);
 
         if (mainActivity.getTomorrowFragment() == null) {
             tomorrowAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
@@ -209,6 +205,7 @@ public class TodayFragment extends Fragment implements Observer {
                     }
 
                 }
+                refreshTodayAdapter(adapter, todoList);
                 adapter.notifyDataSetChanged();
                 tomorrowList.clearUnfinished();
                 tomorrowList.clearFinished();
@@ -217,6 +214,8 @@ public class TodayFragment extends Fragment implements Observer {
             }
         }
     }
+
+
 
     public ArrayAdapter<Goal> getAdapter() {
         return adapter;
