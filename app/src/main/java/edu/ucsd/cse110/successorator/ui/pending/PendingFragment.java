@@ -35,6 +35,7 @@ public class PendingFragment extends Fragment{
     private DateHandler currentDate;
     private static ArrayAdapter<Goal> adapter;
 
+
     public PendingFragment() {
 
     }
@@ -110,6 +111,7 @@ public class PendingFragment extends Fragment{
     public void onChanged(@Nullable Object value) {
         //TODO: might not have to do anything here, might not need to observe date
     }
+
 
     private void setupDateMock() {
         view.dateMockButton.setOnClickListener(v -> {
