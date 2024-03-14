@@ -115,7 +115,7 @@ public class RecurringGoalTest {
     @Test
     public void skipPastDayTest() {
         LocalDate febNine = LocalDate.of(2024, 2, 9);
-        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.WEEKLY, febNine);
+        RecurringGoal rgoal = new RecurringGoal(null, "test", RecurringGoal.WEEKLY, febNine, "");
         LocalDate testDate = LocalDate.of(2024, 2, 9);
 
         assertTrue(rgoal.recurToday(febNine));
