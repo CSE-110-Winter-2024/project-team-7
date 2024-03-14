@@ -27,6 +27,7 @@ public class DeleteRecurringGoalDialogFragment  extends DialogFragment {
         var fragment = new DeleteRecurringGoalDialogFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+        goalPosition = position;
         return fragment;
     }
 
