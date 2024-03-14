@@ -54,12 +54,16 @@ public class Goal implements Serializable {
         return new Goal(this.id, this.content, finished, this.fromRecurring, this.context);
     }
 
-    public Goal copyWithoutId() {
+    public @NonNull Goal copyWithoutId() {
         return new Goal(null, this.content, this.finished, this.fromRecurring, this.context);
     }
 
     public @NonNull String getContext() {
         return context;
+    }
+
+    public @NonNull Goal copyWithoutIdFinished() {
+        return new Goal(null, this.content, true, this.fromRecurring, this.context);
     }
 
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.Nullable;
@@ -22,13 +23,15 @@ import edu.ucsd.cse110.successorator.lib.domain.RecurringGoal;
 import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.util.RecurringGoalArrayAdapter;
+import edu.ucsd.cse110.successorator.ui.dialog.DeleteRecurringGoalDialogFragment;
+import edu.ucsd.cse110.successorator.ui.dialog.MovePendingGoalDialogFragment;
 
 public class RecurringFragment extends Fragment implements Observer {
 
     private MainActivity mainActivity;
     private DateHandler currentDate;
     RecurringBinding view;
-    private ArrayAdapter<RecurringGoal> adapter;
+    private static ArrayAdapter<RecurringGoal> adapter;
     private RecurringGoalLists recurringList;
 
     public RecurringFragment() {
@@ -80,7 +83,15 @@ public class RecurringFragment extends Fragment implements Observer {
 
         view.goalsListRecurringView.setAdapter(adapter);
 
-        //TODO: SETUP THE HOLD THING TO DELETE RECURRING GOALS HERE
+        view.goalsListRecurringView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                var dialogFragment = DeleteRecurringGoalDialogFragment.newInstance(position);
+                dialogFragment.show(mainActivity.getSupportFragmentManager(), "DeleteRecurringGoalDialogFragment");
+                updatePlaceholderVisibility();
+                return true;
+            }
+        });
 
     }
 
@@ -108,7 +119,7 @@ public class RecurringFragment extends Fragment implements Observer {
         //TODO: might not have to do anything here, might not need to observe date
     }
 
-    public ArrayAdapter<RecurringGoal> getAdapter() {
+    public static ArrayAdapter<RecurringGoal> getAdapter() {
         return adapter;
     }
 }

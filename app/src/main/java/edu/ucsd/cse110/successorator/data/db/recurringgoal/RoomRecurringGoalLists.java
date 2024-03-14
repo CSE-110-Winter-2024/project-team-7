@@ -51,4 +51,8 @@ public class RoomRecurringGoalLists implements RecurringGoalLists {
     public void delete(RecurringGoal rgoal) {
         rgoalDao.delete(rgoal.id());
     }
+
+    public RecurringGoal get(int i) {
+        return getRecurringGoals().get(i);
+    }
 }

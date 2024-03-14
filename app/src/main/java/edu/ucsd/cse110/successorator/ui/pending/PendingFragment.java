@@ -23,12 +23,14 @@ import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
+import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
+import edu.ucsd.cse110.successorator.ui.dialog.MovePendingGoalDialogFragment;
 
 public class PendingFragment extends Fragment{
 
     private MainActivity mainActivity;
     PendingBinding view;
-    private ArrayAdapter<Goal> adapter;
+    private static ArrayAdapter<Goal> adapter;
     private GoalLists pendingList; //might need its own class
 
     public PendingFragment() {
@@ -77,8 +79,8 @@ public class PendingFragment extends Fragment{
         view.goalsListPendingView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Goal selectedItem = adapter.getItem(position);
-                //TO DO: OPTIONS TO MOVE TO TODAY, TOMORROW, FINISH, OR DELETE.
+                var dialogFragment = MovePendingGoalDialogFragment.newInstance(position);
+                dialogFragment.show(mainActivity.getSupportFragmentManager(), "MovePendingGoalDialogFragment");
                 updatePlaceholderVisibility();
                 return true;
             }
@@ -104,7 +106,7 @@ public class PendingFragment extends Fragment{
         //TODO: might not have to do anything here, might not need to observe date
     }
 
-    public ArrayAdapter<Goal> getAdapter() {
+    public static ArrayAdapter<Goal> getAdapter() {
         return adapter;
     }
 }

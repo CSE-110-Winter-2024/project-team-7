@@ -86,15 +86,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentDate.observe(this);
         DateUpdater.scheduleDateUpdates(currentDate);
 
-        changeView(TODAY);
-        todayFragment.manualOnCreateView();
-        changeView(TOMORROW);
-        tomorrowFragment.manualOnCreateView();
-        changeView(RECURRING);
-        recurringFragment.manualOnCreateView();
-        changeView(PENDING);
-        pendingFragment.manualOnCreateView();
-        changeView(TODAY);
+        refreshAll();
 
 
 
@@ -149,6 +141,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         todayFragment.updatePlaceholderVisibility();
     }
 
+    public void moveToFinished(Goal goal) {
+        MainViewModel.moveToFinished(goal, todayFragment.getAdapter(), todayFragment.getFinishedAdapter(), todoList);
+        todayFragment.updatePlaceholderVisibility();
+    }
+
 
     public void addPendingItemToTodoList(Goal goal) {
         ArrayAdapter<Goal> addAdapter = todayFragment.getPendingAdapter();
@@ -159,6 +156,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
         if (pendingFragment != null) {
             pendingFragment.updatePlaceholderVisibility();
         }
+    }
+
+    public void deletePendingGoal(Goal goal) {
+        pendingList.finishTask(goal);
+        pendingList.clearFinished();
+        if (pendingFragment != null) {
+            pendingFragment.updatePlaceholderVisibility();
+        }
+        MainViewModel.deletePendingGoal(goal, PendingFragment.getAdapter());
     }
 
     public void addItemToTomorrowList(Goal goal) {
@@ -198,6 +204,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
             recurringFragment.updatePlaceholderVisibility();
         }
 
+    }
+
+    public void deleteRecurringGoal(RecurringGoal rgoal) {
+        MainViewModel.deleteRecurringGoal(rgoal, RecurringFragment.getAdapter(), recurringList);
+        recurringFragment.updatePlaceholderVisibility();
     }
 
     @Override
@@ -280,6 +291,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void setPendingFragment(PendingFragment pendingFragment) {
         this.pendingFragment = pendingFragment;
+    }
+
+    public void refreshAll() {
+        changeView(TODAY);
+        todayFragment.manualOnCreateView();
+        changeView(TOMORROW);
+        tomorrowFragment.manualOnCreateView();
+        changeView(RECURRING);
+        recurringFragment.manualOnCreateView();
+        changeView(PENDING);
+        pendingFragment.manualOnCreateView();
+        changeView(TODAY);
     }
 
     //for testing

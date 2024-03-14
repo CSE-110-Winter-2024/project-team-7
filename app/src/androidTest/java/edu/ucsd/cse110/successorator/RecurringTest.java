@@ -18,6 +18,7 @@ import edu.ucsd.cse110.successorator.lib.domain.RecurringGoalLists;
 
 import static edu.ucsd.cse110.successorator.MainViewModel.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -149,4 +150,22 @@ public class RecurringTest {
             });
         }
     }
+
+    @Test
+    public void testDeleteRecurring() {
+        try (var scenario1 = ActivityScenario.launch(MainActivity.class)) {
+            scenario1.onActivity(activity -> {
+                SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
+                DateHandler currentDate = app.getCurrentDate();
+                RecurringGoalLists recurringList = app.getRecurringList();
+                activity.addItemToRecurringList(new RecurringGoal(null,"daily",
+                                RecurringGoal.DAILY, currentDate.dateTime().toLocalDate()));
+                assertTrue(recurringList.size() == 1);
+                RecurringGoal selected = recurringList.get(0);
+                activity.deleteRecurringGoal(selected);
+                assertTrue(recurringList.size() == 0);
+            });
+        }
+    }
+
 }
