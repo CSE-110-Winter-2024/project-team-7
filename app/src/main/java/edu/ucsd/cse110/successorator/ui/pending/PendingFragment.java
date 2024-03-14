@@ -31,16 +31,10 @@ public class PendingFragment extends Fragment{
 
     private MainActivity mainActivity;
     PendingBinding view;
-<<<<<<< HEAD
     private GoalLists pendingList;
     private DateHandler currentDate;
     private static ArrayAdapter<Goal> adapter;
-=======
 
-    private ArrayAdapter<Goal> adapter;
-    private GoalLists pendingList;
-    private DateHandler currentDate;
->>>>>>> 3e01a28 (pending skip day button works)
 
     public PendingFragment() {
 
@@ -125,9 +119,13 @@ public class PendingFragment extends Fragment{
         });
     }
 
+<<<<<<< HEAD
 
     public static ArrayAdapter<Goal> getAdapter() {
 
+=======
+    public static ArrayAdapter<Goal> getAdapter() {
+>>>>>>> fb0a643 (#84: making adapter static)
         return adapter;
     }
 }
