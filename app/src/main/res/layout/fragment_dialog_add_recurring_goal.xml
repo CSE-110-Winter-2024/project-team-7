@@ -71,7 +71,7 @@
         android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_name_edit_text">
+        app:layout_constraintTop_toBottomOf="@+id/context_type_buttons">
 
         <RadioButton
             android:id="@+id/daily_button"
