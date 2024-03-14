@@ -29,7 +29,8 @@ public class PendingFragment extends Fragment{
     private MainActivity mainActivity;
     PendingBinding view;
     private ArrayAdapter<Goal> adapter;
-    private GoalLists pendingList; //might need its own class
+    private GoalLists pendingList;
+    private DateHandler currentDate;
 
     public PendingFragment() {
 
@@ -48,6 +49,7 @@ public class PendingFragment extends Fragment{
 
         mainActivity = (MainActivity) requireActivity();
         SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
+        currentDate = app.getCurrentDate();
         mainActivity.setPendingFragment(this);
         pendingList = app.getPendingList();
 
@@ -57,7 +59,9 @@ public class PendingFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = PendingBinding.inflate(inflater, container, false);
+
         setupListView();
+        setupDateMock();
         updatePlaceholderVisibility();
 
         return view.getRoot();
@@ -102,6 +106,12 @@ public class PendingFragment extends Fragment{
 
     public void onChanged(@Nullable Object value) {
         //TODO: might not have to do anything here, might not need to observe date
+    }
+
+    private void setupDateMock() {
+        view.dateMockButton.setOnClickListener(v -> {
+            currentDate.skipDay();
+        });
     }
 
     public ArrayAdapter<Goal> getAdapter() {
