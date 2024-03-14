@@ -166,6 +166,7 @@ public class TomorrowFragment extends Fragment implements Observer {
     private void setupDateMock() {
         view.dateMockButton.setOnClickListener(v -> {
             currentDate.skipDay();
+            updatePlaceholderVisibility();
         });
     }
 
@@ -178,7 +179,6 @@ public class TomorrowFragment extends Fragment implements Observer {
             adapter.clear();
             adapter.notifyDataSetChanged();
         }
-        //TODO: rollover all tomorrow goals to today, and delete(i think?) the finished goals
         if (tomorrowList != null && finishedAdapter != null) {
             if (!currentDate.getFormattedDate().equals(formattedStoredDate)) {
                 tomorrowList.clearFinished();

@@ -143,6 +143,16 @@ public class MainViewModel extends ViewModel implements Observer {
         adapter.notifyDataSetChanged();
     }
 
+    public static void deletePendingGoal(Goal goal, ArrayAdapter<Goal> adapter) {
+        adapter.remove(goal);
+        adapter.notifyDataSetChanged();
+    }
+
+    public static void deleteRecurringGoal(RecurringGoal rgoal, ArrayAdapter<RecurringGoal> adapter, RecurringGoalLists recurringList) {
+        adapter.remove(rgoal);
+        adapter.notifyDataSetChanged();
+        recurringList.delete(rgoal);
+    }
     @Override
     public void onChanged(Object o) {
 
