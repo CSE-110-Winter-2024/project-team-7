@@ -50,13 +50,19 @@ public class RecurringGoalArrayAdapter extends ArrayAdapter<RecurringGoal> {
                     recurrence = ", daily";
                     break;
                 case RecurringGoal.WEEKLY:
-                    recurrence = ", recurring every week on " + goal.getStartDate().toString();
+                    var weekday = goal.getStartDate().getDayOfWeek().toString();
+                    recurrence = ", weekly on " + weekday.substring(0,1) + weekday.substring(1).toLowerCase();
                     break;
                 case RecurringGoal.MONTHLY:
-                    recurrence = ", recurring every month on " + goal.getStartDate().toString();
+                    var month = goal.getStartDate().getMonth().toString();
+                    var date = goal.getStartDate().getDayOfMonth();
+                    recurrence = ", monthly on " + month.substring(0,1) + month.substring(1).toLowerCase() + " " + date;
                     break;
                 case RecurringGoal.YEARLY:
-                    recurrence = ", recurring every year on " + goal.getStartDate().toString();
+                    var month1 = goal.getStartDate().getMonth().toString();
+                    var date1 = goal.getStartDate().getDayOfMonth();
+                    var year = goal.getStartDate().getYear();
+                    recurrence = ", yearly on " + month1.substring(0,1) + month1.substring(1).toLowerCase() + " " + date1 + ", " + year;
                     break;
 
             }
