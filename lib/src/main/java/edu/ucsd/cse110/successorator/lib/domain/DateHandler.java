@@ -34,12 +34,14 @@ public class DateHandler implements Subject {
         LocalTime currentTime = dateTime.toLocalTime();
         if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(2, 0))) {
             dateTime = dateTime.minusDays(1);
+            System.out.println("datehandler print: " + dateTime);
         }
         String newFormattedDate = "Today, " + dateTime.format(dateFormat);
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate)) || !(newFormattedDate.equals(previousDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
         }
+        System.out.println("datehandler print: " + formattedDate);
     }
 
     public void updateTodayDate(LocalDateTime dateInput) {

@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void onResume() {
         super.onResume();
         currentDate.updateTodayDate(LocalDateTime.now());
+        DateUpdater.cancelDateUpdates();
+        DateUpdater.scheduleDateUpdates(currentDate);
 
     }
 
