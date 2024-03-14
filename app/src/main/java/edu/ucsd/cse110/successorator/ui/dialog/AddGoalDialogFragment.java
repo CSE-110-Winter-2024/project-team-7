@@ -75,7 +75,7 @@ public class AddGoalDialogFragment extends DialogFragment {
         }
 
         if(view.oneTimeButton.isChecked()) {
-            var goal = new Goal(null, content, false);
+            var goal = new Goal(null, content, false, false, context);
             activity.addItemToTodoList(goal);
         } else if(view.dailyButton.isChecked()) {
             var rgoal = new RecurringGoal(null, content, RecurringGoal.DAILY, currentDate.dateTime().toLocalDate(), context);
