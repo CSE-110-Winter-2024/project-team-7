@@ -12,4 +12,6 @@ public interface RecurringGoalLists {
     int add(RecurringGoal rgoal);
 
     void delete(RecurringGoal rgoal);
+
+    RecurringGoal get(int i);
 }
