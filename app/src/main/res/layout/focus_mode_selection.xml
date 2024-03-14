@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RadioButton
+        android:id="@+id/button_h"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/Home"
+        android:button="@android:color/transparent"
+        android:background="@drawable/shape_home"
+        android:textColor="@drawable/text_color"
+        android:padding="20dp"
+        android:layout_margin="10dp" />
+
+    <RadioButton
+        android:id="@+id/button_w"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/Work"
+        android:button="@android:color/transparent"
+        android:background="@drawable/shape_work"
+        android:textColor="@drawable/text_color"
+        android:padding="20dp"
+        android:layout_margin="10dp" />
+
+    <RadioButton
+        android:id="@+id/button_s"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/School"
+        android:button="@android:color/transparent"
+        android:background="@drawable/shape_school"
+        android:textColor="@drawable/text_color"
+        android:padding="20dp"
+        android:layout_margin="10dp" />
+
+    <RadioButton
+        android:id="@+id/button_e"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/Errand"
+        android:button="@android:color/transparent"
+        android:background="@drawable/shape_errands"
+        android:textColor="@drawable/text_color"
+        android:padding="20dp"
+        android:layout_margin="10dp" />
+</LinearLayout>
