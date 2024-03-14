@@ -23,8 +23,9 @@
             android:button="@android:color/transparent"
             android:background="@drawable/shape_home"
             android:textColor="@drawable/text_color"
-            android:padding="20dp"
-            android:layout_margin="10dp" />
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/button_w"
@@ -35,8 +36,9 @@
             android:button="@android:color/transparent"
             android:background="@drawable/shape_work"
             android:textColor="@drawable/text_color"
-            android:padding="20dp"
-            android:layout_margin="10dp" />
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/button_s"
@@ -47,8 +49,9 @@
             android:button="@android:color/transparent"
             android:background="@drawable/shape_school"
             android:textColor="@drawable/text_color"
-            android:padding="20dp"
-            android:layout_margin="10dp" />
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
 
         <RadioButton
             android:id="@+id/button_e"
@@ -59,8 +62,9 @@
             android:button="@android:color/transparent"
             android:background="@drawable/shape_errands"
             android:textColor="@drawable/text_color"
-            android:padding="20dp"
-            android:layout_margin="10dp" />
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
     </RadioGroup>
 
     <RadioGroup

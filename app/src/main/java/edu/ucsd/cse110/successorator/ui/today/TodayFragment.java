@@ -156,8 +156,14 @@ public class TodayFragment extends Fragment implements Observer {
         if(isEmpty) {
             view.placeholderText.setText(R.string.default_message);
         } else {
-            refreshTodayAdapter(adapter, todoList);
-            refreshTodayFinishedAdapter(finishedAdapter, todoList);
+            if (mainActivity.getFocus().equals("All")) {
+                refreshTodayAdapter(adapter, todoList);
+                refreshTodayFinishedAdapter(finishedAdapter, todoList);
+            }
+            else {
+                refreshTodayAdapterByContext(adapter, todoList, mainActivity.getFocus());
+                refreshTodayFinishedByContext(finishedAdapter, todoList, mainActivity.getFocus());
+            }
         }
 
         return isEmpty;
@@ -229,7 +235,5 @@ public class TodayFragment extends Fragment implements Observer {
     }
 
     public ArrayAdapter<Goal> getPendingAdapter() { return pendingAdapter; }
-
-
 
 }

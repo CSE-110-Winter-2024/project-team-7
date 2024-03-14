@@ -1,7 +1,6 @@
 package edu.ucsd.cse110.successorator.ui.pending;
 
-import static edu.ucsd.cse110.successorator.MainViewModel.moveToFinished;
-import static edu.ucsd.cse110.successorator.MainViewModel.refreshTodayAdapter;
+import static edu.ucsd.cse110.successorator.MainViewModel.*;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,6 +33,7 @@ public class PendingFragment extends Fragment{
     private static ArrayAdapter<Goal> adapter;
     private GoalLists pendingList; //might need its own class
 
+
     public PendingFragment() {
 
     }
@@ -53,6 +53,7 @@ public class PendingFragment extends Fragment{
         SuccessoratorApplication app = (SuccessoratorApplication) mainActivity.getApplication();
         mainActivity.setPendingFragment(this);
         pendingList = app.getPendingList();
+//        pendingList = pendingList.getUnfinishedGoalsByContext(focusToFilter);
 
 
     }
@@ -62,7 +63,6 @@ public class PendingFragment extends Fragment{
         view = PendingBinding.inflate(inflater, container, false);
         setupListView();
         updatePlaceholderVisibility();
-
         return view.getRoot();
     }
 
@@ -97,7 +97,12 @@ public class PendingFragment extends Fragment{
         if(isEmpty) {
             view.placeholderPendingText.setText(R.string.placeholder_pending_text);
         } else {
-            refreshTodayAdapter(adapter, pendingList);
+            if (mainActivity.getFocus().equals("All")) {
+                refreshTodayAdapter(adapter, pendingList);
+            }
+            else {
+                refreshTodayAdapterByContext(adapter, pendingList, mainActivity.getFocus());
+            }
         }
         return isEmpty;
     }

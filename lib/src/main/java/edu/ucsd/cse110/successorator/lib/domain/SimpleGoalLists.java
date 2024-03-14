@@ -126,5 +126,4 @@ public class SimpleGoalLists implements GoalLists {
                 .collect(Collectors.toList());
     }
 
-
 }
