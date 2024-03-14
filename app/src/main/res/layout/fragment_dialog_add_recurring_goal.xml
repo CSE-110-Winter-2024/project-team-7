@@ -6,13 +6,72 @@
     android:layout_height="match_parent">
 
     <RadioGroup
+        android:id="@+id/context_type_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goal_name_edit_text"
+        app:layout_constraintBottom_toTopOf="@+id/recurring_type_buttons">
+
+        <RadioButton
+            android:id="@+id/button_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/Home"
+            android:button="@android:color/transparent"
+            android:background="@drawable/shape_home"
+            android:textColor="@drawable/text_color"
+            android:padding="20dp"
+            android:layout_margin="10dp" />
+
+        <RadioButton
+            android:id="@+id/button_w"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/Work"
+            android:button="@android:color/transparent"
+            android:background="@drawable/shape_work"
+            android:textColor="@drawable/text_color"
+            android:padding="20dp"
+            android:layout_margin="10dp" />
+
+        <RadioButton
+            android:id="@+id/button_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/School"
+            android:button="@android:color/transparent"
+            android:background="@drawable/shape_school"
+            android:textColor="@drawable/text_color"
+            android:padding="20dp"
+            android:layout_margin="10dp" />
+
+        <RadioButton
+            android:id="@+id/button_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/Errand"
+            android:button="@android:color/transparent"
+            android:background="@drawable/shape_errands"
+            android:textColor="@drawable/text_color"
+            android:padding="20dp"
+            android:layout_margin="10dp" />
+    </RadioGroup>
+
+    <RadioGroup
         android:id="@+id/recurring_type_buttons"
         android:layout_width="333dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal_name_edit_text">
+        app:layout_constraintTop_toBottomOf="@+id/context_type_buttons">
 
         <RadioButton
             android:id="@+id/daily_button"

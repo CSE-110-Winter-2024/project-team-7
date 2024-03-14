@@ -136,7 +136,7 @@ public class AppEndToEndTest {
                 DateHandler currentDate = app.getCurrentDate();
 
                 activity.addItemToRecurringList(new RecurringGoal(null,"daily",
-                        RecurringGoal.DAILY, currentDate.dateTime().toLocalDate()));
+                        RecurringGoal.DAILY, currentDate.dateTime().toLocalDate(), ""));
                 System.out.println(todoList.unfinishedSize());
                 assertTrue(todoList.unfinishedSize() == 1);
                 assertTrue(recurringList.size() == 1);

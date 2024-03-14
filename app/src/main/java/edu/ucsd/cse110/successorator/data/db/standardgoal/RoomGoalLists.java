@@ -65,12 +65,12 @@ public class RoomGoalLists implements GoalLists {
 
     @Override
     public void finishTask(Goal goal) {
-        goalDao.finish(goal.id());
+        goalDao.updateFinishedStatus(goal.id(), true);
     }
 
     @Override
     public void undoFinishTask(Goal goal) {
-        goalDao.unfinish(goal.id());
+        goalDao.updateFinishedStatus(goal.id(), false);
     }
 
     @Override
@@ -99,6 +99,21 @@ public class RoomGoalLists implements GoalLists {
         return unfinished.get(index);
     }
 
+    public List<Goal> getUnfinishedGoalsByContext(String context) {
+        List<Goal> goalsByContext = new ArrayList<>();
+        List<GoalEntity> goalEntities = goalDao.findUnfinishedByContext(context);
+        for (GoalEntity entity : goalEntities) {
+            goalsByContext.add(entity.toGoal());
+        }
+        return goalsByContext;
+    }
 
-
+    public List<Goal> getFinishedGoalsByContext(String context) {
+        List<Goal> goalsByContext = new ArrayList<>();
+        List<GoalEntity> goalEntities = goalDao.findFinishedByContext(context);
+        for (GoalEntity entity : goalEntities) {
+            goalsByContext.add(entity.toGoal());
+        }
+        return goalsByContext;
+    }
 }

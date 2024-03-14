@@ -61,21 +61,34 @@ public class AddTomorrowGoalDialogFragment extends DialogFragment {
         }
 
         MainActivity activity = (MainActivity) requireActivity();
+        String context = "Home";
+        if (view.buttonH.isChecked()) {
+            context = "Home";
+        } else if (view.buttonW.isChecked()) {
+            context = "Work";
+        } else if (view.buttonS.isChecked()) {
+            context = "School";
+        } else if (view.buttonE.isChecked()) {
+            context = "Errands";
+        } else {
+            throw new IllegalStateException("No radio button is checked.");
+        }
+
 
         if(view.oneTimeButton.isChecked()) {
-            var goal = new Goal(null, content, false);
+            var goal = new Goal(null, content, false, false, context);
             activity.addItemToTomorrowList(goal);
         } else if(view.dailyButton.isChecked()) {
-            var rgoal = new RecurringGoal(null, content, RecurringGoal.DAILY, currentDate.dateTime().toLocalDate().plusDays(1));
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.DAILY, currentDate.dateTime().toLocalDate().plusDays(1), context);
             activity.addItemToRecurringListTomorrow(rgoal);
         } else if(view.weeklyButton.isChecked()) {
-            var rgoal = new RecurringGoal(null, content, RecurringGoal.WEEKLY, currentDate.dateTime().toLocalDate().plusDays(1));
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.WEEKLY, currentDate.dateTime().toLocalDate().plusDays(1), context);
             activity.addItemToRecurringListTomorrow(rgoal);
         } else if(view.monthlyButton.isChecked()) {
-            var rgoal = new RecurringGoal(null, content, RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate().plusDays(1));
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.MONTHLY, currentDate.dateTime().toLocalDate().plusDays(1), context);
             activity.addItemToRecurringListTomorrow(rgoal);
         } else if(view.yearlyButton.isChecked()) {
-            var rgoal = new RecurringGoal(null, content, RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate().plusDays(1));
+            var rgoal = new RecurringGoal(null, content, RecurringGoal.YEARLY, currentDate.dateTime().toLocalDate().plusDays(1), context);
             activity.addItemToRecurringListTomorrow(rgoal);
         } else {
             throw new IllegalStateException("No radio button is checked.");

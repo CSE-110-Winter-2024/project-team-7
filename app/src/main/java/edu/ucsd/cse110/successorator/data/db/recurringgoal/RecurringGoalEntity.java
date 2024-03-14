@@ -40,8 +40,11 @@ public class RecurringGoalEntity {
     @ColumnInfo(name = "nextDayOfMonth")
     public int nextDayOfMonth;
 
+    @ColumnInfo(name = "context")
+    public String context;
+
     RecurringGoalEntity(@NonNull String content, int recurringType, int startYear, int startMonth,
-                        int startDayOfMonth, int nextYear, int nextMonth, int nextDayOfMonth) {
+                        int startDayOfMonth, int nextYear, int nextMonth, int nextDayOfMonth, String context) {
         this.content = content;
         this.recurringType = recurringType;
         this.startYear = startYear;
@@ -50,6 +53,7 @@ public class RecurringGoalEntity {
         this.nextYear = nextYear;
         this.nextMonth = nextMonth;
         this.nextDayOfMonth = nextDayOfMonth;
+        this.context = context;
     }
 
     public static RecurringGoalEntity fromRecurringGoal(@NonNull RecurringGoal rgoal) {
@@ -57,7 +61,7 @@ public class RecurringGoalEntity {
         LocalDate nextDate = rgoal.getNextRecurringDate();
         var newGoal = new RecurringGoalEntity(rgoal.content(), rgoal.getRecurringType(),
                 startDate.getYear(), startDate.getMonthValue(), startDate.getDayOfMonth(),
-                nextDate.getYear(), nextDate.getMonthValue(), nextDate.getDayOfMonth());
+                nextDate.getYear(), nextDate.getMonthValue(), nextDate.getDayOfMonth(), rgoal.getContext());
 
         newGoal.id = rgoal.id();
         return newGoal;
@@ -65,6 +69,6 @@ public class RecurringGoalEntity {
 
     public @NonNull RecurringGoal toRecurringGoal() {
         return new RecurringGoal(id, content, recurringType, LocalDate.of(startYear, startMonth, startDayOfMonth),
-                LocalDate.of(nextYear, nextMonth, nextDayOfMonth));
+                LocalDate.of(nextYear, nextMonth, nextDayOfMonth), context);
     }
 }

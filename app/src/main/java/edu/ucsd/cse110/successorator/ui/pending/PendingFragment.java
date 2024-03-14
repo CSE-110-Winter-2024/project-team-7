@@ -23,14 +23,17 @@ import edu.ucsd.cse110.successorator.lib.domain.DateHandler;
 import edu.ucsd.cse110.successorator.lib.domain.Goal;
 import edu.ucsd.cse110.successorator.lib.domain.GoalLists;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
+import edu.ucsd.cse110.successorator.ui.dialog.DropDownDialogFragment;
+import edu.ucsd.cse110.successorator.ui.dialog.MovePendingGoalDialogFragment;
+import edu.ucsd.cse110.successorator.util.GoalArrayAdapter;
 
 public class PendingFragment extends Fragment{
 
     private MainActivity mainActivity;
     PendingBinding view;
-    private ArrayAdapter<Goal> adapter;
     private GoalLists pendingList;
     private DateHandler currentDate;
+    private static ArrayAdapter<Goal> adapter;
 
     public PendingFragment() {
 
@@ -74,15 +77,15 @@ public class PendingFragment extends Fragment{
     }
 
     private void setupListView() {
-        adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
+        adapter = new GoalArrayAdapter(this.getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
 
         view.goalsListPendingView.setAdapter(adapter);
 
         view.goalsListPendingView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Goal selectedItem = adapter.getItem(position);
-                //TO DO: OPTIONS TO MOVE TO TODAY, TOMORROW, FINISH, OR DELETE.
+                var dialogFragment = MovePendingGoalDialogFragment.newInstance(position);
+                dialogFragment.show(mainActivity.getSupportFragmentManager(), "MovePendingGoalDialogFragment");
                 updatePlaceholderVisibility();
                 return true;
             }
@@ -114,7 +117,8 @@ public class PendingFragment extends Fragment{
         });
     }
 
-    public ArrayAdapter<Goal> getAdapter() {
+
+    public static ArrayAdapter<Goal> getAdapter() {
         return adapter;
     }
 }
