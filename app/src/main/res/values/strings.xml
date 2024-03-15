@@ -4,9 +4,9 @@
     <string name="default_message">No goals for the Day.\nClick the + at the upper right to enter your Most Important Thing.</string>
     <string name="add_button">Add Button</string>
     <string name="arrow_drop_down">Drop Down Button</string>
-    <string name="placeholder_pending_text">No Pending Goals.\nClick the + at the upper right to enter your Pending Goals.</string>
-    <string name="placeholder_recurring_text">No Recurring Goals.\nClick the + at the upper right to enter your Recurring Goals.</string>
-    <string name="placeholder_tomorrow_text">No goals for Tomorrow.\nClick the + at the upper right to enter your Most Important Thing Tomorrow.</string>
+    <string name="placeholder_pending_text" />
+    <string name="placeholder_recurring_text" />
+    <string name="placeholder_tomorrow_text" />
     <string name="Home">H</string>
     <string name="Errand">E</string>
     <string name="School">S</string>
