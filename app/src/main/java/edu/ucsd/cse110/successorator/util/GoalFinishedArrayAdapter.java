@@ -55,19 +55,19 @@ public class GoalFinishedArrayAdapter extends ArrayAdapter<Goal> {
             switch (goal.getContext()) {
                 case "Home":
                     contextSymbol = "H";
-                    contextBackground = R.drawable.shape_home;
+                    contextBackground = R.drawable.shape_finished;
                     break;
                 case "Work":
                     contextSymbol = "W";
-                    contextBackground = R.drawable.shape_work;
+                    contextBackground = R.drawable.shape_finished;
                     break;
                 case "School":
                     contextSymbol = "S";
-                    contextBackground = R.drawable.shape_school;
+                    contextBackground = R.drawable.shape_finished;
                     break;
                 case "Errands":
                     contextSymbol = "E";
-                    contextBackground = R.drawable.shape_errands;
+                    contextBackground = R.drawable.shape_finished;
                     break;
             }
             contextSymbolView.setBackgroundResource(contextBackground);

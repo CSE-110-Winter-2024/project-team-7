@@ -2,7 +2,9 @@ package edu.ucsd.cse110.successorator;
 
 import static edu.ucsd.cse110.successorator.MainViewModel.*;
 
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private GoalLists todoList;
 
     private GoalLists tomorrowList;
+
+    private MenuItem focusButton;
 
     private RecurringGoalLists recurringList;
 
@@ -98,12 +103,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void onResume() {
         super.onResume();
         currentDate.updateTodayDate(LocalDateTime.now());
+        DateUpdater.cancelDateUpdates();
+        DateUpdater.scheduleDateUpdates(currentDate);
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.action_bar, menu);
+        focusButton = menu.findItem(R.id.action_bar_focus_button);
         return true;
     }
 
@@ -323,6 +332,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
         tomorrowFragment.updatePlaceholderVisibility();
         todayFragment.updatePlaceholderVisibility();
         recurringFragment.updatePlaceholderVisibility();
+        if (!focus.equals("All")) {
+            Drawable icon = focusButton.getIcon();
+            icon.setTint(Color.GREEN);
+        }
+        else {
+            Drawable icon = focusButton.getIcon();
+            icon.setTint(Color.WHITE);
+        }
     }
 
     //for testing

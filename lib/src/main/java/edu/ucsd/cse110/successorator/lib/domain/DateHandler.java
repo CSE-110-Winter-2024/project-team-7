@@ -34,26 +34,41 @@ public class DateHandler implements Subject {
         LocalTime currentTime = dateTime.toLocalTime();
         if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(2, 0))) {
             dateTime = dateTime.minusDays(1);
+            System.out.println("datehandler print: " + dateTime);
         }
         String newFormattedDate = "Today, " + dateTime.format(dateFormat);
-        if (formattedDate == null || !(formattedDate.equals(newFormattedDate)) || !(previousDate.equals(newFormattedDate))) {
+        if (formattedDate == null || !(formattedDate.equals(newFormattedDate)) || !(newFormattedDate.equals(previousDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
         }
+        System.out.println("datehandler print: " + formattedDate);
     }
 
     public void updateTodayDate(LocalDateTime dateInput) {
         this.dateTime = dateInput;
+
+        LocalTime currentTime = dateTime.toLocalTime();
+        if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(2, 0))) {
+            dateTime = dateTime.minusDays(1);
+            System.out.println("datehandler print: " + dateTime);
+        }
+
         String newFormattedDate = "Today, " + dateTime.format(dateFormat);
+
         if (formattedDate == null || !(formattedDate.equals(newFormattedDate))) {
             this.formattedDate = newFormattedDate;
             notifyObservers();
 
         }
+        System.out.println("datehandler print: " + formattedDate);
     }
 
     public void skipDay() {
         this.dateTime = dateTime.plusDays(1);
+        LocalTime currentTime = dateTime.toLocalTime();
+        if (currentTime.isAfter(LocalTime.MIDNIGHT) && currentTime.isBefore(LocalTime.of(2, 0))) {
+            dateTime = dateTime.plusDays(1);
+        }
         updateTodayDate(dateTime);
 
     }

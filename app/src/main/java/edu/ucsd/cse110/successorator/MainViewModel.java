@@ -148,19 +148,14 @@ public class MainViewModel extends ViewModel implements Observer {
 
 
     public static void refreshTodayFinishedAdapter(ArrayAdapter<Goal> finishedAdapter, GoalLists todoList) {
-        List<Goal> sortedGoalsStepOne =
-                Stream.concat(todoList.getFinishedGoalsByContext("Home").stream(), todoList.getFinishedGoalsByContext("Work").stream()).collect(Collectors.toList()); ;
-        List<Goal> sortedGoalsStepTwo =
-                Stream.concat(sortedGoalsStepOne.stream(), todoList.getFinishedGoalsByContext("School").stream()).collect(Collectors.toList()); ;
-        List<Goal> sortedGoals =
-                Stream.concat(sortedGoalsStepTwo.stream(), todoList.getFinishedGoalsByContext("Errands").stream()).collect(Collectors.toList()); ;
+        List<Goal> sortedGoals = todoList.getFinishedGoals();
         finishedAdapter.clear();
         finishedAdapter.addAll(sortedGoals);
         finishedAdapter.notifyDataSetChanged();
     }
 
     public static void refreshTodayFinishedByContext(ArrayAdapter<Goal> finishedAdapter, GoalLists todoList, String context) {
-        List<Goal> sortedGoals = todoList.getFinishedGoalsByContext(context);
+        List<Goal> sortedGoals = todoList.getFinishedGoals();
         finishedAdapter.clear();
         finishedAdapter.addAll(sortedGoals);
         finishedAdapter.notifyDataSetChanged();

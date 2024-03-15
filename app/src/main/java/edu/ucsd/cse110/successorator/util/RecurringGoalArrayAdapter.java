@@ -44,7 +44,29 @@ public class RecurringGoalArrayAdapter extends ArrayAdapter<RecurringGoal> {
             TextView goalDescriptionTextView = convertView.findViewById(R.id.goalDescriptionTextView);
             TextView contextSymbolView = convertView.findViewById(R.id.contextSymbolView);
 
-            goalDescriptionTextView.setText(goal.content());
+            String recurrence = "";
+            switch (goal.getRecurringType()) {
+                case RecurringGoal.DAILY:
+                    recurrence = ": Daily";
+                    break;
+                case RecurringGoal.WEEKLY:
+                    var weekday = goal.getStartDate().getDayOfWeek().toString();
+                    recurrence = ": Weekly on " + weekday.substring(0,1) + weekday.substring(1).toLowerCase();
+                    break;
+                case RecurringGoal.MONTHLY:
+                    var month = goal.getStartDate().getMonth().toString();
+                    var date = goal.getStartDate().getDayOfMonth();
+                    recurrence = ": Monthly on " + month.substring(0,1) + month.substring(1).toLowerCase() + " " + date;
+                    break;
+                case RecurringGoal.YEARLY:
+                    var month1 = goal.getStartDate().getMonth().toString();
+                    var date1 = goal.getStartDate().getDayOfMonth();
+                    var year = goal.getStartDate().getYear();
+                    recurrence = ": Yearly on " + month1.substring(0,1) + month1.substring(1).toLowerCase() + " " + date1 + ", " + year;
+                    break;
+
+            }
+            goalDescriptionTextView.setText(goal.content() + recurrence);
 
             switch (goal.getContext()) {
                 case "Home":

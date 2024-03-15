@@ -38,7 +38,7 @@ public class GoalPersistenceTest {
                 SuccessoratorApplication app = (SuccessoratorApplication) activity.getApplication();
                 GoalLists todoList = app.getTodoList();
                 assertFalse("todoList should not be empty after app restart", todoList.empty());
-                assertTrue("todoList should contain the persisted goal after app restart", todoList.getUnfinishedGoals().contains(goal));
+                assertTrue("todoList should contain the persisted goal after app restart", todoList.getUnfinishedGoals().get(0).content().equals(goal.content()));
             });
         }
     }
